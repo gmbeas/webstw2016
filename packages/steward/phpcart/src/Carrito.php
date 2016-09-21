@@ -211,6 +211,25 @@ class Carrito implements CarritoInterface
             return $item->precio * $item->cantidad;
         });
     }
+
+
+    public function getBruto(){
+        $items = $this->getItems();
+        $total = $items->sum(function($item) {
+            return $item->precio * $item->cantidad;
+        });
+
+        $neto = $total / 1.19;
+        $iva = $total - $neto;
+        $salida['neto'] = (int)round($neto);
+        $salida['iva'] = (int)round($iva);
+        $salida['bruto'] = (int)$total;
+
+        return $salida;
+    }
+
+
+
     /**
      * Get the total quantities of items in the cart
      *
@@ -227,7 +246,8 @@ class Carrito implements CarritoInterface
 
     public function getSumSku($id)
     {
-        // TODO: Implement getSumSku() method.
+        $sku = $this->get($id);
+        return $sku->cantidad * $sku->precio;
     }
 
 

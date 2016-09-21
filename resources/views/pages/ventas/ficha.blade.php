@@ -119,7 +119,7 @@
                 <div class="modal-body">Su producto ha sido agregado al carro.</div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-mega btn-danger" data-dismiss="modal">Continuar</button>
-                    <a href="" class="btn btn-mega btn-default">Ir al carro</a>
+                    <a href="{{URL::to('/carrito')}}" class="btn btn-mega btn-default">Ir al carro</a>
                 </div>
             </div>
         </div>

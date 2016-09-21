@@ -83,7 +83,7 @@
                                     </ul>
                                     <div class="total">Total: <strong>${{number_format($cart->getTotal(), 0, ",", ".")}}</strong></div>
                                     <a href="" class="btn btn-mega">Pagar</a>
-                                    <div class="view-link"><a href="">Ver el Carro </a></div>
+                                    <div class="view-link"><a href="{{URL::to('/carrito')}}">Ver el Carro </a></div>
                                 </div>
                             @else
                                 <a href="#" class="btn btn-xs btn-default">

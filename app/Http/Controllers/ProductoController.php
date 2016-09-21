@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Redirect;
 use Steward\Phpcart\Carrito;
 
 class ProductoController extends Controller
@@ -87,7 +88,6 @@ class ProductoController extends Controller
             ->with('producto', $producto);
     }
 
-
     public function agregaCarro(Request $request)
     {
         $sku      = $request->input('sku');
@@ -114,5 +114,74 @@ class ProductoController extends Controller
             'mensaje' => 'El producto se agregó al carro de compras.',
             'vista'	  => generaHtml('ventas')
         )));
+    }
+
+    public function verCarro()
+    {
+        return view('pages.ventas.vercarro');
+    }
+
+    public function elimina($id)
+    {
+        $cart = new Carrito('ventas');
+        $cart->remove($id);
+        return Redirect::to('carrito');
+    }
+
+    public function disminuirproducto(Request $request)
+    {
+        $cart       = new Carrito('ventas');
+        $sku        = $request->input('id');
+        $cantidad   = $request->input('cantidad');
+        $unidad     = $request->input('unidad');
+
+
+        $cart->updateCantidad($sku, $cantidad);
+        $totalitem  = $cart->getSumSku($sku);
+        $totalCarro = $cart->getBruto();
+        return  json_encode(array(
+            'estado'   => true,
+            'mensaje'  => '',
+            'totalitem'=> $totalitem,
+            'total'    => $totalCarro,
+            'vista'    => generaHtml('ventas')
+        ));
+    }
+
+    public function incrementarproducto(Request $request)
+    {
+        $cart     = new Carrito('ventas');
+        $sku      = $request->input('id');
+        $cantidad = $request->input('cantidad');
+        $cantifin = $cantidad;
+        $unidad   = $request->input('unidad');
+
+        if($unidad > 1)
+            $cantidad = $cantidad / $unidad;
+
+        $resultado = getStock($sku, $cantidad);
+        $stock     = $resultado['_stock'];
+        if($stock['Flag'] == 1)
+        {
+
+            $cart->updateCantidad($sku, $cantifin);
+            $totalitem = $cart->getSumSku($sku);
+            $totalCarro= $cart->getBruto();
+
+            return  json_encode(array(
+                'estado'   => true,
+                'mensaje'  => $stock['Mensaje'],
+                'totalitem'=> $totalitem,
+                'total'    => $totalCarro,
+                'vista'    => generaHtml('ventas')
+            ));
+        }
+
+        return  json_encode(array(
+            'estado'   => false,
+            'mensaje'  => $stock['Mensaje'],
+            'totalitem'=> '',
+            'total'    => ''
+        ));
     }
 }

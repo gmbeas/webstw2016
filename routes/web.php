@@ -24,6 +24,10 @@ Route::get('/', 'HomeController@index');
 */
 Route::get('/ficha/{sku}/{nombre}', 'ProductoController@ficha');
 Route::post('/addcarro', array('uses' => 'ProductoController@agregaCarro'));
+Route::get('/carrito', 'ProductoController@verCarro');
+Route::delete('/carrito/{id}', 'ProductoController@elimina');
+Route::post('/disminuirproducto', array('uses' => 'ProductoController@disminuirproducto'));
+Route::post('/incrementarproducto', array('uses' => 'ProductoController@incrementarproducto'));
 
 
 /*
