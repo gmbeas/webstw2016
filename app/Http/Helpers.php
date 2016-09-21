@@ -8,6 +8,20 @@
 
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Str;
+
+
+function generaHtml($tienda){
+    $cart = new \Steward\Phpcart\Carrito($tienda);
+    $htmlcart = '<a href="#" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown"><span class="compact-hidden">Carro de compras - <strong>$ ' . number_format($cart->getTotal(), 0, ",", ".") . '</strong></span> <span aria-hidden="true" class="glyphicon glyphicon-shopping-cart"><span class="label-cart">' . $cart->count() . '</span></span></a><div class="dropdown-menu pull-right shoppingcart-box" role="menu"> Su carro de compras<ul class="list">';
+    foreach($cart->getItems() as $producto){
+        $htmlcart .= ' <li class="item"><a href="' . URL::to('/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) . '.html" class="preview-image"> <img class="preview" src="' .URL::asset('/imagenweb/sku/' . $producto->foto) . '" alt=""> </a> <div class="description"> <a href="' .URL::to('/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) .'.html">'. $producto->nombre . '</a> <strong class="price">'.$producto->cantidad .' x $ ' . number_format($producto->precio, 0, ",", ".") .'</strong> </div> </li>';
+    }
+    $htmlcart .= '</ul> <div class="total">Total: <strong>$' . number_format($cart->getTotal(), 0, ",", ".") .'</strong></div><a href="" class="btn btn-mega">Pagar</a><div class="view-link"><a href="">Ver el Carro </a></div>';
+
+    return $htmlcart;
+}
+
 
 
 function actualizaCarro($a1, $a2, $a3){

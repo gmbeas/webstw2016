@@ -4,6 +4,8 @@
 
 @section('content')
 
+    <meta name="csrf-token" content="{!! csrf_token() !!}">
+
     <div class="container">
         <div class="row" style="margin-bottom: 40px;">
 
@@ -55,7 +57,7 @@
                         <div class="option"> <b>Cantidad:</b>
                             <div class="input-group quantity-control" unselectable="on" style="-webkit-user-select: none;">
                                 <span class="input-group-addon">−</span>
-                                <input type="text" name="cantidad" data-unidad="<?=$producto['unidad_venta'];?>" id="cantidad" class="form-control" value="<?=$producto['unidad_venta'];?>">
+                                <input type="text" name="cantidad" data-unidad="{{$producto['unidad_venta']}}" id="cantidad" class="form-control" value="{{$producto['unidad_venta']}}">
                                 <span class="input-group-addon">+</span>
                             </div>
                         </div>
@@ -123,4 +125,61 @@
         </div>
     </div>
 
+@stop
+
+
+@section('javascript')
+    <script>
+        function verificaCantidad() {
+            var cantidad = $('#cantidad').val();
+            var unidad = $('#cantidad').data('unidad');
+            if (! cantidad) {
+                $.alerta('Debe seleccionar una cantidad.');
+                return false;
+            }
+            if (! unidad) {
+                unidad = 1;
+            }
+            if ( (cantidad % unidad) ) {
+                $.alerta('Este producto se vende en set de '+unidad+'. Por favor seleccione un multiplo de '+unidad+'.');
+                return false;
+            }
+            return true;
+        }
+        $(document).ready(function(){
+            $('#comprar').click(function() {
+                var sku = '{{trim($producto['codigo'])}}';
+                var cantidad = $('#cantidad').val();
+                var nombre = '{{trim($producto['NombreWeb'])}}';
+                var precio = '{{$producto['precio_unitario']}}';
+                var foto = '{{$producto['foto'][0]}}';
+                var unidad = '{{$producto['unidad_venta']}}';
+                var skuid = '{{$producto['skuid']}}'
+                var token = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    type: "POST",
+                    url: '{{URL::to('addcarro')}}',
+                    data: {'sku': sku, 'cantidad': cantidad, 'nombre' : nombre, 'precio' : precio, 'foto' : foto, 'unidad' : unidad, 'skuid' : skuid, '_token' : token},
+                    success: function(response) {
+                        var respuesta = JSON.parse(response);
+                        if (respuesta.estado == 'OK') {
+                            $('#modal-add-cart .modal-body').html('<span class="glyphicon glyphicon-ok-sign"></span> '+respuesta.mensaje);
+                            $('#modal-add-cart').modal('show');
+                            var target = $('[rel="carroFlotante"]');
+                            if ($(target).length) {
+                                $(target).html(respuesta.vista);
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        $('#cantidad').change(function() {
+            if (! verificaCantidad() ) {
+                return false;
+            }
+        });
+    </script>
 @stop

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Steward\Phpcart\Carrito;
 
 class ProductoController extends Controller
 {
@@ -84,5 +85,34 @@ class ProductoController extends Controller
 
         return view('pages.ventas.ficha')
             ->with('producto', $producto);
+    }
+
+
+    public function agregaCarro(Request $request)
+    {
+        $sku      = $request->input('sku');
+        $cantidad = $request->input('cantidad');
+        $nombre   = $request->input('nombre');
+        $precio   = $request->input('precio');
+        $foto     = $request->input('foto');
+        $unidad   = $request->input('unidad');
+        $skuid	  = $request->input('skuid');
+
+        $cart     = new Carrito();
+        $cart->nombred('ventas')->add([
+            'id'		=>	$sku,
+            'nombre'	=>	$nombre,
+            'cantidad'	=>	$cantidad,
+            'precio'	=>	$precio,
+            'foto'		=>	$foto,
+            'unidad'	=>	$unidad,
+            'skuid'		=>	$skuid
+        ]);
+
+        die(json_encode(array(
+            'estado'  => 'OK',
+            'mensaje' => 'El producto se agregó al carro de compras.',
+            'vista'	  => generaHtml('ventas')
+        )));
     }
 }

@@ -31,17 +31,5 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet' type='text/css'>
 <link href="http://geedmo.github.io/yamm3/yamm/yamm.css" rel="stylesheet">
 
-<style>
-    .label-cart {
-        color: #aaa;
-        position: absolute;
-        text-align: center;
-        top: 8px;
-        left: 0;
-        width: 100%;
-        font-size: 11px;
-        display: none;
-    }
-</style>
 
 

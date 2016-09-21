@@ -23,6 +23,7 @@ Route::get('/', 'HomeController@index');
 |
 */
 Route::get('/ficha/{sku}/{nombre}', 'ProductoController@ficha');
+Route::post('/addcarro', array('uses' => 'ProductoController@agregaCarro'));
 
 
 /*
