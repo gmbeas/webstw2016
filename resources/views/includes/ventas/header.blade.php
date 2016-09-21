@@ -36,6 +36,11 @@
                     <div class="navbar-secondary-menu pull-right hidden-xs">
                         <!-- login -->
                         <div class="btn-group compact-hidden">
+                            @if(checkSesionUsuario())
+                                <a href="{{URL::to('/logout')}}" class="btn btn-xs btn-default" id="btnSession"> <span class="icon icon-vcard"></span> Cerrar Sesión </a>
+                                @else
+                                <a href="{{URL::to('/login')}}" class="btn btn-xs btn-default"> <span class="icon icon-vcard"></span> Login/Registro  </a>
+                            @endif
 
                         </div>
                         <!-- end login -->

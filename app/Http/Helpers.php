@@ -10,6 +10,40 @@
 use GuzzleHttp\Client;
 
 
+function actualizaCarro($a1, $a2, $a3){
+
+}
+
+function creaSesionUsuario($ficha){
+    Session::put('cliente', $ficha);
+}
+
+function getLogin($rut, $password){
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_LOGIN');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "Rut"       =>  $rut,
+            "Password"  =>  $password
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
+function checkSesionUsuario(){
+    if(Session::has('cliente'))
+        return true;
+    else
+        return false;
+}
+
+function eliminaSesionUsuario(){
+    Session::forget('cliente');
+}
+
+
+
 function getBusqueda($search){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_BUSQUEDA');

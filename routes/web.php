@@ -27,6 +27,22 @@ Route::get('/ficha/{sku}/{nombre}', 'ProductoController@ficha');
 
 /*
 |--------------------------------------------------------------------------
+| Controller Clientes
+|--------------------------------------------------------------------------
+|
+| Metodos para controller de clientes
+|
+*/
+Route::get('/login', 'ClienteController@login');
+Route::get('/logout', 'ClienteController@doLogout');
+
+Route::post('/login', array('uses' => 'ClienteController@doLogin'));
+
+
+
+
+/*
+|--------------------------------------------------------------------------
 | Controller Categorias
 |--------------------------------------------------------------------------
 |
