@@ -133,7 +133,7 @@ class Carrito implements CarritoInterface
     public function updatePrecio($id, $price)
     {
         $item = (array) $this->get($id);
-        $item['price'] = $price;
+        $item['precio'] = $price;
         return $this->update($item);
     }
     /**

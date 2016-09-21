@@ -34,9 +34,9 @@
                                 @foreach($cart->getItems() as $producto)
                                 <tr>
                                     <td>
-                                        {{ Form::open(array('name' => 'formElimina', 'url' => 'carrito/' . $producto->id, 'class' => 'pull-right')) }}
+                                        {{ Form::open(array('name' => 'formElimina_' . $producto->id, 'url' => 'carrito/' . $producto->id)) }}
                                         {{ Form::hidden('_method', 'DELETE') }}
-                                        <a href="#" onclick="document.forms['formElimina'].submit(); return false;" class="remove-button hidden-xs">
+                                        <a href="#" onclick="document.forms['formElimina_{{$producto->id}}'].submit(); return false;" class="remove-button hidden-xs">
                                             <span class="icon-cancel-2 "></span>
                                         </a>
                                         {{ Form::close() }}

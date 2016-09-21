@@ -37,12 +37,45 @@ function getStock($sku, $cantidad){
 }
 
 
-function actualizaCarro($a1, $a2, $a3){
+function actualizaCarro($region, $ciudad, $comuna){
+    $cart = new \Steward\Phpcart\Carrito('ventas');
+    $items = array();
+    foreach ($cart->getItems() as $item) {
+        $items[] = $item->skuid . ',' . $item->cantidad;
+    }
+    $skus = '|' . join('|', $items);
 
+    $totales = getTotales($skus, $region, $ciudad, $comuna);
+    $kk = $totales;
+    foreach ($totales['_total'] as $producto){
+        if($producto['Tipo'] == 'D'){
+            $cart->updatePrecio($producto['Sku'], $producto['PrecioUnidadBruto']);
+        }
+    }
 }
 
 function creaSesionUsuario($ficha){
     Session::put('cliente', $ficha);
+}
+
+
+
+function getTotales($skus, $region, $ciudad, $comuna){
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_GET_TOTALES');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "Tienda"    =>  "29",
+            "Rut"       =>  getRutSession(),
+            "Skus"      =>  $skus,
+            "CodPromo"  =>  "",
+            "RegionId"  =>  $region,
+            "CiudadId"  =>  $ciudad,
+            "ComundaId" =>  $comuna
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
 }
 
 function getLogin($rut, $password){
@@ -69,6 +102,19 @@ function eliminaSesionUsuario(){
     Session::forget('cliente');
 }
 
+function getSesionUsuario(){
+    return Session::get('cliente');
+}
+
+
+function getRutSession(){
+    if(checkSesionUsuario()){
+        $cliente =getSesionUsuario();
+        return $cliente['MbAuxCod'];
+    }else{
+        return "";
+    }
+}
 
 
 function getBusqueda($search){
@@ -78,7 +124,7 @@ function getBusqueda($search){
         'json' => [
             "Tienda"        =>  "29",
             "PalabraClave"  =>  $search,
-            "Rut"           =>  ""
+            "Rut"           =>  getRutSession()
         ]]);
     $pp = $r->getBody();
     $response_body = json_decode($pp, true);
@@ -93,7 +139,7 @@ function getProductos($arbol, $prfid){
             "Tienda"     =>  "29",
             "Arbol"      =>  $arbol,
             "PrfId"      =>  $prfid,
-            "Rut"        =>  ""
+            "Rut"        =>  getRutSession()
         ]]);
     $pp = $r->getBody();
     $response_body = json_decode($pp, true);
@@ -107,7 +153,7 @@ function getFichaProducto($sku){
         'json' => [
             "Tienda"    =>  "29",
             "Sku"       =>  $sku,
-            "Rut"     =>  ""
+            "Rut"     =>  getRutSession()
         ]]);
     $pp = $r->getBody();
     $response_body = json_decode($pp, true);
@@ -144,7 +190,7 @@ function getAgrupados($PrfId){
     $r = $client->request('POST', $url, [
         'json' => [
             "Tienda"    =>  "29",
-            "Rut"       =>  "",
+            "Rut"       =>  getRutSession(),
             "PrfId"     =>  $PrfId
         ]]);
     $pp = $r->getBody();
@@ -170,7 +216,7 @@ function getMasVendidos(){
     $r = $client->request('POST', $url, [
         'json' => [
             "Tienda"    =>  "29",
-            "Rut"       =>  ""
+            "Rut"       =>  getRutSession()
         ]]);
     $pp = $r->getBody();
     $response_body = json_decode($pp, true);
