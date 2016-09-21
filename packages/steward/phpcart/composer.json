@@ -1,0 +1,13 @@
+{
+    "name": "steward/phpcart",
+    "description": "Modulo para carrito de compras",
+    "type": "package",
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Gonzalo Martinez",
+            "email": "gmbeas@gmail.com"
+        }
+    ],
+    "require": {}
+}
