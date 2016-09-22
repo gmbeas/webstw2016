@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -72,5 +73,21 @@ class ClienteController extends Controller
         eliminaSesionUsuario();
         actualizaCarro("0", "0", "0");
         return Redirect::to('login');
+    }
+
+
+
+    public function getCiudades(Request $request){
+        $idregion = $request->input('idregion');
+        $inforegiones = getRegCiuCom(2, $idregion, 0);
+        die(json_encode($inforegiones['_regciucom']));
+    }
+
+    public function getComunas(Request $request){
+        $idregion = $request->input('idregion');
+        $idciudad = $request->input('idciudad');
+
+        $inforegiones = getRegCiuCom(3, $idregion, $idciudad);
+        die(json_encode($inforegiones['_regciucom']));
     }
 }

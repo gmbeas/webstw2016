@@ -94,7 +94,6 @@
                         </div>
                     </div>
                     <!-- FIN DESPACHO -->
-
                     <!-- PAGO -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -203,6 +202,57 @@
         </div>
     </div>
 
+
+    <!-- DIRECCION ADD -->
+    <div class="modal fade" id="add-direc">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                {{ Form::open(array('url' => '/login', 'class' => 'form-horizontal validar-formulario')) }}
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Agregar dirección</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ClienteDireccion" class="col-sm-2 control-label">Dirección:</label>
+                                <div class="col-sm-10">
+                                    {{ Form::input('text', 'ClienteDireccion', null, ['class' => 'form-control', 'id' => 'ClienteDireccion']) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ClienteRegion" class="col-sm-2 control-label">Región:</label>
+                                <div class="col-sm-10">
+                                    {{ Form::select('ClienteRegion', $regiones, null, ['class' => 'form-control', 'id' => 'ClienteRegion']) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ClienteCiudad" class="col-sm-2 control-label">Ciudad:</label>
+                                <div class="col-sm-10">
+                                    {{ Form::select('ClienteCiudad', array(), null, ['class' => 'form-control', 'id' => 'ClienteCiudad', 'empty' => '- sin info']) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="ClienteComuna" class="col-sm-2 control-label">Comuna:</label>
+                                <div class="col-sm-10">
+                                    {{ Form::select('ClienteComuna', array(), null, ['class' => 'form-control', 'id' => 'ClienteComuna']) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="addDireccion" class="btn btn-primary btn-mega">Agregar</button>
+                </div>
+                {{ Form::close() }}
+            </div>
+        </div>
+    </div>
+    <!-- END ADD -->
+
 @stop
 
 
@@ -278,6 +328,52 @@
                     scrollTop: $("#collapseSix").parent().offset().top
                 }, 600);
             }
+        });
+
+
+
+        $('#ClienteRegion').change(function() {
+            var region = $(this).val(), target = $('#ClienteCiudad');
+            if (! $(target).length) {
+                return false;
+            }
+            $(target).html('<option>cargando...</option>');
+
+            $.ajax({
+                type: "POST",
+                url: '{{URL::to('getciudades')}}',
+                data: {'idregion': region, '_token' : token},
+                success: function(response) {
+                    var respuesta = JSON.parse(response);
+                    $(target).html('');
+                    $.each(respuesta, function(i, value) {
+                        $(target).append($('<option>').text(value.Nombre).attr('value', value.Id));
+                    });
+                }
+            });
+        });
+
+
+        $('#ClienteCiudad').change(function() {
+            var ciudad = $(this).val(),
+                    region = $('#ClienteRegion').val(),
+                    target = $('#ClienteComuna');
+            if (! $(target).length) {
+                return false;
+            }
+            $(target).html('<option>cargando...</option>');
+            $.ajax({
+                type: "POST",
+                url: '{{URL::to('getcomunas')}}',
+                data: {'idregion': region, 'idciudad' : ciudad, '_token' : token},
+                success: function(response) {
+                    var respuesta = JSON.parse(response);
+                    $(target).html('');
+                    $.each(respuesta, function(i, value) {
+                        $(target).append($('<option>').text(value.Nombre).attr('value', value.Id));
+                    });
+                }
+            });
         });
 
 

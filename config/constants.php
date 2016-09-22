@@ -22,6 +22,7 @@ $METHOD_GET_FICHA 		= "GetProductoFicha";
 $METHOD_GET_PRODUCTOS 	= "GetProductos";
 $METHOD_GET_STOCK 		= "Stock";
 $METHOD_GET_TOTALES		= "GetTotales";
+$METHOD_GET_REGCIUCOM	= "GetRegCiuCom";
 
 return [
     'SERVICIOS' => [
@@ -37,5 +38,6 @@ return [
         'METHOD_GET_PRODUCTOS'     		=> $url.$api.$METHOD_GET_PRODUCTOS,
         'METHOD_GET_STOCK'     			=> $url.$api.$METHOD_GET_STOCK,
         'METHOD_GET_TOTALES'     		=> $url.$api.$METHOD_GET_TOTALES,
+        'METHOD_GET_REGCIUCOM'     		=> $url.$api.$METHOD_GET_REGCIUCOM,
     ]
 ];

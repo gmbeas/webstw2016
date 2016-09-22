@@ -11,6 +11,22 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 
 
+function getRegCiuCom($tipo, $regionid, $ciudadid){
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_GET_REGCIUCOM');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "Tipo"      =>  $tipo,
+            "RegionId"  =>  $regionid,
+            "CiudadId"  => $ciudadid
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
+
+
 function generaHtml($tienda){
     $cart = new \Steward\Phpcart\Carrito($tienda);
     $htmlcart = '<a href="#" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown"><span class="compact-hidden">Carro de compras - <strong>$ ' . number_format($cart->getTotal(), 0, ",", ".") . '</strong></span> <span aria-hidden="true" class="glyphicon glyphicon-shopping-cart"><span class="label-cart">' . $cart->count() . '</span></span></a><div class="dropdown-menu pull-right shoppingcart-box" role="menu"> Su carro de compras<ul class="list">';
@@ -57,8 +73,6 @@ function actualizaCarro($region, $ciudad, $comuna){
 function creaSesionUsuario($ficha){
     Session::put('cliente', $ficha);
 }
-
-
 
 function getTotales($skus, $region, $ciudad, $comuna){
     $client = new Client;

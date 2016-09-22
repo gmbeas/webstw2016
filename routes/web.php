@@ -43,6 +43,10 @@ Route::get('/logout', 'ClienteController@doLogout');
 
 Route::post('/login', array('uses' => 'ClienteController@doLogin'));
 
+Route::post('/getciudades', array('uses' => 'ClienteController@getCiudades'));
+Route::post('/getcomunas', array('uses' => 'ClienteController@getComunas'));
+
+
 
 
 

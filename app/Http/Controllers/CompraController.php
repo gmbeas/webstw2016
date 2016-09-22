@@ -20,10 +20,17 @@ class CompraController extends Controller
                 $direcciones[$direccion['MbDirCod']] = $direccion['MbDirDes'] . ', ' . $direccion['MbCiuNom'] . ', ' . $direccion['MbZonNom'];
             }
 
+            $regiones = array();
+            $inforegiones = getRegCiuCom(1, 0, 0);
+            foreach ($inforegiones['_regciucom'] as $region) {
+                $regiones[$region['Id']] = $region['Nombre'];
+            }
+
             return view('pages.ventas.checkout')
                 ->with('cliente', $sessioncliente)
                 ->with('direcciones', $direcciones)
-                ->with('productos', $cart->getItems());
+                ->with('productos', $cart->getItems())
+                ->with('regiones', $regiones);
         }
         else{
             Session::put('url.checkout', \URL::to('/checkout'));
