@@ -106,7 +106,7 @@
                                         </div>
                                         <div class="row text-right">
                                             <div style="padding-right: 35px;" class="col-md-6 col-md-offset-6">
-                                                <a href="" class="btn btn-mega">Comprar</a>
+                                                <a href="{{URL::to('/checkout')}}" class="btn btn-mega">Comprar</a>
                                             </div>
                                         </div>
                                     </div>

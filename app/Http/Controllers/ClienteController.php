@@ -13,7 +13,14 @@ use Session;
 class ClienteController extends Controller
 {
     public function login(){
-        Session::put('url.intended', URL::previous());
+
+        if(Session::has('url.checkout')){
+            Session::put('url.intended', Session::get('url.checkout'));
+            Session::forget('url.checkout');
+        }else{
+            Session::put('url.intended', URL::previous());
+        }
+
         if(checkSesionUsuario()){
             return redirect()->action('HomeController@index');
         }

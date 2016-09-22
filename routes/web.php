@@ -57,3 +57,13 @@ Route::post('/login', array('uses' => 'ClienteController@doLogin'));
 Route::get('/categoria/{arbol}/{prfid}/{nombre}', 'CategoriaController@view');
 Route::get('/categoria/buscador', 'CategoriaController@buscador');
 
+
+/*
+|--------------------------------------------------------------------------
+| Controller Compra
+|--------------------------------------------------------------------------
+|
+| Metodos para controller de compras
+|
+*/
+Route::get('/checkout', 'CompraController@index');
