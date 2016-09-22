@@ -67,3 +67,4 @@ Route::get('/categoria/buscador', 'CategoriaController@buscador');
 |
 */
 Route::get('/checkout', 'CompraController@index');
+Route::post('/cambiadespacho', array('uses' => 'CompraController@cambiaDespacho'));
