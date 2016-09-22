@@ -90,4 +90,36 @@ class ClienteController extends Controller
         $inforegiones = getRegCiuCom(3, $idregion, $idciudad);
         die(json_encode($inforegiones['_regciucom']));
     }
+
+    public function addDireccion(Request $request){
+        $direccion = $request->input('direccion');
+        $idregion = $request->input('idregion');
+        $idciudad = $request->input('idciudad');
+        $idcomuna = $request->input('idcomuna');
+
+        $nomregion = $request->input('nomregion');
+        $nomciudad = $request->input('nomciudad');
+        $nomcomuna = $request->input('nomcomuna');
+
+        $nuevadire = setNuevaDireccion($direccion, $idregion, $idciudad, $idcomuna);
+        $idnuevadire = $nuevadire['_dire'];
+
+        $xx = getSesionUsuario();
+        $nn = array('MbAuxCod' => getRutSession(),
+            'MbDirCod' => $idnuevadire['DirCod'],
+            'MbDirDes' => $direccion,
+            'MbDirReg' => $idregion,
+            'MbDirCiu' => $idciudad,
+            'MbDirCom' => $idcomuna,
+            'MbRegNom' => $nomregion,
+            'MbCiuNom' => $nomciudad,
+            'MbZonNom' => $nomcomuna);
+
+        array_push($xx['_direcciones'], $nn);
+
+        creaSesionUsuario($xx);
+
+        return response()->json(json_encode($idnuevadire));
+
+    }
 }

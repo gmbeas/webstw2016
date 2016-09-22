@@ -208,7 +208,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
 
-                {{ Form::open(array('url' => '/login', 'class' => 'form-horizontal validar-formulario')) }}
+                {{ Form::open(array('class' => 'form-horizontal validar-formulario')) }}
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -290,6 +290,54 @@
         }
 
 
+
+        $('#add-direc #addDireccion').click(function() {
+            var formulario = $(this).parents('form');
+            $(formulario).find('.has-error').removeClass('has-error');
+            $(formulario).find('.form-control').each(function(index, elemento) {
+                if (! $(elemento).val()) {
+                    $(elemento).parents('.form-group').addClass('has-error');
+                }
+            });
+            if ($(formulario).find('.has-error').length) {
+                $.alerta('Para guardar la nueva dirección debe llenar los campos destacados.');
+                return false;
+            }
+
+           // $('#CompraAgregarDireccionForm').submit();
+
+            var dire = $('#ClienteDireccion').val();
+            var idregion = $('#ClienteRegion').val();
+            var idciudad = $('#ClienteCiudad').val();
+            var idcomuna = $('#ClienteComuna').val();
+            var nomregion = $('#ClienteRegion option:selected').text();
+            var nomciudad = $('#ClienteCiudad option:selected').text();
+            var nomcomuna = $('#ClienteComuna option:selected').text();
+
+            $.ajax({
+                type: "POST",
+                url: '{{URL::to('nuevadireccion')}}',
+                data: {'direccion': dire, 'idregion' : idregion, 'idciudad' : idciudad, 'idcomuna' : idcomuna, 'nomregion' : nomregion, 'nomciudad' : nomciudad, 'nomcomuna' : nomcomuna, '_token' : token},
+                success: function(response) {
+                    var respuesta = JSON.parse(response);
+                    console.log(respuesta);
+
+                    var target = $('#CompraDespachoId');
+                    $(target).append($('<option>').text($('#ClienteDireccion').val()+ ', '+ $('#ClienteCiudad option:selected').text() + ', ' + $('#ClienteComuna option:selected').text()).attr('value', respuesta.DirCod));
+
+
+                    target.val(respuesta.DirCod);
+                    cambiarDespacho(respuesta.DirCod);
+
+                    $('#add-direc').modal('toggle');
+                    $('#ClienteDireccion').val('');
+                    $('#ClienteRegion').val('0');
+                    $('#ClienteCiudad').empty();
+                    $('#ClienteComuna').empty();
+
+                }
+            });
+        });
 
 
 
@@ -389,7 +437,7 @@
                 num = num.split('').reverse().join('').replace(/^[\.]/,'');
                 return num
             } else {
-                alert('Solo se permiten numeros');
+                alert('Solo se permiten números');
             }
         }
     </script>

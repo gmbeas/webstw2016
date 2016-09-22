@@ -38,6 +38,24 @@ function generaHtml($tienda){
     return $htmlcart;
 }
 
+
+function setNuevaDireccion($direccion, $regionid, $ciudadid, $comunaid){
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_NUEVA_DIRECCION');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "Rut"       =>  getRutSession(),
+            "Direccion" =>  $direccion,
+            "RegionId"  =>  $regionid,
+            "CiudadId"  =>  $ciudadid,
+            "ComunaId"  =>  $comunaid
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
+
 function getStock($sku, $cantidad){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_GET_STOCK');
@@ -123,7 +141,7 @@ function getSesionUsuario(){
 
 function getRutSession(){
     if(checkSesionUsuario()){
-        $cliente =getSesionUsuario();
+        $cliente = getSesionUsuario();
         return $cliente['MbAuxCod'];
     }else{
         return "";
