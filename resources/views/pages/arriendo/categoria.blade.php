@@ -201,7 +201,7 @@
                                 }
                             }
                             var urlimage = '{{URL::asset('/imagenweb/sku/')}}';
-                            var urlficha = '{{ URL::to('/ficha/')}}';
+                            var urlficha = '{{ URL::to('/arriendo/ficha/')}}';
                             var ficha = urlficha + '/' + registro.Sku + '/' + slug(registro.NombreWeb, '-') + '.html';
                             var imagen = urlimage + '/' + $.trim(registro.Foto);
                             contenido+= '<div class="product-preview" style="height: 400px;" data-prefijo_id="'+registro.Prf_Id+'">'+

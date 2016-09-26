@@ -38,6 +38,17 @@ function generaHtml($tienda){
     return $htmlcart;
 }
 
+function generaHtmlArriendo($tienda){
+    $cart = new \Steward\Phpcart\Carrito($tienda);
+    $htmlcart = '<a href="#" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown"><span class="compact-hidden">Carro de arriendo - <strong>$ ' . number_format($cart->getTotal(), 0, ",", ".") . '</strong></span> <span aria-hidden="true" class="glyphicon glyphicon-shopping-cart"><span class="label-cart">' . $cart->count() . '</span></span></a><div class="dropdown-menu pull-right shoppingcart-box" role="menu"> Su carro de arriendo<ul class="list">';
+    foreach($cart->getItems() as $producto){
+        $htmlcart .= ' <li class="item"><a href="' . URL::to('/arriendo/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) . '.html" class="preview-image"> <img class="preview" src="' .URL::asset('/imagenweb/sku/' . $producto->foto) . '" alt=""> </a> <div class="description"> <a href="' .URL::to('/arriendo/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) .'.html">'. $producto->nombre . '</a> <strong class="price">'.$producto->cantidad .' x $ ' . number_format($producto->precio, 0, ",", ".") .'</strong> </div> </li>';
+    }
+    $htmlcart .= '</ul> <div class="total">Total: <strong>$' . number_format($cart->getTotal(), 0, ",", ".") .'</strong></div><a href="' . URL::to('/arriendo/checkout') . '" class="btn btn-mega">Confirmar</a><div class="view-link"><a href="' . URL::to('/arriendo/carrito') .'">Ver el Cotización </a></div>';
+
+    return $htmlcart;
+}
+
 
 function setNuevaDireccion($direccion, $regionid, $ciudadid, $comunaid){
     $client = new Client;
@@ -56,12 +67,12 @@ function setNuevaDireccion($direccion, $regionid, $ciudadid, $comunaid){
 }
 
 
-function getStock($sku, $cantidad){
+function getStock($tienda, $sku, $cantidad){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_GET_STOCK');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda"    =>  '29',
+            "Tienda"    =>  $tienda,
             "Sku"       =>  $sku,
             "Cantidad"  => $cantidad
         ]]);
@@ -149,12 +160,12 @@ function getRutSession(){
 }
 
 
-function getBusqueda($search){
+function getBusqueda($tienda, $search){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_BUSQUEDA');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda"        =>  "29",
+            "Tienda"        =>  $tienda,
             "PalabraClave"  =>  $search,
             "Rut"           =>  getRutSession()
         ]]);
@@ -196,12 +207,12 @@ function getProductos($tienda, $arbol, $prfid){
     return $response_body;
 }
 
-function getFichaProducto($sku){
+function getFichaProducto($tienda, $sku){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_GET_FICHA');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda"    =>  "29",
+            "Tienda"    =>  $tienda,
             "Sku"       =>  $sku,
             "Rut"     =>  getRutSession()
         ]]);

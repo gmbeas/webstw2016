@@ -23,6 +23,8 @@
 {!! Html::style('css/isotope.css') !!}
 {!! Html::style('css/smoothness/jquery-ui-1.10.3.custom.min.css') !!}
 {!! Html::style('css/jquery.fancybox.css') !!}
+{!! Html::style('template/plugins/bootstrap-datepicker/css/datepicker.css') !!}
+
 {!! Html::style('css/steward.css') !!}
 
 {!! Html::style('rs-plugin/css/settings.css') !!}

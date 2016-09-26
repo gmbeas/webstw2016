@@ -37,7 +37,7 @@
 
             <div class="row">
                 <div class="col-md-6 col-lg-7"  style="margin-top:-10px;padding-left: 60px; ">
-                    {!! Form::open(['method'=>'GET', 'url'=>'/categoria/buscador','class'=>'navbar-form','role'=>'buscar'])  !!}
+                    {!! Form::open(['method'=>'GET', 'url'=>'/arriendo/categoria/buscador','class'=>'navbar-form','role'=>'buscar'])  !!}
                     <div class="input-group">
                         {{ Form::input('buscar', 'buscar', null, ['class' => 'form-control input-md input-search', 'placeholder' => 'Busque su producto aquí']) }}
                         <div class="input-group-btn">
@@ -82,8 +82,8 @@
                                         @endforeach
                                     </ul>
                                     <div class="total">Total: <strong>${{number_format($cart->getTotal(), 0, ",", ".")}}</strong></div>
-                                    <a href="{{URL::to('/checkout')}}" class="btn btn-mega">Pagar</a>
-                                    <div class="view-link"><a href="{{URL::to('/carrito')}}">Ver el Carro </a></div>
+                                    <a href="{{URL::to('/arriendo/checkout')}}" class="btn btn-mega">Confirmar</a>
+                                    <div class="view-link"><a href="{{URL::to('/arriendo/carrito')}}">Ver el Cotización </a></div>
                                 </div>
                             @else
                                 <a href="#" class="btn btn-xs btn-default">

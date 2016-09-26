@@ -96,4 +96,34 @@ class CompraController extends Controller
 
         die (json_encode($data));
     }
+
+
+
+    public function indexArriendo(){
+        if(checkSesionUsuario()){
+            $sessioncliente = getSesionUsuario();
+            $cart = new Carrito('arriendo');
+            $direcciones = array();
+            $direcciones["0"] = "- Seleccione dirección de despacho";
+            foreach($sessioncliente['_direcciones'] as $direccion) {
+                $direcciones[$direccion['MbDirCod']] = $direccion['MbDirDes'] . ', ' . $direccion['MbCiuNom'] . ', ' . $direccion['MbZonNom'];
+            }
+
+            $regiones = array();
+            $inforegiones = getRegCiuCom(1, 0, 0);
+            foreach ($inforegiones['_regciucom'] as $region) {
+                $regiones[$region['Id']] = $region['Nombre'];
+            }
+
+            return view('pages.arriendo.checkout')
+                ->with('cliente', $sessioncliente)
+                ->with('direcciones', $direcciones)
+                ->with('productos', $cart->getItems())
+                ->with('regiones', $regiones);
+        }
+        else{
+            Session::put('url.checkout', \URL::to('/arriendo/checkout'));
+            return \Redirect::to('/login');
+        }
+    }
 }

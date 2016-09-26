@@ -22,6 +22,11 @@
 {!! HTML::script('rs-plugin/js/jquery.themepunch.revolution.min.js') !!}
 {!! HTML::script('js/cloudzoom.js') !!}
 {!! HTML::script('js/jquery.printarea.js') !!}
+
+
+{!! HTML::script('template/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') !!}
+{!! HTML::script('template/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.es.js') !!}
+
 {!! HTML::script('js/funciones.js') !!}
 
 <script>

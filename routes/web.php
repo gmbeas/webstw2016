@@ -32,6 +32,13 @@ Route::delete('/carrito/{id}', 'ProductoController@elimina');
 Route::post('/disminuirproducto', array('uses' => 'ProductoController@disminuirproducto'));
 Route::post('/incrementarproducto', array('uses' => 'ProductoController@incrementarproducto'));
 
+Route::get('/arriendo/ficha/{sku}/{nombre}', 'ProductoController@fichaArriendo');
+Route::post('/arriendo/addcarro', array('uses' => 'ProductoController@agregaCarroArriendo'));
+Route::get('/arriendo/carrito', 'ProductoController@verCarroArriendo');
+Route::delete('/arriendo/carrito/{id}', 'ProductoController@eliminaArriendo');
+Route::post('/arriendo/disminuirproducto', array('uses' => 'ProductoController@disminuirproductoArriendo'));
+Route::post('/arriendo/incrementarproducto', array('uses' => 'ProductoController@incrementarproductoArriendo'));
+
 
 /*
 |--------------------------------------------------------------------------
@@ -63,15 +70,13 @@ Route::post('/nuevadireccion', array('uses' => 'ClienteController@addDireccion')
 |
 */
 Route::get('/categoria/{arbol}/{prfid}/{nombre}', 'CategoriaController@view');
-Route::get('/arriendo/categoria/{arbol}/{prfid}/{nombre}', 'CategoriaController@viewArriendo');
-
-
 Route::get('/categoria/buscador', 'CategoriaController@buscador');
-
 Route::post('/traecategorias', array('uses' => 'CategoriaController@traecategorias'));
-Route::post('/arriendo/traecategorias', array('uses' => 'CategoriaController@traecategoriasArriendo'));
-
 Route::post('/traeproductos', array('uses' => 'CategoriaController@traeproductos'));
+
+Route::get('/arriendo/categoria/{arbol}/{prfid}/{nombre}', 'CategoriaController@viewArriendo');
+Route::get('/arriendo/categoria/buscador', 'CategoriaController@buscadorArriendo');
+Route::post('/arriendo/traecategorias', array('uses' => 'CategoriaController@traecategoriasArriendo'));
 Route::post('/arriendo/traeproductos', array('uses' => 'CategoriaController@traeproductosArriendo'));
 
 
@@ -85,3 +90,5 @@ Route::post('/arriendo/traeproductos', array('uses' => 'CategoriaController@trae
 */
 Route::get('/checkout', 'CompraController@index');
 Route::post('/cambiadespacho', array('uses' => 'CompraController@cambiaDespacho'));
+
+Route::get('/arriendo/checkout', 'CompraController@indexArriendo');

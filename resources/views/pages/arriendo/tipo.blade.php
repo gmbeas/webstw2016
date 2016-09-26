@@ -11,11 +11,11 @@
                     @foreach($masvendidos['_vendidoshome'] as $producto)
                         <li>
                             <div class="product">
-                                <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
+                                <a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
                                     <img class="img-responsive " src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}" alt="">
                                 </a>
                                 <p class="name">
-                                    <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
+                                    <a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
                                         {{$producto['NombreWeb']}}
                                     </a>
                                 </p>
@@ -36,11 +36,11 @@
                         @if($producto['Tipo'] == 'LAN')
                             <li>
                                 <div class="product">
-                                    <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
+                                    <a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
                                         <img class="img-responsive scale" src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}" alt="">
                                     </a>
                                     <p class="name">
-                                        <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
+                                        <a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
                                             {{$producto['NombreWeb']}}
                                         </a>
                                     </p>
@@ -67,7 +67,7 @@
                                             @if($producto['Tipo'] == 'OFE')
 
                                                 <div class="preview ">
-                                                    <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
+                                                    <a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
                                                         <img class="img-responsive" src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}"  width="100%" alt="">
                                                     </a>
                                                     <ul class="product-controls-list">
@@ -75,7 +75,7 @@
                                                     </ul>
                                                 </div>
                                                 <h3 class="title">
-                                                    <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html">
+                                                    <a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html">
                                                         {{$producto['NombreWeb']}}
                                                     </a>
                                                 </h3>
@@ -101,11 +101,11 @@
                         @if($producto['Tipo'] == 'FCF')
                             <li>
                                 <div class="product">
-                                    <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html"class="preview-image">
+                                    <a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html"class="preview-image">
                                         <img class="img-responsive  " src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}" alt="">
                                     </a>
                                     <p class="name">
-                                        <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
+                                        <a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
                                             {{$producto['NombreWeb']}}
                                         </a>
                                     </p>

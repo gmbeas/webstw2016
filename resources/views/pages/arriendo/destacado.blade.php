@@ -8,7 +8,7 @@
                     <div class="item">
                         <div class="product-preview">
                             <div class="preview">
-                                <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
+                                <a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
                                     <img class="img-responsive" src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}" alt="">
                                 </a>
                                 <ul class="product-controls-list right">
@@ -16,7 +16,7 @@
                                     <li><span class="label hidden">-<?=rand(20,40);?>%</span></li>
                                 </ul>
                             </div>
-                            <h3 class="title"><a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html">{{$producto['NombreWeb']}}</a></h3>
+                            <h3 class="title"><a href="{{ URL::to('/arriendo/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html">{{$producto['NombreWeb']}}</a></h3>
                             <span class="price new">${{number_format($producto['PrecioUnidadBrutoNormal'], 0, ",", ".")}}</span><br>
                             <span class="price hidden">${{number_format($producto['PrecioUnidadBrutoNormal'], 0, ",", ".")}}</span>
                         </div>
