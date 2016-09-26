@@ -1,27 +1,27 @@
 @php
-    $menusPadres = getMenuSuperior(29);
-    $cart = new \Steward\Phpcart\Carrito('ventas');
+    $menusPadres = getMenuSuperior(30);
+    $cart = new \Steward\Phpcart\Carrito('arriendo');
 @endphp
 
-    <style>
-        .label-cart {
-            color: #aaa;
-            position: absolute;
-            text-align: center;
-            top: 8px;
-            left: 0;
-            width: 100%;
-            font-size: 11px;
-            display: none;
-        }
-    </style>
+<style>
+    .label-cart {
+        color: #aaa;
+        position: absolute;
+        text-align: center;
+        top: 8px;
+        left: 0;
+        width: 100%;
+        font-size: 11px;
+        display: none;
+    }
+</style>
 
 <div id="head-desk" class="container hidden-xs hidden-sm">
     <!-- top -->
     <div class="row hidden-xs hidden-sm" style="padding-right:30px">
         <!-- LOGO -->
         <div class="col-md-2" style="height:100px">
-            <a style="margin-left:45px" href="{{URL::to('/')}}">
+            <a style="margin-left:45px" href="{{URL::to('/arriendo')}}">
                 <img src="{{URL::asset('/img/logo-top.png')}}" height="75px" class="logo-top" style="margin-top:10px">
             </a>
         </div>
@@ -52,7 +52,7 @@
                         <div class="btn-group compact-hidden">
                             @if(checkSesionUsuario())
                                 <a href="{{URL::to('/logout')}}" class="btn btn-xs btn-default" id="btnSession"> <span class="icon icon-vcard"></span> Cerrar Sesión </a>
-                                @else
+                            @else
                                 <a href="{{URL::to('/login')}}" class="btn btn-xs btn-default"> <span class="icon icon-vcard"></span> Login/Registro  </a>
                             @endif
 
@@ -65,15 +65,15 @@
                                     <span class="compact-hidden">Carro de compras - <strong>${{number_format($cart->getTotal(), 0, ",", ".")}}</strong></span>
                                     <span aria-hidden="true" class="glyphicon glyphicon-shopping-cart"><span class="label-cart">{{$cart->count()}}</span></span>
                                 </a>
-                                <div class="dropdown-menu pull-right shoppingcart-box" role="menu"> Su carro de compras
+                                <div class="dropdown-menu pull-right shoppingcart-box" role="menu"> Su carro de arriendo
                                     <ul class="list">
                                         @foreach($cart->getItems() as $producto)
                                             <li class="item">
-                                                <a href="{{ URL::to('/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) }}.html" class="preview-image">
+                                                <a href="{{ URL::to('/arriendo/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) }}.html" class="preview-image">
                                                     <img class="preview" src="{{URL::asset('/imagenweb/sku/' . $producto->foto)}}" alt="">
                                                 </a>
                                                 <div class="description">
-                                                    <a href="{{ URL::to('/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) }}.html">
+                                                    <a href="{{ URL::to('/arriendo/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) }}.html">
                                                         {{$producto->nombre}}
                                                     </a>
                                                     <strong class="price">{{$producto->cantidad}} x ${{number_format($producto->precio, 0, ",", ".")}}</strong>
@@ -87,8 +87,8 @@
                                 </div>
                             @else
                                 <a href="#" class="btn btn-xs btn-default">
-                                <span class="compact-hidden">Carro de compras - <strong>$ 0</strong></span>
-                                <span aria-hidden="true" class="glyphicon glyphicon-shopping-cart">
+                                    <span class="compact-hidden">Carro de arriendo - <strong>$ 0</strong></span>
+                                    <span aria-hidden="true" class="glyphicon glyphicon-shopping-cart">
                                         <span class="label-cart">0</span>
                                     </span>
                                 </a>
@@ -128,30 +128,40 @@
                                                     <div class="col-xs-6 col-sm-2" style="width:14.2%">
                                                         <h5><a class="name" style="text-decoration: none;" href="#">{{$nivel2['Nombre']}}</a></h5>
                                                         <ul class="list-unstyled">
-                                                           @foreach($nivel2['_nivel3'] as $nivel3)
+                                                            @foreach($nivel2['_nivel3'] as $nivel3)
                                                                 <li>
                                                                     @if($nivel3['PrfId'] != 0)
-                                                                        <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/' . $nivel3['PrfId'] . '/' . Str::slug($nivel3['Nombre']) )}}.html">
+                                                                        <a href="{{URL::to('/arriendo/categoria/' . $nivel3['Arbol'] . '/' . $nivel3['PrfId'] . '/' . Str::slug($nivel3['Nombre']) )}}.html">
                                                                             {{$nivel3['Nombre']}}
                                                                         </a>
                                                                     @else
-                                                                        <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/0/' . Str::slug($nivel3['Nombre']) )}}.html">
+                                                                        <a href="{{URL::to('/arriendo/categoria/' . $nivel3['Arbol'] . '/0/' . Str::slug($nivel3['Nombre']) )}}.html">
                                                                             {{$nivel3['Nombre']}}
                                                                         </a>
                                                                     @endif
 
                                                                 </li>
-                                                           @endforeach
+                                                            @endforeach
                                                         </ul>
                                                     </div>
-                                                @endforeach
-                                                <!--  -->
+                                            @endforeach
+                                            <!--  -->
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
                             </li>
                         @endforeach
+                            <li class="dropdown yamm-fw">
+                                <a href="" class="dropdown-toggle princ">
+                                    Packs Temáticos
+                                </a>
+                            </li>
+                            <li class="dropdown yamm-fw">
+                                <a href="" class="dropdown-toggle princ">
+                                    Carpas
+                                </a>
+                            </li>
                     </ul>
                 </div>
             </div>

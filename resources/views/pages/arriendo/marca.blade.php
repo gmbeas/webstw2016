@@ -1,5 +1,5 @@
 @php
-    $marcas = getMarcas(29);
+    $marcas = getMarcas(30);
 @endphp
 
 <!-- MARCAS -->

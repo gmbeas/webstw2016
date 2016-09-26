@@ -1,11 +1,11 @@
 @php
-    $masvendidos = getMasVendidos(29);
+    $masvendidos = getMasVendidos(30);
 @endphp
 <section class="content">
     <div class="row">
         <div class="col-sm-6 col-md-3 col-lg-3">
 
-            <h3 class="titulo_tipos">MÁS VENDIDOS</h3>
+            <h3 class="titulo_tipos">MÁS ARRENDADOS</h3>
             <div class="products-widget jcarousel-skin-previews vertical">
                 <ul class="slides">
                     @foreach($masvendidos['_vendidoshome'] as $producto)
@@ -94,7 +94,7 @@
         </section>
 
         <div class="col-sm-6 col-md-3 col-lg-3">
-            <h3 class="titulo_tipos">FAVORITOS DEL CHEF</h3>
+            <h3 class="titulo_tipos" style="font-size: 1.5em; letter-spacing: -2px; font-weight: 600;">FAVORITOS DEL BANQUETERO</h3>
             <div class="products-widget jcarousel-skin-previews vertical">
                 <ul class="slides">
                     @foreach($agrupados['_agrupados'] as $producto)
@@ -112,8 +112,8 @@
                                     <span class="rating"> </span> <span class="price">${{number_format($producto['PrecioUnidadBrutoNormal'], 0, ",", ".")}}</span>
                                 </div>
                             </li>
-                     @endif
-                   @endforeach
+                        @endif
+                    @endforeach
                 </ul>
             </div>
         </div>

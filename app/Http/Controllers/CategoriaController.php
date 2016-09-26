@@ -33,6 +33,12 @@ class CategoriaController extends Controller
             ->with('nombre', $nombre);
     }
 
+    public function viewArriendo($arbol, $prfid, $nombre){
+        return view('pages.arriendo.categoria')
+            ->with('nombre', $nombre);
+    }
+
+
     public function buscador(){
         $search = \Request::get('buscar'); //<-- we use global request to get the param of URI
         $productos = getBusqueda($search);
@@ -49,7 +55,7 @@ class CategoriaController extends Controller
             $tipo = 2;
 
 
-        $info = getCategorias($input['arbol'], $input['prfid'], $tipo);
+        $info = getCategorias(29, $input['arbol'], $input['prfid'], $tipo);
         return response()->json(json_encode($info));
     }
 
@@ -59,7 +65,30 @@ class CategoriaController extends Controller
         $prfid = '';
         if($input['prfid'] != "0")
             $prfid = $input['prfid'];
-        $r = getProductos($input['arbol'], $prfid);
+        $r = getProductos(29, $input['arbol'], $prfid);
+
+        return response()->json(json_encode($r));
+    }
+
+    public function traecategoriasArriendo(Request $request){
+        $input  = $request->all();
+
+        $tipo = 1;
+        if($input['prfid'] == "0")
+            $tipo = 2;
+
+
+        $info = getCategorias(30, $input['arbol'], $input['prfid'], $tipo);
+        return response()->json(json_encode($info));
+    }
+
+    public function traeproductosArriendo(Request $request){
+        $input  = $request->all();
+
+        $prfid = '';
+        if($input['prfid'] != "0")
+            $prfid = $input['prfid'];
+        $r = getProductos(30, $input['arbol'], $prfid);
 
         return response()->json(json_encode($r));
     }

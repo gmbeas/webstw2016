@@ -164,12 +164,12 @@ function getBusqueda($search){
 }
 
 
-function getCategorias($arbol, $prfid, $tipo){
+function getCategorias($tienda, $arbol, $prfid, $tipo){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_GET_CATEGORIA');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda"     =>  "29",
+            "Tienda"     =>  $tienda,
             "Arbol"      =>  $arbol,
             "PrfId"      => $prfid,
             "Tipo"       => $tipo
@@ -181,12 +181,12 @@ function getCategorias($arbol, $prfid, $tipo){
 
 
 
-function getProductos($arbol, $prfid){
+function getProductos($tienda, $arbol, $prfid){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_GET_PRODUCTOS');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda"     =>  "29",
+            "Tienda"     =>  $tienda,
             "Arbol"      =>  $arbol,
             "PrfId"      =>  $prfid,
             "Rut"        =>  getRutSession()
@@ -210,36 +210,36 @@ function getFichaProducto($sku){
     return $response_body;
 }
 
-function getMenuSuperior(){
+function getMenuSuperior($tienda){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_MENU_SUPERIOR');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda" => "29"
+            "Tienda" => $tienda
         ]]);
     $pp = $r->getBody();
     $response_body = json_decode($pp, true);
     return $response_body;
 }
 
-function getBannerHome(){
+function getBannerHome($tienda){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_BANNER_HOME');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda" => "29"
+            "Tienda" => $tienda
         ]]);
     $pp = $r->getBody();
     $response_body = json_decode($pp, true);
     return $response_body;
 }
 
-function getAgrupados($PrfId){
+function getAgrupados($tienda, $PrfId){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_AGRUPADOS');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda"    =>  "29",
+            "Tienda"    =>  $tienda,
             "Rut"       =>  getRutSession(),
             "PrfId"     =>  $PrfId
         ]]);
@@ -248,24 +248,24 @@ function getAgrupados($PrfId){
     return $response_body;
 }
 
-function getMarcas(){
+function getMarcas($tienda){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_GET_MARCAS');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda"    =>  "29"
+            "Tienda"    =>  $tienda
         ]]);
     $pp = $r->getBody();
     $response_body = json_decode($pp, true);
     return $response_body;
 }
 
-function getMasVendidos(){
+function getMasVendidos($tienda){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_MAS_VENDIDOS');
     $r = $client->request('POST', $url, [
         'json' => [
-            "Tienda"    =>  "29",
+            "Tienda"    =>  $tienda,
             "Rut"       =>  getRutSession()
         ]]);
     $pp = $r->getBody();

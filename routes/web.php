@@ -11,7 +11,10 @@
 |
 */
 
+
+
 Route::get('/', 'HomeController@index');
+Route::get('/arriendo', 'HomeController@indexArriendo');
 
 
 /*
@@ -60,9 +63,16 @@ Route::post('/nuevadireccion', array('uses' => 'ClienteController@addDireccion')
 |
 */
 Route::get('/categoria/{arbol}/{prfid}/{nombre}', 'CategoriaController@view');
+Route::get('/arriendo/categoria/{arbol}/{prfid}/{nombre}', 'CategoriaController@viewArriendo');
+
+
 Route::get('/categoria/buscador', 'CategoriaController@buscador');
+
 Route::post('/traecategorias', array('uses' => 'CategoriaController@traecategorias'));
+Route::post('/arriendo/traecategorias', array('uses' => 'CategoriaController@traecategoriasArriendo'));
+
 Route::post('/traeproductos', array('uses' => 'CategoriaController@traeproductos'));
+Route::post('/arriendo/traeproductos', array('uses' => 'CategoriaController@traeproductosArriendo'));
 
 
 /*
