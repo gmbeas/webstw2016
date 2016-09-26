@@ -153,7 +153,7 @@
                             </li>
                         @endforeach
                             <li class="dropdown yamm-fw">
-                                <a href="" class="dropdown-toggle princ">
+                                <a href="{{URL::to('/arriendo/combos')}}" class="dropdown-toggle princ">
                                     Packs Temáticos
                                 </a>
                             </li>

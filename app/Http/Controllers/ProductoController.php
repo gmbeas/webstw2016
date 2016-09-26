@@ -188,6 +188,11 @@ class ProductoController extends Controller
 
 
 
+    public function verCombox(){
+        $r = listaCombosArriendo();
+        return view('pages.arriendo.combos')
+            ->with('combos', $r);
+    }
 
     public function verCarroArriendo()
     {

@@ -11,6 +11,15 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 
 
+function listaCombosArriendo(){
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_LISTA_COMBOS_ARRIENDO');
+    $r = $client->request('POST', $url);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
 function getRegCiuCom($tipo, $regionid, $ciudadid){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_GET_REGCIUCOM');

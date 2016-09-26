@@ -39,6 +39,8 @@ Route::delete('/arriendo/carrito/{id}', 'ProductoController@eliminaArriendo');
 Route::post('/arriendo/disminuirproducto', array('uses' => 'ProductoController@disminuirproductoArriendo'));
 Route::post('/arriendo/incrementarproducto', array('uses' => 'ProductoController@incrementarproductoArriendo'));
 
+Route::get('/arriendo/combos', 'ProductoController@verCombox');
+
 
 /*
 |--------------------------------------------------------------------------
