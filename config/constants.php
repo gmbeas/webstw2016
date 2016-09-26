@@ -24,6 +24,7 @@ $METHOD_GET_STOCK 		= "Stock";
 $METHOD_GET_TOTALES		= "GetTotales";
 $METHOD_GET_REGCIUCOM	= "GetRegCiuCom";
 $METHOD_NUEVA_DIRECCION	= "NuevaDireccion";
+$METHOD_GET_CATEGORIA	= "GetCategoria";
 
 return [
     'SERVICIOS' => [
@@ -41,5 +42,6 @@ return [
         'METHOD_GET_TOTALES'     		=> $url.$api.$METHOD_GET_TOTALES,
         'METHOD_GET_REGCIUCOM'     		=> $url.$api.$METHOD_GET_REGCIUCOM,
         'METHOD_NUEVA_DIRECCION'   		=> $url.$api.$METHOD_NUEVA_DIRECCION,
+        'METHOD_GET_CATEGORIA'   		=> $url.$api.$METHOD_GET_CATEGORIA,
     ]
 ];

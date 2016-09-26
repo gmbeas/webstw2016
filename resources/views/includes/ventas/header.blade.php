@@ -135,7 +135,7 @@
                                                                             {{$nivel3['Nombre']}}
                                                                         </a>
                                                                     @else
-                                                                        <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/' . $nivel3['NivId'] . '/' . Str::slug($nivel3['Nombre']) )}}.html">
+                                                                        <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/0/' . Str::slug($nivel3['Nombre']) )}}.html">
                                                                             {{$nivel3['Nombre']}}
                                                                         </a>
                                                                     @endif

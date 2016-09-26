@@ -61,6 +61,8 @@ Route::post('/nuevadireccion', array('uses' => 'ClienteController@addDireccion')
 */
 Route::get('/categoria/{arbol}/{prfid}/{nombre}', 'CategoriaController@view');
 Route::get('/categoria/buscador', 'CategoriaController@buscador');
+Route::post('/traecategorias', array('uses' => 'CategoriaController@traecategorias'));
+Route::post('/traeproductos', array('uses' => 'CategoriaController@traeproductos'));
 
 
 /*

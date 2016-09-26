@@ -163,6 +163,24 @@ function getBusqueda($search){
     return $response_body;
 }
 
+
+function getCategorias($arbol, $prfid, $tipo){
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_GET_CATEGORIA');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "Tienda"     =>  "29",
+            "Arbol"      =>  $arbol,
+            "PrfId"      => $prfid,
+            "Tipo"       => $tipo
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
+
+
 function getProductos($arbol, $prfid){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_GET_PRODUCTOS');
