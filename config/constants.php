@@ -26,6 +26,7 @@ $METHOD_GET_REGCIUCOM	= "GetRegCiuCom";
 $METHOD_NUEVA_DIRECCION	= "NuevaDireccion";
 $METHOD_GET_CATEGORIA	= "GetCategoria";
 $METHOD_LISTA_COMBOS_ARRIENDO	= "ListaCombos";
+$METHOD_TOTAl_COMBO_ARRIENDO = "GetTotalArriendo";
 
 return [
     'SERVICIOS' => [
@@ -45,5 +46,6 @@ return [
         'METHOD_NUEVA_DIRECCION'   		=> $url.$api.$METHOD_NUEVA_DIRECCION,
         'METHOD_GET_CATEGORIA'   		=> $url.$api.$METHOD_GET_CATEGORIA,
         'METHOD_LISTA_COMBOS_ARRIENDO'	=> $url.$api.$METHOD_LISTA_COMBOS_ARRIENDO,
+        'METHOD_TOTAl_COMBO_ARRIENDO' => $url . $api . $METHOD_TOTAl_COMBO_ARRIENDO,
     ]
 ];

@@ -38,7 +38,7 @@
             <!-- END SLIDE -->
 
             <section class="col-sm-8 col-md-9 col-lg-9 content-center">
-                <h3>Decoraciones Temáticas disponibles</h3>
+                <h3>PACKS TEMÁTICOS DISPONIBLES</h3>
                 <div class="products-list row">
                     @foreach($combos['_combos'] as $combo)
                         <div class="product-preview">
@@ -55,7 +55,9 @@
                                     {{$combo['Combo']}}
                                 </a>
                             </h3>
-                            <span class="price new"></span><!--rating-->
+                            <span class="price new">{{((isset($combo['Precio']) && $combo['Precio'])? '$'.number_format($combo['Precio'], 0, ",", ".") : '' )}}
+                                <small>({{(isset($combo['NroInvitados']) && $combo['NroInvitados']) ? $combo['NroInvitados']:'0'}}
+                                    personas)</small></span><!--rating-->
                             <!--description-->
                             <div class="list_description">{{$combo['Combo']}}</div>
                             <!--buttons-->

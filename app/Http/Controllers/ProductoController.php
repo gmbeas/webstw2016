@@ -190,6 +190,14 @@ class ProductoController extends Controller
 
     public function verCombox(){
         $r = listaCombosArriendo();
+
+        foreach ($r['_combos'] as $index => $combo) {
+            $r2 = getTotalComboArriendo($combo['Cbo_Id'], $combo['Mod_Id'], 10);
+            $total = $r2['_total']['ValorBruto'];
+            $r['_combos'][$index]['Precio'] = $total;
+        }
+
+
         return view('pages.arriendo.combos')
             ->with('combos', $r);
     }

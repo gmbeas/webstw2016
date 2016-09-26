@@ -11,6 +11,22 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 
 
+function getTotalComboArriendo($comboid, $modid, $ninvitados)
+{
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_TOTAl_COMBO_ARRIENDO');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "ComboId" => $comboid,
+            "ModuloId" => $modid,
+            "Invitados" => $ninvitados
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
+
 function listaCombosArriendo(){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_LISTA_COMBOS_ARRIENDO');
