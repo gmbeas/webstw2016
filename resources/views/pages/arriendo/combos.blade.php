@@ -43,7 +43,8 @@
                     @foreach($combos['_combos'] as $combo)
                         <div class="product-preview">
                             <div class="preview ">
-                                <a href="" class="preview-image">
+                                <a href="{{URL::to('arriendo/detallecombo/' . $combo['Cbo_Id'] . '/' . $combo['Mod_Id'] . '/' . $combo['NroInvitados'] . '/' . Str::slug($combo['Combo']))}}.html"
+                                   class="preview-image">
                                     <img class="bordegris" src="{{URL::asset('/imagenweb/otro/' . trim($combo['NombreImagen2']))}}" width="270" height="328" alt="" alt="{{trim($combo['NombreImagen2'])}}">
                                 </a>
                                 <ul class="product-controls-list right hide-right">
@@ -51,7 +52,8 @@
                                 </ul>
                             </div>
                             <h3 class="title nombreProducto">
-                                <a href="" class="preview-image">
+                                <a href="{{URL::to('arriendo/detallecombo/' . $combo['Cbo_Id'] . '/' . $combo['Mod_Id'] . '/' . $combo['NroInvitados'] . '/' . Str::slug($combo['Combo']))}}.html"
+                                   class="preview-image">
                                     {{$combo['Combo']}}
                                 </a>
                             </h3>

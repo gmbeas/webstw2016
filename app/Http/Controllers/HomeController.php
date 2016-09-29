@@ -29,6 +29,9 @@ class HomeController extends Controller
         $agrupados = getAgrupados(30, "");
         $marcas = getMarcas(30);
 
+        $cart = new Carrito('arriendo');
+
+        $cart->clear();
         return view('pages.arriendo.home')
             ->with('banners', $banners)
             ->with('agrupados', $agrupados)

@@ -197,9 +197,41 @@ class ProductoController extends Controller
             $r['_combos'][$index]['Precio'] = $total;
         }
 
-
         return view('pages.arriendo.combos')
             ->with('combos', $r);
+    }
+
+    public function detalleCombo($id, $mod, $inv, $nombre)
+    {
+
+        $r = getSimulaComboArriendo($id, $mod, $inv);
+        $r2 = listaCombosArriendo();
+
+        return view('pages.arriendo.combo')
+            ->with('productos', $r)
+            ->with('combos', $r2);
+    }
+
+    public function agregaComboArriendo(Request $request)
+    {
+        $data = $request->all();
+        $cart = new Carrito();
+        foreach ($data['data']['Producto'] as $producto) {
+            $pp = $producto['id'];
+
+
+            $cart->nombred('arriendo')->add([
+                'id' => $producto['sku'],
+                'nombre' => $producto['nombre'],
+                'cantidad' => $producto['cantidad'],
+                'precio' => $producto['precio'],
+                'foto' => $producto['foto'],
+                'unidad' => $producto['unidad'],
+                'skuid' => $producto['id']
+            ]);
+        }
+
+        return Redirect::to('arriendo/carrito');
     }
 
     public function verCarroArriendo()

@@ -67,7 +67,8 @@
                     <!-- BOTON DE ARRIENDO -->
                     @if(isset($producto['disponible']['arriendo']) && $producto['disponible']['arriendo'])
                         <div class="row" style="margin-bottom:20px;">
-                            <a href="" class="btn btn-warning btn-lg pull-left btn-arriendo">DISPONIBLE EN ARRIENDO</a>
+                            <a href="{{URL::to('/arriendo/ficha/' . $producto['codigo'] . '/' . Str::slug($producto['NombreWeb']))}}.html"
+                               class="btn btn-warning btn-lg pull-left btn-arriendo">DISPONIBLE EN ARRIENDO</a>
                         </div>
                     @endif
                     <!-- FIN -->
