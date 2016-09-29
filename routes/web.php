@@ -42,6 +42,7 @@ Route::post('/arriendo/incrementarproducto', array('uses' => 'ProductoController
 Route::get('/arriendo/combos', 'ProductoController@verCombox');
 Route::get('/arriendo/detallecombo/{cbo}/{mod}/{inv}/{nombre}', 'ProductoController@detalleCombo');
 Route::post('/arriendo/agregacombo', array('uses' => 'ProductoController@agregaComboArriendo'));
+Route::post('/arriendo/carganuevocombo', array('uses' => 'ProductoController@cargaNuevoCombo'));
 
 /*
 |--------------------------------------------------------------------------

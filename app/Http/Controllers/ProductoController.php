@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Steward\Phpcart\Carrito;
 
 class ProductoController extends Controller
@@ -210,6 +211,24 @@ class ProductoController extends Controller
         return view('pages.arriendo.combo')
             ->with('productos', $r)
             ->with('combos', $r2);
+    }
+
+    public function cargaNuevoCombo(Request $request)
+    {
+        $data = $request->all();
+        $r = getSimulaComboArriendo($data['cbo'], $data['mod'], $data['inv']);
+
+        foreach ($r['_simula'] as $index => $combo) {
+            foreach ($combo['_skus'] as $index2 => $sku) {
+
+
+                $r['_simula'][$index]['_skus'][$index2]['Url'] = Str::slug($sku['NombreWeb']) . '.html';
+            }
+
+        }
+
+
+        die(json_encode($r));
     }
 
     public function agregaComboArriendo(Request $request)

@@ -171,7 +171,7 @@
 @stop
 
 @section('content')
-
+    <meta name="csrf-token" content="{!! csrf_token() !!}">
     <div id="modalLoadning" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content"
@@ -283,13 +283,14 @@
                                             {{ Form::hidden('data[Producto][' . $cont . '][bruto]', $sku['ValorBruto']) }}
                                             {{ Form::hidden('data[Producto][' . $cont . '][foto]', $sku['Sku'] . '_b1.jpg') }}
 
-
                                             {{ Form::input('number', 'data[Producto][' . $cont . '][cantidad]', $sku['Unidades'], ['class' => 'form-control', 'id' => 'Producto' . $cont . 'Cantidad', 'min' => '1']) }}
                                         </div>
                                         <span class="numero">{{$cont}}</span>
                                         <span class="divisor">
-                                            <img src="{{URL::asset('/imagenweb/sku/' . $sku['Sku'])}}_b1.jpg" alt="">
-                                            <h6>{{$sku['NombreWeb']}}</h6>
+                                            <a href="{{ URL::to('/arriendo/ficha/' . $sku['Sku']. '/' . Str::slug($sku['NombreWeb'], '-')) }}.html"><img
+                                                        src="{{URL::asset('/imagenweb/sku/' . $sku['Sku'])}}_b1.jpg"
+                                                        alt=""></a>
+                                            <a href="{{ URL::to('/arriendo/ficha/' . $sku['Sku']. '/' . Str::slug($sku['NombreWeb'], '-')) }}.html"><h6>{{$sku['NombreWeb']}}</h6></a>
                                         </span>
                                     </li>
                                 @endforeach
@@ -314,6 +315,7 @@
 
 @section('javascript')
     <script>
+        var token = $('meta[name="csrf-token"]').attr('content');
         $(document).ready(function () {
             $(document).on('click', '#comboForm .borrar a[rel="borrarProducto"]', function (e) {
                 e.preventDefault();
@@ -353,6 +355,65 @@
 
                 if (requestCombo)
                     requestCombo.abort();
+
+
+                requestCombo = $.ajax({
+                    async: true,
+                    dataType: "json",
+                    type: 'POST',
+                    url: '{{URL::to('arriendo/carganuevocombo')}}',
+                    data: {
+                        'cbo': '{{Request::segment(3)}}',
+                        'mod': '{{Request::segment(4)}}',
+                        'inv': $('#ComboInvitados').val(),
+                        '_token': token
+                    },
+                    success: function (respuesta) {
+                        //var respuesta = JSON.parse(response);
+                        $(target).html('');
+                        var cont = 0;
+                        $.each(respuesta._simula, function (grupo, productos) {
+
+                            var combosHtml = '<h4 class="titulo-combo-detalle steward-font-color">' + productos.Nombre + '</h4><ul class="listado-combo-detalle list-unstyled">';
+                            $.each(productos._skus, function (index, producto) {
+                                ++cont;
+                                //console.log(producto)
+                                var urlfoto = '{{URL::asset('/imagenweb/sku/')}}';
+                                var urllink = '{{ URL::to('/arriendo/ficha/')}}';
+                                var url = urllink + '/' + $.trim(producto.Sku) + '/' + producto.Url;
+                                var foto = urlfoto + '/' + $.trim(producto.Sku) + '_b1.jpg';
+                                combosHtml += '<li>' +
+                                        '<span class="borrar" style="background: none; margin-top: 30px;"><a href="#" rel="borrarProducto" class="btn btn-default btn-mega" style="font-size: .8em;">eliminar</a></span><div class="cantidad-combo-detalle pull-right text-right" style="margin-top: 45px;">$' + number_format(producto.ValorBruto, 0, ',', '.') + '</div><div class="cantidad-combo-detalle pull-right">' +
+                                        '<input type="hidden" name="data[Producto][' + cont + '][id]" value="' + $.trim(producto.Sku_Id) + '" id="Producto' + cont + 'Id">' +
+                                        '<input type="hidden" name="data[Producto][' + cont + '][sku]" value="' + $.trim(producto.Sku) + '" id="Producto' + cont + 'Sku">' +
+                                        '<input type="hidden" name="data[Producto][' + cont + '][precio]" value="' + $.trim(producto.PrecioUn) + '" id="Producto' + cont + 'Precio">' +
+                                        '<input type="hidden" name="data[Producto][' + cont + '][nombre]" value="' + $.trim(producto.NombreWeb) + '" id="Producto' + cont + 'Nombre">' +
+                                        '<input type="hidden" name="data[Producto][' + cont + '][unidad]" value="' + $.trim(producto.Unidades) + '" id="Producto1Unidad">' +
+                                        '<input type="hidden" name="data[Producto][' + cont + '][foto]" value="' + $.trim(producto.Sku) + '_b1.jpg" id="Producto1Foto">' +
+                                        '<input name="data[Producto][' + cont + '][cantidad]" class="form-control" value="' + $.trim(producto.Unidades) + '" min="1" type="number" id="Producto' + cont + 'Cantidad">' +
+                                        '</div>' +
+                                        '<span class="numero">' + cont + '</span><span class="divisor">' +
+                                        '<a href="' + url + '"><img src="' + foto + '" alt="' + $.trim(producto.Sku) + '_b1.jpg"></a>' +
+                                        '<a href="' + url + '"><h6>' + $.trim(producto.NombreWeb) + '</h6></a>' +
+                                        '</span>' +
+                                        '</li>';
+                            });
+
+                            combosHtml += '</ul>';
+                            $(target).append(combosHtml);
+                        });
+                    },
+                    error: function () {
+                        $.alerta('Se ha producido un problema al intentar cargar el combo. Por favor intentelo nuevamente.');
+                    },
+                    complete: function () {
+                        if ($('#modalLoadning').length) {
+                            setTimeout(function () {
+                                $('#modalLoadning').modal('hide');
+                            }, 500);
+                        }
+                    }
+                });
 
 
                 return false;
