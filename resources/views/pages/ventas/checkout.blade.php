@@ -52,6 +52,7 @@
                         </div>
                     </div>
                     <!-- FIN REGISTRO - LOGIN -->
+                {{ Form::open(array('url' => '/pago', 'class' => 'form-horizontal validar-formulario', 'id' => 'CompraPagoForm')) }}
                     <!-- DESPACHO -->
                     <div class="panel panel-default">
                         <div class="panel-heading active">
@@ -195,6 +196,7 @@
                         </div>
                     </div>
                     <!-- FIN RESUMEN -->
+                    {{Form::close()}}
                 </div>
                 <!-- end check out -->
                 <div class="divider divider-sm visible-sm  visible-xs"></div>
@@ -289,6 +291,23 @@
             });
         }
 
+
+        $('.continuar').click(function (e) {
+            e.preventDefault();
+            var despacho = $('#CompraPagoForm #CompraDespachoId');
+            console.log(despacho);
+            if (!$(despacho).length) {
+                return false;
+            }
+            if (!$(despacho).val()) {
+                return false;
+            }
+            if (!$('#politicas').is(':checked')) {
+                //$.alerta('Para continuar, debe aceptar las politicas.');
+                return false;
+            }
+            $('#CompraPagoForm').submit();
+        });
 
 
         $('#add-direc #addDireccion').click(function() {

@@ -3,12 +3,22 @@
 namespace App\Http\Controllers;
 
 
+use App\Compra;
 use App\Http\Requests;
 use Steward\Phpcart\Carrito;
 
 class HomeController extends Controller
 {
     public function index(){
+
+
+        $vehicles = Compra::all();
+        $jjj = compact('vehicles');
+        foreach ($vehicles as $vehicle) {
+            $pp = $vehicle->orden;
+            $xx = $pp;
+        }
+
 
         $cart = new Carrito('ventas');
 

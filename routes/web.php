@@ -93,6 +93,7 @@ Route::post('/arriendo/traeproductos', array('uses' => 'CategoriaController@trae
 |
 */
 Route::get('/checkout', 'CompraController@index');
+Route::post('/pago', array('uses' => 'CompraController@pago'));
 Route::post('/cambiadespacho', array('uses' => 'CompraController@cambiaDespacho'));
 
 Route::get('/arriendo/checkout', 'CompraController@indexArriendo');

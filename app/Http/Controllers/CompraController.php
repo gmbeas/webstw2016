@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Compra;
 use Illuminate\Http\Request;
+
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
@@ -37,7 +39,6 @@ class CompraController extends Controller
             return \Redirect::to('/login');
         }
     }
-
 
     public function cambiaDespacho(Request $request){
         $despachoId      = $request->input('despachoId');
@@ -95,6 +96,25 @@ class CompraController extends Controller
         $data['total']['neto'] = (int)$neto + (int)$valordespacho;
 
         die (json_encode($data));
+    }
+
+    public function pago(Request $request)
+    {
+        $aa = $request->all();
+        $compra = new Compra();
+        $compra->orden = 0;
+        $compra->clienteId = getIdUserSession();
+        $compra->despachoId = $aa['CompraDespachoId'];
+        $compra->subtotal = 0;
+        $compra->neto = 0;
+        $compra->iva = 0;
+        $compra->total = 0;
+        $compra->despacho = 0;
+        $compra->estado = 1;
+        $compra->ip = $request->ip();
+        $compra->tipo = 1;
+
+        $compra->save();
     }
 
 

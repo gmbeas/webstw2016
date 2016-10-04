@@ -200,6 +200,16 @@ function getRutSession(){
     }
 }
 
+function getIdUserSession()
+{
+    if (checkSesionUsuario()) {
+        $cliente = getSesionUsuario();
+        return $cliente['_usuarioweb']['Id'];
+    } else {
+        return "0";
+    }
+}
+
 
 function getBusqueda($tienda, $search){
     $client = new Client;
