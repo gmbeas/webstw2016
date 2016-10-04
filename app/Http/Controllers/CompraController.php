@@ -101,6 +101,11 @@ class CompraController extends Controller
     public function pago(Request $request)
     {
         $aa = $request->all();
+
+        $cart = new Carrito('ventas');
+        $jjj = $cart->getTotal();
+        $hhh = $cart->getBruto();
+
         $compra = new Compra();
         $compra->orden = 0;
         $compra->clienteId = getIdUserSession();

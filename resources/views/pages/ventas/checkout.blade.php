@@ -162,7 +162,9 @@
                                                 @endforeach
                                                 </tbody>
                                             </table>
+                                            {{ Form::hidden('valordespachoinput', '0') }}
                                             <div class="pull-left"> <b class="title">Despacho:</b> <span id="valorDespacho2"></span></div>
+
                                             <div class="pull-right">
                                                 <table class="table condensed">
                                                     <tr>
@@ -282,6 +284,8 @@
                     $('#direccion').html (respuesta.direccion.dire);
                     $('#comuna').html (respuesta.direccion.comu);
                     $('#region').html (respuesta.direccion.regi);
+                    //$('#valordespachoinput').val(respuesta.total.flete);
+                    $('input[name="valordespachoinput"]').val(respuesta.total.flete);
                     $('#valorDespacho').html ('$'+format(respuesta.total.flete)+' + IVA');
                     $('#valorDespacho2').html ('$'+format(respuesta.total.flete)+' + IVA');
                     $('#precioTotal').html ('$'+format(respuesta.total.bruto));
