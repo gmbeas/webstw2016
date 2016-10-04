@@ -5,7 +5,7 @@
 @section('content')
     @php
         $cart = new \Steward\Phpcart\Carrito('arriendo');
-        $totales = $cart->getBruto();
+        $totales = $cart->getBruto("0");
     @endphp
     <meta name="csrf-token" content="{!! csrf_token() !!}">
 

@@ -28,6 +28,7 @@ $METHOD_GET_CATEGORIA = "GetCategoria";
 $METHOD_LISTA_COMBOS_ARRIENDO	= "ListaCombos";
 $METHOD_TOTAl_COMBO_ARRIENDO = "GetTotalArriendo";
 $METHOD_SIMULA_COMBO_ARRIENDO = "GetSimulaComboArriendo";
+$METHOD_GET_NOTA_VENTA = "GeneraVentaNota";
 
 return [
     'SERVICIOS' => [
@@ -49,5 +50,6 @@ return [
         'METHOD_LISTA_COMBOS_ARRIENDO' => $url . $api . $METHOD_LISTA_COMBOS_ARRIENDO,
         'METHOD_TOTAl_COMBO_ARRIENDO' => $url . $api . $METHOD_TOTAl_COMBO_ARRIENDO,
         'METHOD_SIMULA_COMBO_ARRIENDO' => $url . $api . $METHOD_SIMULA_COMBO_ARRIENDO,
+        'METHOD_GET_NOTA_VENTA' => $url . $api . $METHOD_GET_NOTA_VENTA,
     ]
 ];

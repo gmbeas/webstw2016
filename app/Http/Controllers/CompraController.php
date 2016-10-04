@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Compra;
+use App\CompraDetalle;
 use Illuminate\Http\Request;
 
 
@@ -76,6 +77,11 @@ class CompraController extends Controller
         $data['direccion']['comu'] = $nomcomu;
         $data['direccion']['regi'] = $nomregi;
 
+        $data['direccion']['ciuid'] = $ciudad;
+        $data['direccion']['regiid'] = $region;
+
+
+
         $valordespacho ="";
         $bruto ="";
         $iva ="";
@@ -104,22 +110,46 @@ class CompraController extends Controller
 
         $cart = new Carrito('ventas');
         $jjj = $cart->getTotal();
-        $hhh = $cart->getBruto();
+        $hhh = $cart->getBruto($aa['valordespachoinput']);
+
+
+        $items = array();
+        foreach ($cart->getItems() as $item) {
+            $items[] = $item->id . ',' . $item->cantidad . ',' . $item->unidad . ',' . $item->precio;
+        }
+        $skus = '|' . join('|', $items);
+
+
+        $nv = setNotaVenta($skus, $aa['valoridregion'], $aa['valoridciudad']);
 
         $compra = new Compra();
-        $compra->orden = 0;
+        $compra->orden = $nv['NotaVenta'];
         $compra->clienteId = getIdUserSession();
         $compra->despachoId = $aa['CompraDespachoId'];
         $compra->subtotal = 0;
-        $compra->neto = 0;
-        $compra->iva = 0;
-        $compra->total = 0;
-        $compra->despacho = 0;
+        $compra->neto = $hhh['neto'];
+        $compra->iva = $hhh['iva'];
+        $compra->total = $hhh['bruto'];
+        $compra->despacho = $aa['valordespachoinput'];
         $compra->estado = 1;
         $compra->ip = $request->ip();
         $compra->tipo = 1;
 
         $compra->save();
+        $ultimoid = $compra->id;
+
+
+        foreach ($cart->getItems() as $item) {
+            $detalle = new CompraDetalle();
+            $detalle->sku = $item->id;
+            $detalle->compraid = $ultimoid;
+            $detalle->cantidad = $item->cantidad;
+            $detalle->precio = $item->precio;
+            $detalle->um = $item->unidad;
+            $detalle->save();
+        }
+
+
     }
 
 

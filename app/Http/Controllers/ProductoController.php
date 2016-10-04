@@ -139,7 +139,7 @@ class ProductoController extends Controller
 
         $cart->updateCantidad($sku, $cantidad);
         $totalitem  = $cart->getSumSku($sku);
-        $totalCarro = $cart->getBruto();
+        $totalCarro = $cart->getBruto("0");
         return  json_encode(array(
             'estado'   => true,
             'mensaje'  => '',
@@ -167,7 +167,7 @@ class ProductoController extends Controller
 
             $cart->updateCantidad($sku, $cantifin);
             $totalitem = $cart->getSumSku($sku);
-            $totalCarro= $cart->getBruto();
+            $totalCarro = $cart->getBruto("0");
 
             return  json_encode(array(
                 'estado'   => true,
@@ -377,7 +377,7 @@ class ProductoController extends Controller
 
         $cart->updateCantidad($sku, $cantidad);
         $totalitem  = $cart->getSumSku($sku);
-        $totalCarro = $cart->getBruto();
+        $totalCarro = $cart->getBruto("0");
         return  json_encode(array(
             'estado'   => true,
             'mensaje'  => '',
@@ -405,7 +405,7 @@ class ProductoController extends Controller
 
             $cart->updateCantidad($sku, $cantifin);
             $totalitem = $cart->getSumSku($sku);
-            $totalCarro= $cart->getBruto();
+            $totalCarro = $cart->getBruto("0");
 
             return  json_encode(array(
                 'estado'   => true,

@@ -213,14 +213,21 @@ class Carrito implements CarritoInterface
     }
 
 
-    public function getBruto(){
+    public function getBruto($flete)
+    {
         $items = $this->getItems();
         $total = $items->sum(function($item) {
             return $item->precio * $item->cantidad;
         });
-
-        $neto = $total / 1.19;
-        $iva = $total - $neto;
+        if ($flete <> "0") {
+            $neto = $total / 1.19;
+            $neto = $neto + $flete;
+            $total = round($neto * 1.19);
+            $iva = $total - $neto;
+        } else {
+            $neto = $total / 1.19;
+            $iva = $total - $neto;
+        }
         $salida['neto'] = (int)round($neto);
         $salida['iva'] = (int)round($iva);
         $salida['bruto'] = (int)$total;

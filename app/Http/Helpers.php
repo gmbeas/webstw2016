@@ -144,6 +144,24 @@ function creaSesionUsuario($ficha){
     Session::put('cliente', $ficha);
 }
 
+function setNotaVenta($skus, $regionid, $ciudadid)
+{
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_GET_NOTA_VENTA');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "Tienda" => "29",
+            "Rut" => getRutSession(),
+            "ListaPrecio" => getListaPrecioSession(),
+            "SkusValidos" => $skus,
+            "RegionId" => $regionid,
+            "CiudadId" => $ciudadid
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
 function getTotales($skus, $region, $ciudad, $comuna){
     $client = new Client;
     $url = Config::get('constants.SERVICIOS.METHOD_GET_TOTALES');
@@ -196,6 +214,16 @@ function getRutSession(){
         $cliente = getSesionUsuario();
         return $cliente['MbAuxCod'];
     }else{
+        return "";
+    }
+}
+
+function getListaPrecioSession()
+{
+    if (checkSesionUsuario()) {
+        $cliente = getSesionUsuario();
+        return $cliente['Lista'];
+    } else {
         return "";
     }
 }
