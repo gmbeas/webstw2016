@@ -99,22 +99,39 @@ class ProductoController extends Controller
         $unidad   = $request->input('unidad');
         $skuid	  = $request->input('skuid');
 
-        $cart     = new Carrito();
-        $cart->nombred('ventas')->add([
-            'id'		=>	$sku,
-            'nombre'	=>	$nombre,
-            'cantidad'	=>	$cantidad,
-            'precio'	=>	$precio,
-            'foto'		=>	$foto,
-            'unidad'	=>	$unidad,
-            'skuid'		=>	$skuid
-        ]);
+        $cart = new Carrito('ventas');
 
-        die(json_encode(array(
-            'estado'  => 'OK',
-            'mensaje' => 'El producto se agregó al carro de compras.',
-            'vista'	  => generaHtml('ventas')
-        )));
+        $itemx = $cart->get($sku);
+
+        $cantidadx = $itemx->cantidad + $cantidad;
+
+        $resultado = getStock(29, $sku, $cantidadx);
+
+        if ($resultado['_stock']['Flag'] == 1) {
+            $cart->nombred('ventas')->add([
+                'id' => $sku,
+                'nombre' => $nombre,
+                'cantidad' => $cantidad,
+                'precio' => $precio,
+                'foto' => $foto,
+                'unidad' => $unidad,
+                'skuid' => $skuid
+            ]);
+
+            die(json_encode(array(
+                'estado' => 'OK',
+                'mensaje' => 'El producto se agregó al carro de compras.',
+                'vista' => generaHtml('ventas')
+            )));
+        } else {
+            die(json_encode(array(
+                'estado' => 'ERROR',
+                'mensaje' => $resultado['_stock']['Mensaje']
+            )));
+        }
+
+
+
     }
 
     public function verCarro()
@@ -147,6 +164,27 @@ class ProductoController extends Controller
             'total'    => $totalCarro,
             'vista'    => generaHtml('ventas')
         ));
+    }
+
+    public function disminuirproductoFicha(Request $request)
+    {
+
+    }
+
+    public function incrementarproductoFicha(Request $request)
+    {
+        $sku = $request->input('id');
+        $cantidad = $request->input('cantidad');
+        $cantifin = $cantidad;
+        $unidad = $request->input('unidad');
+
+        if ($unidad > 1)
+            $cantidad = $cantidad / $unidad;
+
+        $resultado = getStock(29, $sku, $cantidad);
+
+        return json_encode($resultado);
+
     }
 
     public function incrementarproducto(Request $request)

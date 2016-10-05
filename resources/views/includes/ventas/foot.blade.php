@@ -22,6 +22,7 @@
 {!! HTML::script('rs-plugin/js/jquery.themepunch.revolution.min.js') !!}
 {!! HTML::script('js/cloudzoom.js') !!}
 {!! HTML::script('js/jquery.printarea.js') !!}
+{!! HTML::script('swetalert/sweetalert-dev.js') !!}
 {!! HTML::script('js/funciones.js') !!}
 
 <script>

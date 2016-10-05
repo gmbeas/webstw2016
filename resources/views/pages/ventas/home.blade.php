@@ -35,4 +35,11 @@
         <!-- //end Brands -->
 
     </div>
+
+
+@stop
+@section('javascript')
+    <script>
+        //swal("Good job!", "You clicked the button!", "success")
+    </script>
 @stop

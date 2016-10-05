@@ -183,14 +183,19 @@
                 data: {'id': id, 'cantidad': cantidad, 'unidad' : unidad, '_token' : token},
                 success: function(response) {
                     var respuesta = JSON.parse(response);
-                    $(elemento).val(cantidad).parents('tr').find('span[rel="valor"]').html('$'+$.formatNumber(respuesta.totalitem));
-                    $('#neto').html('$'+$.formatNumber(respuesta.total.neto));
-                    $('#iva').html('$'+$.formatNumber(respuesta.total.iva));
-                    $('#total').html('$'+$.formatNumber(respuesta.total.bruto));
-                    var target = $('[rel="carroFlotante"]');
-                    if ($(target).length) {
-                        $(target).html(respuesta.vista);
+                    if (respuesta.estado) {
+                        $(elemento).val(cantidad).parents('tr').find('span[rel="valor"]').html('$' + $.formatNumber(respuesta.totalitem));
+                        $('#neto').html('$' + $.formatNumber(respuesta.total.neto));
+                        $('#iva').html('$' + $.formatNumber(respuesta.total.iva));
+                        $('#total').html('$' + $.formatNumber(respuesta.total.bruto));
+                        var target = $('[rel="carroFlotante"]');
+                        if ($(target).length) {
+                            $(target).html(respuesta.vista);
+                        }
+                    } else {
+                        swal(respuesta.mensaje);
                     }
+
                 }
             });
         }

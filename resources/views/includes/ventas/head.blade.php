@@ -27,6 +27,7 @@
 
 {!! Html::style('rs-plugin/css/settings.css') !!}
 {!! Html::style('rs-plugin/css/extralayers.css') !!}
+{!! Html::style('swetalert/sweetalert.css') !!}
 
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800' rel='stylesheet' type='text/css'>
 <link href="http://geedmo.github.io/yamm3/yamm/yamm.css" rel="stylesheet">

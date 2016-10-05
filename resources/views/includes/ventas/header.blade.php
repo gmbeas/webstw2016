@@ -131,13 +131,27 @@
                                                            @foreach($nivel2['_nivel3'] as $nivel3)
                                                                 <li>
                                                                     @if($nivel3['PrfId'] != 0)
-                                                                        <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/' . $nivel3['PrfId'] . '/' . Str::slug($nivel3['Nombre']) )}}.html">
-                                                                            {{$nivel3['Nombre']}}
-                                                                        </a>
+                                                                        @if($nivel3['PrefijoLargo'] == "")
+                                                                            <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/' . $nivel3['PrfId'] . '/' . Str::slug($nivel3['Nombre']) )}}.html">
+                                                                                {{$nivel3['Nombre']}}
+                                                                            </a>
+                                                                        @else
+                                                                            <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/' . $nivel3['PrfId'] . '/' . Str::slug($nivel3['PrefijoLargo']) )}}.html">
+                                                                                {{$nivel3['PrefijoLargo']}}
+                                                                            </a>
+                                                                        @endif
+
                                                                     @else
-                                                                        <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/0/' . Str::slug($nivel3['Nombre']) )}}.html">
-                                                                            {{$nivel3['Nombre']}}
-                                                                        </a>
+                                                                        @if($nivel3['PrefijoLargo'] == "")
+                                                                            <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/0/' . Str::slug($nivel3['Nombre']) )}}.html">
+                                                                                {{$nivel3['Nombre']}}
+                                                                            </a>
+                                                                        @else
+                                                                            <a href="{{URL::to('/categoria/' . $nivel3['Arbol'] . '/0/' . Str::slug($nivel3['PrefijoLargo']) )}}.html">
+                                                                                {{$nivel3['PrefijoLargo']}}
+                                                                            </a>
+                                                                        @endif
+
                                                                     @endif
 
                                                                 </li>

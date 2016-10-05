@@ -2,6 +2,7 @@
 @section('titulo', 'Checkout')
 
 @section('css')
+
 @stop
 
 @php
@@ -259,10 +260,12 @@
     </div>
     <!-- END ADD -->
 
+
 @stop
 
 
 @section('javascript')
+
     <script>
         var token = $('meta[name="csrf-token"]').attr('content');
 

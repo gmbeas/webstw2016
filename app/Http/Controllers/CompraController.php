@@ -8,8 +8,11 @@ use Illuminate\Http\Request;
 
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Steward\Phpcart\Carrito;
+
+use Alert;
 
 class CompraController extends Controller
 {
@@ -149,10 +152,9 @@ class CompraController extends Controller
             $detalle->save();
         }
 
-
+        Alert::info('Email was sent!');
+        return back();
     }
-
-
 
     public function indexArriendo(){
         if(checkSesionUsuario()){

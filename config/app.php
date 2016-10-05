@@ -168,6 +168,7 @@ return [
          */
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        UxWeb\SweetAlert\SweetAlertServiceProvider::class,
         //
 
         /*
@@ -230,6 +231,8 @@ return [
         'Html'      => Collective\Html\HtmlFacade::class,
 
         'Str'      => 'Illuminate\Support\Str',
+
+        'Alert' => UxWeb\SweetAlert\SweetAlert::class,
 
     ],
 

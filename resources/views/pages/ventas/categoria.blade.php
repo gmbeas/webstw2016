@@ -76,7 +76,11 @@
             <!-- END SLIDE -->
             <section class="col-sm-8 col-md-9 col-lg-9 content-center">
                 <div class="section-divider" style="padding-top: 0px;padding-bottom: 0px;"></div>
-                <h3 id="TituloPrefijo"><?= $nombre;?></h3>
+                @php
+                    $nombre = str_replace("-", " ", $nombre);
+                    $nombre = str_replace(".html", "", $nombre);
+                @endphp
+                <h3 id="TituloPrefijo">{{str_replace("-", " ", $nombre)}}</h3>
                 <!-- BOX CATEGORIAS -->
 
                 <!-- END BOX -->
@@ -114,7 +118,6 @@
 
             return title.replace(new RegExp('^[' + separator + '\\s]+|[' + separator + '\\s]+$', 'g'),'');
         }
-
 
         function desplegarLineas(linea, id) {
             if (! linea) {
@@ -250,8 +253,11 @@
                  data: {'arbol' : arbol, 'prfid' : prfid, '_token' : token},
                  success: function(response) {
                      var respuesta = JSON.parse(response);
+                     console.log(respuesta);
                      var mostrar = true;
+                     var prefactivo = "";
                      if(respuesta['_atributos'].length > 0){
+
                          var contenido = '<h3>Filtros</h3><ul class="expander-list" id="lista-atributos"><form>';
 
                          $.each(respuesta['_atributos'], function(index, registro) {
@@ -267,13 +273,17 @@
                          $(targetCategorias).html(contenido);
 
                      }else if(respuesta['_prefijos'].length > 0){
+                         var cantidadpref = respuesta['_prefijos'].length;
+
+                         if (cantidadpref == 1)
+                             prefactivo = " activo"
                          var contenido = '<h3>Categorias<a href="#" class="btn btn-xs btn-default pull-right" id="recogerCategorias"><small>ver todas</small></a></h3>'+
                                  '<ul class="expander-list" id="lista-categorias">';
 
                          $.each(respuesta['_prefijos'] ,function(categoriaId, filtroCategoria) {
                              contenido+= '<li class="categorias" data-categoria="'+filtroCategoria.Prf_Id+'">'+
                                      '<span class="name">'+
-                                     '<a href="#" class="prefijo" rel="btnPrefijo">'+filtroCategoria.Prefijo+'</a>'+
+                                     '<a href="#" class="prefijo' + prefactivo + '" rel="btnPrefijo">' + filtroCategoria.Prefijo + '</a>' +
                                      '</span>'+
                                      '<ul>';
                              $.each(filtroCategoria['_atributos'], function(grupo, filtros) {
@@ -363,14 +373,16 @@
                                      $ul = $this.parent(".name").next("ul"),
                                      $name = $this.next("a");
                              $this.click(function () {
-                                 if ($ul.css("display") ==
-                                         "block") $ul.slideUp("slow");
+                                 if ($ul.css("display") == "block") $ul.slideUp("slow");
                                  else $ul.slideDown("slow");
                                  $(this).html(hide ? "&minus;" : "+");
                                  $name.css("font-weight", hide ? "bold" : "normal");
                                  hide = !hide
                              })
                          });
+
+                         if (prefactivo != "")
+                             $(".expander-list").find("ul").show();
                      }
                  }
             });

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use URL;
 use Session;
+use Alert;
 
 class ClienteController extends Controller
 {
@@ -46,6 +47,7 @@ class ClienteController extends Controller
         $validator = Validator::make(Input::all(), $rules, $mensaje);
 
         if ($validator->fails()) {
+            Alert::error('Ha iniciado sesión con éxito!');
             return Redirect::to('login')
                 ->withErrors($validator) // send back all errors to the login form
                 ->withInput(Input::except('password'));
@@ -57,12 +59,15 @@ class ClienteController extends Controller
 
             $ficha = getLogin($userdata['rutcliente'], $userdata['password']);
             if($ficha['_error']['Error']){
+
+                Alert::error('Ha iniciado sesión con éxito!');
                 return Redirect::to('login')
                     ->withInput(Input::except('password'));
 
             }else{
                 creaSesionUsuario($ficha['_ficha']);
                 actualizaCarro("0", "0", "0");
+                Alert::info('Has iniciado sesión', 'Hola Gonzalo Martínez')->persistent("Cerrar");
 
                 return Redirect::to(Session::get('url.intended'));
             }

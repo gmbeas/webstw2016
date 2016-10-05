@@ -12,6 +12,7 @@
     </div>
 
     <div id="outer-canvas">
+
         <!-- Header -->
         @include('includes.ventas.header')
         <!-- //end header -->
@@ -26,6 +27,8 @@
 </div>
 
 @include('includes.ventas.foot')
+
 @yield('javascript')
+@include('sweet::alert')
 </body>
 </html>

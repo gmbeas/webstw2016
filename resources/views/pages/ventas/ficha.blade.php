@@ -55,11 +55,16 @@
                 <div class="product-description">
                     <form>
                         <div class="option"> <b>Cantidad:</b>
-                            <div class="input-group quantity-control" unselectable="on" style="-webkit-user-select: none;">
-                                <span class="input-group-addon">−</span>
-                                <input type="text" name="cantidad" data-unidad="{{$producto['unidad_venta']}}" id="cantidad" class="form-control" value="{{$producto['unidad_venta']}}">
+                            <div class="input-group quantity-control quantity-control-cart">
+                                <span class="input-group-addon">&minus;</span>
+                                <input type="text" name="cantidad" id="cantidad"
+                                       data-unidad="{{$producto['unidad_venta']}}" data-key="{{$producto['codigo']}}"
+                                       data-defaultValue="{{$producto['unidad_venta']}}" class="form-control"
+                                       value="{{$producto['unidad_venta']}}" rel="cantidadProducto">
                                 <span class="input-group-addon">+</span>
                             </div>
+
+
                         </div>
                         <div class="clearfix visible-xs"></div>
                         <a class="btn btn-mega btn-lg" id="comprar" >COMPRAR</a>
@@ -110,6 +115,7 @@
             color: #ee3b27 !important;
         }
     </style>
+
     <div id="modal-add-cart" class="modal fade" style="top: 10%; outline: none;" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -131,18 +137,25 @@
 
 @section('javascript')
     <script>
+
+        var token = $('meta[name="csrf-token"]').attr('content');
+
         function verificaCantidad() {
+            //swal("Debe seleccionar una cantidad.", "You clicked the button!", "info")
             var cantidad = $('#cantidad').val();
             var unidad = $('#cantidad').data('unidad');
             if (! cantidad) {
-                $.alerta('Debe seleccionar una cantidad.');
+                //$.alerta('Debe seleccionar una cantidad.');
+                swal("Debe seleccionar una cantidad.", "", "info")
                 return false;
             }
             if (! unidad) {
                 unidad = 1;
             }
             if ( (cantidad % unidad) ) {
-                $.alerta('Este producto se vende en set de '+unidad+'. Por favor seleccione un multiplo de '+unidad+'.');
+                //$.alerta('Este producto se vende en set de '+unidad+'. Por favor seleccione un multiplo de '+unidad+'.');
+
+                swal('Este producto se vende en set de ' + unidad + '. Por favor seleccione un multiplo de ' + unidad + '.', "", "info")
                 return false;
             }
             return true;
@@ -171,6 +184,8 @@
                             if ($(target).length) {
                                 $(target).html(respuesta.vista);
                             }
+                        } else {
+                            swal(respuesta.mensaje);
                         }
                     }
                 });
@@ -182,5 +197,42 @@
                 return false;
             }
         });
+
+        function disminuirProducto(elemento) {
+            var id = $(elemento).data('key'),
+                    unidad = $(elemento).data('unidad');
+
+            var cantidad = parseInt($(elemento).val()) - unidad;
+            if (cantidad <= 0) {
+                return false;
+            }
+            $(elemento).val(cantidad).parents('tr').find('span[rel="valor"]').html('$' + $.formatNumber(cantidad));
+        }
+
+        function incrementarProducto(elemento) {
+            var id = $(elemento).data('key'),
+                    unidad = $(elemento).data('unidad');
+
+            var cantidad = parseInt($(elemento).val()) + unidad;
+
+            $.ajax({
+                type: "POST",
+                url: '{{URL::to('/incrementarproductoFicha')}}',
+                data: {'id': id, 'cantidad': cantidad, 'unidad': unidad, '_token': token},
+                success: function (response) {
+                    var respuesta = JSON.parse(response);
+                    //console.log(respuesta);
+                    //$(elemento).val(cantidad).parents('tr').find('span[rel="valor"]').html('$'+$.formatNumber(cantidad));
+                    if (respuesta._stock.Flag == 1) {
+                        $(elemento).val(cantidad).parents('tr').find('span[rel="valor"]').html('$' + $.formatNumber(cantidad));
+                    }
+                    else {
+                        swal(respuesta._stock.Mensaje);
+                    }
+                }
+            });
+        }
+
+
     </script>
 @stop

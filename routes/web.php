@@ -32,6 +32,9 @@ Route::delete('/carrito/{id}', 'ProductoController@elimina');
 Route::post('/disminuirproducto', array('uses' => 'ProductoController@disminuirproducto'));
 Route::post('/incrementarproducto', array('uses' => 'ProductoController@incrementarproducto'));
 
+Route::post('/disminuirproductoFicha', array('uses' => 'ProductoController@disminuirproductoFicha'));
+Route::post('/incrementarproductoFicha', array('uses' => 'ProductoController@incrementarproductoFicha'));
+
 Route::get('/arriendo/ficha/{sku}/{nombre}', 'ProductoController@fichaArriendo');
 Route::post('/arriendo/addcarro', array('uses' => 'ProductoController@agregaCarroArriendo'));
 Route::get('/arriendo/carrito', 'ProductoController@verCarroArriendo');
