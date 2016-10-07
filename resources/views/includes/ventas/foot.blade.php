@@ -23,7 +23,8 @@
 {!! HTML::script('js/cloudzoom.js') !!}
 {!! HTML::script('js/jquery.printarea.js') !!}
 {!! HTML::script('swetalert/sweetalert-dev.js') !!}
-{!! HTML::script('js/funciones.js') !!}
+{!! HTML::script('swetalert/sweetalert-dev.js') !!}
+{!! HTML::script('switchery/switchery.js') !!}
 
 <script>
     $(function() {
@@ -37,6 +38,17 @@
             $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
         }, function() {
             $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+        });
+
+
+        $(document).on('click', 'a[rel="marcadorMapa"]', function (e) {
+            console.log("si");
+            var nombre = $(this).data('nombre'),
+                    direccion = $(this).data('direccion'),
+                    iframe = $(this).data('iframe'),
+                    mapa = '<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="' + iframe + '"></iframe>';
+            $('#modalMaps h4[rel="titulo"]').html(nombre + ' <small>' + direccion + '</small>');
+            $('#modalMaps #map-canvas').html(mapa);
         });
     });
 
@@ -122,5 +134,19 @@
                     fullScreenOffsetContainer: ".navbar"
                 });
     });	//ready
+
+    var elem = document.querySelector('.demo'); // referred checkbox class is here
+    var init = new Switchery(elem, {
+        color: '#c00232',
+        secondaryColor: '#ff9c00',
+        jackColor: '#ffffff',
+        jackSecondaryColor: '#fffffff'
+    }); // put option after elem attribute
+
+    elem.onchange = function () {
+
+        window.location.href = '{{URL::to('arriendo')}}';
+    };
+
 
 </script>

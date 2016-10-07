@@ -100,3 +100,15 @@ Route::post('/pago', array('uses' => 'CompraController@pago'));
 Route::post('/cambiadespacho', array('uses' => 'CompraController@cambiaDespacho'));
 
 Route::get('/arriendo/checkout', 'CompraController@indexArriendo');
+
+
+/*
+|--------------------------------------------------------------------------
+| Controller Promocion
+|--------------------------------------------------------------------------
+|
+| Metodos para controller de de promociones
+|
+*/
+
+Route::get('/cibermonday', 'PromocionController@indexCiberMonday2016');

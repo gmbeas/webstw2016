@@ -208,20 +208,7 @@ jQuery(function ($) {
         }
     })
 });
-jQuery(function ($) {
-    "use strict";
-    var viewGrid = $(".view-grid"),
-        viewList = $(".view-list"),
-        productList = $(".products-list");
-    viewGrid.click(function (e) {
-        productList.removeClass("products-list-in-row").addClass("products-list-in-column");
-        e.preventDefault()
-    });
-    viewList.click(function (e) {
-        productList.removeClass("products-list-in-column").addClass("products-list-in-row");
-        e.preventDefault()
-    })
-});
+
 jQuery(function ($) {
     "use strict";
     var searchblock = $(".navbar-search"),

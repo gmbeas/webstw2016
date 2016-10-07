@@ -101,21 +101,3 @@
         </div>
     </div>
 </div>
-
-@section('javascript')
-    <script>
-        $(document).ready(function() {
-            // This will now be added just before the closing body tag, after jquery,
-            // and thus should work fine.
-            $(document).on('click','a[rel="marcadorMapa"]',function(e) {
-                console.log("si");
-                var nombre = $(this).data('nombre'),
-                        direccion = $(this).data('direccion'),
-                        iframe = $(this).data('iframe'),
-                        mapa = '<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="'+iframe+'"></iframe>';
-                $('#modalMaps h4[rel="titulo"]').html(nombre+' <small>'+direccion+'</small>');
-                $('#modalMaps #map-canvas').html(mapa);
-            });
-        });
-    </script>
-@endsection

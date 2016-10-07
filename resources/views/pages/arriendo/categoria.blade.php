@@ -76,6 +76,10 @@
             <!-- END SLIDE -->
             <section class="col-sm-8 col-md-9 col-lg-9 content-center">
                 <div class="section-divider" style="padding-top: 0px;padding-bottom: 0px;"></div>
+                @php
+                    $nombre = str_replace("-", " ", $nombre);
+                    $nombre = str_replace(".html", "", $nombre);
+                @endphp
                 <h3 id="TituloPrefijo"><?= $nombre;?></h3>
                 <!-- BOX CATEGORIAS -->
 

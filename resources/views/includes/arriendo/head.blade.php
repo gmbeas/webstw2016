@@ -26,6 +26,9 @@
 {!! Html::style('template/plugins/bootstrap-datepicker/css/datepicker.css') !!}
 
 {!! Html::style('css/steward.css') !!}
+{!! Html::style('swetalert/sweetalert.css') !!}
+{!! Html::style('switchery/switchery.css') !!}
+
 
 {!! Html::style('rs-plugin/css/settings.css') !!}
 {!! Html::style('rs-plugin/css/extralayers.css') !!}

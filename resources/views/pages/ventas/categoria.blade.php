@@ -81,13 +81,43 @@
                     $nombre = str_replace(".html", "", $nombre);
                 @endphp
                 <h3 id="TituloPrefijo">{{str_replace("-", " ", $nombre)}}</h3>
-                <!-- BOX CATEGORIAS -->
 
-                <!-- END BOX -->
-                <div class="products-list row" id="resultLineas" style="display: none;"></div>
-                <div class="products-list" id="resultProductos" data-arbol="{{Request::segment(2)}}" data-prfid="{{Request::segment(3)}}">
 
+                <!-- Filters -->
+                <div class="filters-panel">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4 col-lg-4"> Ordenar por
+                            <div class="btn-group btn-select sort-select sort-isotope"><a href="#"
+                                                                                          class="btn btn-default btn-xs dropdown-toggle"
+                                                                                          data-toggle="dropdown"> <span
+                                            class="value">Precio</span> <span class="caret min"></span> </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" data-value="price">Precio</a></li>
+                                </ul>
+                            </div>
+                            <a href="#" class="sort-select-arrow up"><span class="up icon-arrow-up-3"></span><span
+                                        class="down icon-arrow-down-3"></span></a></div>
+                        <div class="col-md-4 col-lg-4 hidden-sm hidden-xs">
+                            <div class="view-mode"> Ver como:&nbsp; <a href="#" class="view-grid"><span
+                                            class="icon-th"></span></a>&nbsp;&nbsp;<a href="#" class="view-list"><span
+                                            class="icon-th-list"></span></a></div>
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix"></div>
                 </div>
+                <!-- //end Filters -->
+
+                <!-- Products list -->
+                <div class="hidden-xs row">
+                    <div class="products-list" id="resultProductos" data-arbol="{{Request::segment(2)}}"
+                         data-prfid="{{Request::segment(3)}}">
+
+                    </div>
+                </div>
+                <!-- //end Products list -->
+
             </section>
         </div>
 
@@ -98,7 +128,11 @@
 @section('javascript')
     <script>
         var token = $('meta[name="csrf-token"]').attr('content');
-        jQuery.formatNumber = function(Number){
+        var $isotop = $('.products-list');
+        var testprefijo = "";
+
+
+        $.formatNumber = function (Number) {
             return Number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         };
 
@@ -119,67 +153,93 @@
             return title.replace(new RegExp('^[' + separator + '\\s]+|[' + separator + '\\s]+$', 'g'),'');
         }
 
-        function desplegarLineas(linea, id) {
-            if (! linea) {
-                return false;
-            }
-            var boton = $('#resultCategorias #lista-lineas a[rel="btnLinea"][data-linea="'+linea+'"]');
+        //cargarProductos(true);
 
-            if ($('h3#TituloPrefijo > small').length) {
-                $('h3#TituloPrefijo > small').remove();
-            }
-            $('#resultCategorias #lista-lineas a').removeClass('activo');
-            $(boton).addClass('activo');
-
-            if ($('h3#TituloPrefijo').length) {
-                $('h3#TituloPrefijo').append(' <small> &raquo; '+linea+'</small>');
-            }
-            if ($('#resultLineas').length && $('#resultLineas').is(':visible')) {
-                $('#resultLineas').fadeOut(500, function() {
-                    $('div.product-preview').addClass('noMostrar');
-                    $('div.product-preview.modulo-oferta').removeClass('noMostrar');
-
-                    $('.nombreBusqueda:contains("'+linea.toLowerCase()+' ")').each(function(index,elemento) {
-                        $(elemento).parent().removeClass('noMostrar');
-                    });
-                    $('html, body').animate({
-                        scrollTop: $("#resultProductos").parent().offset().top
-                    }, 300);
-                    $('#resultProductos').fadeIn(800);
+        function recarga() {
+            if ($isotop.length) {
+                var $sortAscending = $(".sort-select-arrow");
+                if ($.support.opacity) window.onresize = function () {
+                    $isotop.isotope({
+                        masonry: {}
+                    })
+                };
+                $isotop.isotope({
+                    itemSelector: ".product-preview",
+                    layoutMode: "fitRows",
+                    masonry: {},
+                    resizable: false,
+                    sortBy: "price",
+                    sortAscending: true,
+                    getSortData: {
+                        position: function ($elem) {
+                            return parseInt($elem.attr("data-position"), 10)
+                        },
+                        rating: function ($elem) {
+                            return parseFloat($elem.attr("data-rating"))
+                        },
+                        price: function ($elem) {
+                            return parseFloat($elem.find(".price:last").text().replace("$", "").replace(",", "."))
+                        },
+                        dateAdded: function ($elem) {
+                            return Date.parse($elem.attr("data-date-added"))
+                        }
+                    }
                 });
-            } else {
-                $('#resultProductos').fadeOut(500, function() {
-                    $('div.product-preview').addClass('noMostrar');
-                    $('div.product-preview.modulo-oferta').removeClass('noMostrar');
-                    $('.nombreBusqueda:contains("'+linea.toLowerCase()+' ")').each(function(index,elemento) {
-                        $(elemento).parent().removeClass('noMostrar');
-                    });
-                    $('html, body').animate({
-                        scrollTop: $("#resultProductos").parent().offset().top
-                    }, 300);
-                    $('#resultProductos').fadeIn(800);
+
+
+                $(".sort-select").change(function (e, data) {
+                    $(".sort-select .value").html(data.html);
+                    if (data.value) {
+                        $isotop.isotope({
+                            sortBy: data.value
+                        });
+                    }
+                });
+                $sortAscending.click(function (e) {
+                    if ($(this).parent().find(".sort-isotope").length >
+                            0) e.preventDefault();
+                    var $this = $(this);
+                    if ($this.hasClass("up")) {
+                        $isotop.isotope({
+                            layoutMode: "masonry",
+                            sortAscending: false
+                        });
+                        $sortAscending.removeClass("up").addClass("down")
+                    } else {
+                        $isotop.isotope({
+                            layoutMode: "masonry",
+                            sortAscending: true
+                        });
+                        $sortAscending.removeClass("down").addClass("up")
+                    }
                 });
             }
 
-            $('#lista-lineas > li > ul').slideUp(200);
+            var viewGrid = $(".view-grid"),
+                    viewList = $(".view-list"),
+                    productList = $(".products-list");
+            viewGrid.click(function (e) {
+                productList.removeClass("products-list-in-row").addClass("products-list-in-column");
+                $isotop.isotope({
+                    masonry: {}
+                })
+                e.preventDefault()
+            });
+            viewList.click(function (e) {
+                productList.removeClass("products-list-in-column").addClass("products-list-in-row");
+                $isotop.isotope({
+                    masonry: {}
+                })
+                e.preventDefault()
+            });
 
-            if ($(boton).parents('li').find('ul[rel="filtrosLineas"]').length) {
-                if ($(boton).parents('li').find('ul[rel="filtrosLineas"]').is(':visible')) {
-                    $(boton).parents('li').find('ul[rel="filtrosLineas"] input.filtros').prop('checked', false);
-                } else {
-                    $(boton).parents('li').find('ul[rel="filtrosLineas"]').slideDown(300);
-                }
-                return false;
-            }
-            $(boton).parents('li').append('<ul rel="filtrosLineas"></ul>');
-            var target = $(boton).parents('li').find('ul[rel="filtrosLineas"]');
         }
 
         function cargarProductos(mostrar) {
-            var targetProductos = $('div#resultProductos');
+
             var targetBanner = $('#resultBanner');
-            var arbol = $(targetProductos).data('arbol');
-            var prfid = $(targetProductos).data('prfid');
+            var arbol = $isotop.data('arbol');
+            var prfid = $isotop.data('prfid');
 
             $.ajax({
                 type: "POST",
@@ -187,10 +247,11 @@
                 data: {'arbol' : arbol, 'prfid' : prfid, '_token' : token},
                 success: function(response) {
                     var respuesta = JSON.parse(response);
-                    console.log(respuesta);
+                    //console.log(respuesta);
                     var banner = false;
                     if(respuesta['_productos'].length > 0){
                         var contenido = '';
+                        var contador = 1;
                         $.each(respuesta['_productos'], function(index, registro) {
                             var precio = 0;
                             if (registro.PrecioUnidadBruto) {
@@ -203,11 +264,20 @@
                                     precio+=' '+$.trim(registro.Um);
                                 }
                             }
+
+
+                            var myarr = registro.ListaAtributos.split(",");
+                            var extinto = "";
+                            myarr.forEach(function (entry) {
+                                //console.log(entry);
+                                extinto += " atributo-" + entry;
+                            });
+                            //console.log( extinto.replace('(','').replace(')', ''));
                             var urlimage = '{{URL::asset('/imagenweb/sku/')}}';
                             var urlficha = '{{ URL::to('/ficha/')}}';
                             var ficha = urlficha + '/' + registro.Sku + '/' + slug(registro.NombreWeb, '-') + '.html';
                             var imagen = urlimage + '/' + $.trim(registro.Foto);
-                            contenido+= '<div class="product-preview" style="height: 400px;" data-prefijo_id="'+registro.Prf_Id+'">'+
+                            contenido += '<div class="product-preview prueba-' + registro.Prf_Id + extinto + '" style="height: 400px;" data-prefijo_id="' + registro.Prf_Id + '">' +
                                     '<div class="preview ">'+
                                     '<a href="' + ficha + '" class="preview-image">'+
                                     '<img class="bordegris" src="' + imagen + '" width="270" height="270" alt="">'+
@@ -227,20 +297,16 @@
                                     '</div>'+
                                     '</div>';
 
-
+                            contador++;
 
                         });
-
-                        $(targetProductos).fadeOut(300,function() {
-                            $(targetProductos).html(contenido);
-                            if (mostrar) {
-                                $(targetProductos).fadeIn(500);
-                            }
-                        });
+                        $isotop.append(contenido);
+                        recarga();
                     }
                 }
             });
         }
+
 
         function cargarCategorias() {
             var targetCategorias = $('#resultCategorias');
@@ -248,160 +314,161 @@
             var prfid = $(targetCategorias).data('prfid');
 
             $.ajax({
-                 type: "POST",
-                 url: '{{URL::to('traecategorias')}}',
-                 data: {'arbol' : arbol, 'prfid' : prfid, '_token' : token},
-                 success: function(response) {
-                     var respuesta = JSON.parse(response);
-                     console.log(respuesta);
-                     var mostrar = true;
-                     var prefactivo = "";
-                     if(respuesta['_atributos'].length > 0){
+                type: "POST",
+                url: '{{URL::to('traecategorias')}}',
+                data: {'arbol': arbol, 'prfid': prfid, '_token': token},
+                success: function (response) {
+                    var respuesta = JSON.parse(response);
+                    //console.log(respuesta);
+                    var mostrar = true;
+                    var prefactivo = "";
+                    if (respuesta['_atributos'].length > 0) {
+                        // console.log(respuesta['_atributos']);
+                        var contenido = '<h3>Filtros</h3><ul class="expander-list" id="lista-atributos"><form>';
 
-                         var contenido = '<h3>Filtros</h3><ul class="expander-list" id="lista-atributos"><form>';
+                        $.each(respuesta['_atributos'], function (index, registro) {
 
-                         $.each(respuesta['_atributos'], function(index, registro) {
+                            contenido += '<li class="grupos" data-grupo ="' + registro.GrupoId + '"><span class="name"><span class="expander">-</span> <a href="#">' + registro.Atributo + '</a></span><ul>';
+                            $.each(registro['Grupo'], function (index2, valor) {
+                                contenido += '<li><input type="checkbox" class="filtros"  name="' + valor.Grp_Id + '" value="atributo-' + valor.Atd_Id + '" multiple="multiple"> ' + valor.Atributo + '</li>';
+                            });
+                            contenido += '</ul></li>';
+                        });
 
-                             contenido+= '<li class="grupos" data-grupo ="' + registro.GrupoId + '"><span class="name"><span class="expander">-</span> <a href="#">' + registro.Atributo + '</a></span><ul>';
-                             $.each(registro['Grupo'] ,function(index2,valor) {
-                                 contenido+= '<li><input type="checkbox" class="filtros"  name="'+valor.Grp_Id+'" value="'+valor.Atributo.toLowerCase()+'" multiple="multiple"> '+valor.Atributo+'</li>';
-                             });
-                             contenido+= '</ul></li>';
-                         });
+                        contenido += '</form></ul>';
+                        $(targetCategorias).html(contenido);
 
-                         contenido+= '</form></ul>';
-                         $(targetCategorias).html(contenido);
+                    } else if (respuesta['_prefijos'].length > 0) {
+                        var cantidadpref = respuesta['_prefijos'].length;
 
-                     }else if(respuesta['_prefijos'].length > 0){
-                         var cantidadpref = respuesta['_prefijos'].length;
+                        if (cantidadpref == 1)
+                            prefactivo = " activo"
+                        var contenido = '<h3>Categorias<a href="#" class="btn btn-xs btn-default pull-right" id="recogerCategorias"><small>ver todas</small></a></h3>' +
+                                '<ul class="expander-list" id="lista-categorias">';
 
-                         if (cantidadpref == 1)
-                             prefactivo = " activo"
-                         var contenido = '<h3>Categorias<a href="#" class="btn btn-xs btn-default pull-right" id="recogerCategorias"><small>ver todas</small></a></h3>'+
-                                 '<ul class="expander-list" id="lista-categorias">';
-
-                         $.each(respuesta['_prefijos'] ,function(categoriaId, filtroCategoria) {
-                             contenido+= '<li class="categorias" data-categoria="'+filtroCategoria.Prf_Id+'">'+
-                                     '<span class="name">'+
-                                     '<a href="#" class="prefijo' + prefactivo + '" rel="btnPrefijo">' + filtroCategoria.Prefijo + '</a>' +
-                                     '</span>'+
-                                     '<ul>';
-                             $.each(filtroCategoria['_atributos'], function(grupo, filtros) {
-                                     contenido+= '<li>'+
-                                             '<span class="name">'+
-                                             '<span class="expander">-</span> '+
-                                             '<a href="#">'+filtros.Atributo+'</a>'+
-                                             '</span>'+
-                                             '<ul style="padding-left: 20px;">';
-                                 $.each(filtros['Grupo'],function(filtroId,filtroNombre) {
-                                     contenido+= '<li rel="filtro">'+
-                                             '<input type="checkbox" class="filtros"  name="data[' + filtros.Atributo + '][filtro]" value="'+filtroNombre.Atributo+'" multiple="multiple"> '+filtroNombre.Atributo+
-                                             '</li>';
-                                 });
-                                 contenido+= '</ul></li>';
-                             });
-
-
-                             contenido+= '</ul></li>';
-                         });
-
-                         contenido+= '</ul>';
-
-                         $(targetCategorias).html(contenido);
-
-                     }else if(respuesta['_lineas'].length > 0){
-                         var contenido = '<h3>Líneas<a href="#" class="btn btn-xs btn-default pull-right" id="lineasTodas"><small>ver todas</small></a></h3><ul class="expander-list" id="lista-lineas">';
-
-                         $.each(respuesta['_lineas'], function(index, linea) {
-                             contenido+= '<li>'+
-                                     '<span class="name">'+
-                                     '<a href="#" class="linea" rel="btnLinea" data-linea="'+linea.Atributo+'" data-id="'+linea.Atd_Id+'">'+linea.Atributo+'</a>'+
-                                     '</span>'+
-                                     '</li>';
-                         });
-
-                         contenido+= '</ul>';
-                         $(targetCategorias).html(contenido);
-
-                         var iconos = '';
-                         $.each(respuesta['_lineas'], function(index, linea) {
-
-                             var urlimage = '{{URL::asset('/imagenweb/arbol/')}}';
-                             var imagen = urlimage + '/' + $.trim(linea.FotoAtributo);
+                        $.each(respuesta['_prefijos'], function (categoriaId, filtroCategoria) {
+                            contenido += '<li class="categorias" data-categoria="' + filtroCategoria.Prf_Id + '">' +
+                                    '<span class="name">' +
+                                    '<a href="#" class="prefijo' + prefactivo + '" rel="btnPrefijo">' + filtroCategoria.Prefijo + '</a>' +
+                                    '</span>' +
+                                    '<ul>';
+                            $.each(filtroCategoria['_atributos'], function (grupo, filtros) {
+                                //console.log(filtroCategoria['_atributos']);
+                                contenido += '<li>' +
+                                        '<span class="name">' +
+                                        '<span class="expander">-</span> ' +
+                                        '<a href="#">' + filtros.Atributo + '</a>' +
+                                        '</span>' +
+                                        '<ul style="padding-left: 20px;">';
+                                $.each(filtros['Grupo'], function (filtroId, filtroNombre) {
+                                    contenido += '<li rel="filtro">' +
+                                            '<input type="checkbox" class="filtros"  name="data[' + filtros.Atributo + '][filtro]" value="atributo-' + filtroNombre.Atd_Id + '" multiple="multiple"> ' + filtroNombre.Atributo +
+                                            '</li>';
+                                });
+                                contenido += '</ul></li>';
+                            });
 
 
-                             var imagen = 'http://placehold.it/270x270';
-                             if (linea.foto) {
-                                 imagen = imagen;
-                             }
-                             iconos+= '<div class="product-preview" style="height: 400px;">'+
-                                     '<div class="preview ">'+
-                                     '<a href="#" class="linea" rel="btnLinea" data-linea="'+linea.Atributo+'" data-id="'+linea.Atd_Id+'" class="preview-image">'+
-                                     '<img class="bordegris" src="'+imagen+'" width="270" height="270" alt="">'+
-                                     '</a>'+
-                                     '<ul class="product-controls-list right hide-right">'+
-                                     '<li class="top-out-small"></li>'+
-                                     '</ul>'+
-                                     '</div>'+
-                                     '<h3 class="title nombreProducto">'+
-                                     '<a href="#" class="linea" rel="btnLinea" data-linea="'+linea.Atributo+'"><b>'+linea.Atributo+'</b></a>'+
-                                     '</h3>'+
-                                     '</div>';
-                         });
-                         $('#resultLineas').html(iconos).fadeIn(500);
-                         mostrar = false;
-                     }
+                            contenido += '</ul></li>';
+                        });
 
-                     if ($('div#resultProductos').length) {
-                         cargarProductos(mostrar);
-                     }
+                        contenido += '</ul>';
 
-                     if ($(".expander-list").length) {
-                         $(".expander-list").find("ul").hide().end().find(" .expander").text("+").end().find(".active").each(function () {
-                             $(this).parents("li ").each(function () {
-                                 var $this = $(this),
-                                         $ul = $this.find("> ul"),
-                                         $name = $this.find("> .name a"),
-                                         $expander = $this.find("> .name .expander");
-                                 $ul.show();
-                                 $name.css("font-weight", "bold");
-                                 $expander.html("&minus;")
-                             })
-                         }).end().find(" .expander").each(function () {
-                             var $this = $(this),
-                                     hide = $this.text() === "+",
-                                     $ul = $this.parent(".name").next("ul"),
-                                     $name = $this.next("a");
-                             $this.click(function () {
-                                 if ($ul.css("display") == "block") $ul.slideUp("slow");
-                                 else $ul.slideDown("slow");
-                                 $(this).html(hide ? "&minus;" : "+");
-                                 $name.css("font-weight", hide ? "bold" : "normal");
-                                 hide = !hide
-                             })
-                         });
+                        $(targetCategorias).html(contenido);
 
-                         if (prefactivo != "")
-                             $(".expander-list").find("ul").show();
-                     }
-                 }
+                    } else if (respuesta['_lineas'].length > 0) {
+                        var contenido = '<h3>Líneas<a href="#" class="btn btn-xs btn-default pull-right" id="lineasTodas"><small>ver todas</small></a></h3><ul class="expander-list" id="lista-lineas">';
+
+                        $.each(respuesta['_lineas'], function (index, linea) {
+                            contenido += '<li>' +
+                                    '<span class="name">' +
+                                    '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Atributo + '" data-id="' + linea.Atd_Id + '">' + linea.Atributo + '</a>' +
+                                    '</span>' +
+                                    '</li>';
+                        });
+
+                        contenido += '</ul>';
+                        $(targetCategorias).html(contenido);
+
+                        var iconos = '';
+                        $.each(respuesta['_lineas'], function (index, linea) {
+
+                            var urlimage = '{{URL::asset('/imagenweb/arbol/')}}';
+                            var imagen = urlimage + '/' + $.trim(linea.FotoAtributo);
+
+
+                            var imagen = 'http://placehold.it/270x270';
+                            if (linea.foto) {
+                                imagen = imagen;
+                            }
+                            iconos += '<div class="product-preview" style="height: 400px;">' +
+                                    '<div class="preview ">' +
+                                    '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Atributo + '" data-id="' + linea.Atd_Id + '" class="preview-image">' +
+                                    '<img class="bordegris" src="' + imagen + '" width="270" height="270" alt="">' +
+                                    '</a>' +
+                                    '<ul class="product-controls-list right hide-right">' +
+                                    '<li class="top-out-small"></li>' +
+                                    '</ul>' +
+                                    '</div>' +
+                                    '<h3 class="title nombreProducto">' +
+                                    '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Atributo + '"><b>' + linea.Atributo + '</b></a>' +
+                                    '</h3>' +
+                                    '</div>';
+                        });
+                        $('#resultLineas').html(iconos).fadeIn(500);
+                        mostrar = false;
+                    }
+
+                    //if ($('div#resultProductos').length) {
+                    cargarProductos(mostrar);
+                    //}
+
+                    if ($(".expander-list").length) {
+                        $(".expander-list").find("ul").hide().end().find(" .expander").text("+").end().find(".active").each(function () {
+                            $(this).parents("li ").each(function () {
+                                var $this = $(this),
+                                        $ul = $this.find("> ul"),
+                                        $name = $this.find("> .name a"),
+                                        $expander = $this.find("> .name .expander");
+                                $ul.show();
+                                $name.css("font-weight", "bold");
+                                $expander.html("&minus;")
+                            })
+                        }).end().find(" .expander").each(function () {
+                            var $this = $(this),
+                                    hide = $this.text() === "+",
+                                    $ul = $this.parent(".name").next("ul"),
+                                    $name = $this.next("a");
+                            $this.click(function () {
+                                if ($ul.css("display") == "block") $ul.slideUp("slow");
+                                else $ul.slideDown("slow");
+                                $(this).html(hide ? "&minus;" : "+");
+                                $name.css("font-weight", hide ? "bold" : "normal");
+                                hide = !hide
+                            })
+                        });
+
+                        if (prefactivo != "")
+                            $(".expander-list").find("ul").show();
+                    }
+                }
             });
 
         }
 
-
-
         $(document).ready(function() {
-            $('div#resultProductos').html('<div class="well well-xs text-center"><span class="glyphicon glyphicon-repeat glyphicon-spin"></span> CARGANDO </div>');
             if ($('#resultCategorias').length) {
                 cargarCategorias();
             }
 
+
             $(document).on('click','ul.expander-list li > .name > a',function(e) {
                 e.preventDefault();
+
                 var boton = $(this);
                 if ($(boton).siblings('span.expander').length) {
                     $(boton).siblings('span.expander').click();
+
                 }
             });
 
@@ -434,17 +501,13 @@
                     $(elemento).children('ul').slideUp("slow");
                     $(elemento).find('a[rel="btnPrefijo"]').removeClass('activo');
                 });
-                $('#resultProductos').fadeOut(500, function() {
-                    if ($('input.filtros:checked').length) {
-                        $('input.filtros:checked').attr('checked',false);
-                    }
-                    $('.product-preview').hide().removeClass('noMostrar').show();
-                    $('#resultProductos').fadeIn(800);
-                });
+                $isotop.isotope({filter: '*'});
             });
 
             $(document).on('click','#resultCategorias #lista-categorias.expander-list > li.categorias > span.name > a[rel="btnPrefijo"]', function() {
+
                 var categoria_id = $(this).parents('li.categorias').data('categoria');// categoria seleccionada
+                testprefijo = categoria_id;
                 if ($('h3#TituloPrefijo > small').length) {
                     $('h3#TituloPrefijo > small').remove();
                 }
@@ -471,111 +534,66 @@
                         }
                     }
                 });
-                $('#resultProductos').fadeOut(500, function() {
-                    $('div.product-preview').removeClass('noMostrar');
-                    if ($('input.filtros:checked').length) {
-                        $('input.filtros:checked').attr('checked',false);
-                    }
-                    if ($('#lista-categorias.expander-list > li.categorias > .name > a.prefijo.activo').length) {
-                        $('.product-preview').hide();
-                        $('.product-preview[data-prefijo_id="'+categoria_id+'"]').show();
-                    } else {
-                        $('.product-preview').show();
-                    }
-                    $('#resultProductos').fadeIn(800);
-                });
+
+                var filterValue = ".prueba-" + categoria_id;
+                filterValue = filterFns[filterValue] || filterValue;
+
+                $isotop.isotope({filter: filterValue});
             });
 
             $(document).on('change','#resultCategorias #lista-atributos .filtros',function() {
-                $('#resultProductos').fadeOut(500, function() {
-                    $('div.product-preview').addClass('noMostrar');
-                    $('div.product-preview.modulo-oferta').removeClass('noMostrar');
+                var isoFilters = [];
+                $('#lista-atributos li.grupos').each(function () {
+                    $('input.filtros[name="' + $(this).data("grupo") + '"]:checked').each(function () {
+                        //console.log($(this).val());
+                        //filterValue += "." + $(this).val();
+                        isoFilters.push("." + $(this).val());
 
-                    if($('input.filtros:checked').length ==0) {
-                        $('div.product-preview').removeClass('noMostrar');
-                        $('#resultProductos').fadeIn(800);
-                        return false;
-                    }
-                    var inicial = true;
-                    $('#lista-atributos li.grupos').each(function() {
-                        if(inicial) {
-                            $('input.filtros[name="'+$(this).data("grupo")+'"]:checked').each(function() {
-                                $(".nombreBusqueda:contains('"+$(this).val()+"')").each(function() {
-                                    $(this).parent().removeClass('noMostrar');
-                                });
-                                inicial = false;
-                            });
-                        } else {
-                            filtro ="";
-                            $('input.filtros[name="'+$(this).data("grupo")+'"]:checked').each(function() {
-                                if(filtro !='') {
-                                    filtro += ', ';
-                                }
-                                filtro += " .nombreBusqueda:contains('"+$(this).val().toLowerCase()+"')";
-                            });
-                            if(filtro != '') {
-                                filtro = '.nombreBusqueda:not('+filtro+')';
-                                $(filtro).each(function() {
-                                    if($(this).parent().not('.noMostrar')) {
-                                        $(this).parent().addClass('noMostrar');
-                                    }
-                                });
-                            }
-                        }
                     });
-
-                    if ($('.products-list > .product-view-ajax-container.temp').length) {
-                        $('.products-list > .product-view-ajax-container.temp').addClass('hidden');
-                    }
-                    $('#resultProductos').fadeIn(800);
                 });
+
+                //filterValue = '.melamina';
+                //console.log(filterValue);
+                //filterValue = filterFns[ filterValue ] || filterValue;
+                var selector = isoFilters.join(', ');
+                $isotop.isotope({filter: selector});
                 return false;
             });
 
             $(document).on('change','#resultCategorias #lista-categorias .filtros',function() {
-                $('#resultProductos').fadeOut(500, function() {
-                    $('div.product-preview').addClass('noMostrar');
-                    $('div.product-preview.modulo-oferta').removeClass('noMostrar');
-                    if (! $('#lista-categorias > li.categorias > ul:visible > li > ul > li > input.filtros:checked').length) {
-                        $('div.product-preview').removeClass('noMostrar');
-                        $('#resultProductos').fadeIn(800);
-                        return false;
-                    }
+                //console.log(1);
 
-                    var inicial = true;
-                    $('#lista-categorias > li.categorias > ul > li').each(function(a,grupo) {
-                        if(inicial) {
-                            $(grupo).find('input.filtros:checked').each(function(b,atributo) {
-                                $(".nombreBusqueda:contains('"+$(atributo).val().toLowerCase()+"')").each(function(c,activo) {
-                                    $(activo).parent().removeClass('noMostrar');
-                                });
-                                inicial = false;
-                            });
-                        } else {
-                            filtro ="";
-                            $(grupo).find('input.filtros:checked').each(function(b,atributo) {
-                                if(filtro !='') {
-                                    filtro += ', ';
-                                }
-                                filtro += " .nombreBusqueda:contains('"+$(atributo).val().toLowerCase()+"')";
-                            });
-                            if(filtro != '') {
-                                filtro = '.nombreBusqueda:not('+filtro+')';
-                                $(filtro).each(function() {
-                                    if($(this).parent().not('.noMostrar')) {
-                                        $(this).parent().addClass('noMostrar');
-                                    }
-                                });
-                            }
-                        }
+                var categoria_id = $(this).parents('li.categorias').data('categoria');// categoria seleccionada
+                console.log(categoria_id);
+                var isoFilters = [];
+                //isoFilters.push(".prueba-" + testprefijo);
+                $('#lista-categorias > li.categorias > ul > li').each(function (a, grupo) {
+                    $(grupo).find('input.filtros:checked').each(function (b, atributo) {
+
+                        isoFilters.push("." + $(this).val());
                     });
-                    $('#resultProductos').fadeIn(800);
+
                 });
+
+
+                var filters = {};
+
+                filters['.prueba-873'] = '.atributo-396';
+                //console.log(testprefijo);
+
+                //console.log(isoFilters);
+                var selector = isoFilters.join(', ');
+                //$isotop.isotope({ filter: '.prueba-' + testprefijo});
+                var filterValue = concatValues(filters);
+                //console.log(filterValue);
+                $isotop.isotope({filter: ".prueba-" + categoria_id + selector});
+
                 return false;
             });
 
             $(document).on('click', '#lista-lineas ul[rel="filtrosLineas"] a[rel="prefijoFiltroLinea"]', function(e) {
                 e.preventDefault();
+
                 var boton = $(this);
                 $('a[rel="prefijoFiltroLinea"]').removeClass('activo').css({
                     textDecoration: 'none'
@@ -600,5 +618,33 @@
                 });
             });
         });
+
+        // filter functions
+        var filterFns = {
+            // show if number is greater than 50
+            numberGreaterThan50: function () {
+                var number = $(this).find('.number').text();
+                return parseInt(number, 10) > 50;
+            },
+            // show if name ends with -ium
+            ium: function () {
+                var name = $(this).find('.name').text();
+                return name.match(/ium$/);
+            }
+        };
+
+        String.prototype.replaceAll = function (search, replacement) {
+            var target = this;
+            return target.split(search).join(replacement);
+        };
+
+        // flatten object by concatting values
+        function concatValues(obj) {
+            var value = '';
+            for (var prop in obj) {
+                value += obj[prop];
+            }
+            return value;
+        }
     </script>
 @stop

@@ -39,6 +39,9 @@
                 <div class="col-md-6 col-lg-7"  style="margin-top:-10px;padding-left: 60px; ">
                     {!! Form::open(['method'=>'GET', 'url'=>'/arriendo/categoria/buscador','class'=>'navbar-form','role'=>'buscar'])  !!}
                     <div class="input-group">
+                        <div style="text-transform: uppercase; padding: 7px 10px; font-weight: 900; position: absolute; top: -48px; right: 0;">
+                            <input type="checkbox" class="demo"/>
+                        </div>
                         {{ Form::input('buscar', 'buscar', null, ['class' => 'form-control input-md input-search', 'placeholder' => 'Busque su producto aquí']) }}
                         <div class="input-group-btn">
                             <button  class="btn btn-default btn-md btn-search" type="submit"><i class="glyphicon glyphicon-search"></i></button>
