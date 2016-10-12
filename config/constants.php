@@ -8,6 +8,7 @@
 
 
 $url = "http://localhost:35462/";
+//$url = "http://192.168.1.230/apilaravel/";
 $api = "api/";
 
 $METHOD_MENU_SUPERIOR = "GetMenuCompletoSuperior";
@@ -29,6 +30,9 @@ $METHOD_LISTA_COMBOS_ARRIENDO	= "ListaCombos";
 $METHOD_TOTAl_COMBO_ARRIENDO = "GetTotalArriendo";
 $METHOD_SIMULA_COMBO_ARRIENDO = "GetSimulaComboArriendo";
 $METHOD_GET_NOTA_VENTA = "GeneraVentaNota";
+$METHOD_GET_LANDING = "GetLanding";
+
+$METHOD_TEST = "GeneraFirma";
 
 return [
     'SERVICIOS' => [
@@ -51,5 +55,7 @@ return [
         'METHOD_TOTAl_COMBO_ARRIENDO' => $url . $api . $METHOD_TOTAl_COMBO_ARRIENDO,
         'METHOD_SIMULA_COMBO_ARRIENDO' => $url . $api . $METHOD_SIMULA_COMBO_ARRIENDO,
         'METHOD_GET_NOTA_VENTA' => $url . $api . $METHOD_GET_NOTA_VENTA,
+        'METHOD_GET_LANDING' => $url . $api . $METHOD_GET_LANDING,
+        'METHOD_TEST' => $url . $api . $METHOD_TEST,
     ]
 ];

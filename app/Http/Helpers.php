@@ -10,6 +10,38 @@
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 
+function getLanding($tienda, $codigo)
+{
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_GET_LANDING');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "Tienda" => $tienda,
+            "Rut" => getRutSession(),
+            "Codigo" => $codigo
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
+function getTest()
+{
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_TEST');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "Id" => 666,
+            "Nombre" => "Felipe",
+            "Cargo" => "Goma de Marketing",
+            "Fono1" => "(+562) 2 7566013",
+            "Fono2" => "(+569) 5 6194730"
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
 
 function getSimulaComboArriendo($comboid, $modid, $ninvitados)
 {

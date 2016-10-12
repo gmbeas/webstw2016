@@ -32,21 +32,14 @@
             <div class="divider-xs visible-xs"></div>
             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 hidden-xs">
                 <h3>CATEGORIAS</h3>
-                <div class="btn-group btn-select"><a href="#" class="btn btn-default btn-xs dropdown-toggle"
-                                                     data-toggle="dropdown"> <span class="value"><span
-                                    class="m-icon m-icon-shorts"></span> Shorts</span> <span class="caret min"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><span class="m-icon m-icon-dress"></span>Dresses</a></li>
-                        <li><a href="#"><span class="m-icon m-icon-shirts"></span>Shirts</a></li>
-                        <li><a href="#"><span class="m-icon m-icon-coats"></span>Coats</a></li>
-                        <li><a href="#"><span class="m-icon m-icon-jackets"></span>Jackets</a></li>
-                        <li><a href="#"><span class="m-icon m-icon-shorts"></span> Shorts</a></li>
-                        <li><a href="#"><span class="m-icon m-icon-jeans"></span>Jeans</a></li>
-                        <li><a href="#"><span class="m-icon m-icon-skirts"></span>Skirts</a></li>
-                        <li><a href="#"><span class="m-icon m-icon-lingerie"></span>Lingerie</a></li>
-                        <li><a href="#"><span class="m-icon m-icon-tops"></span>Tops</a></li>
-                    </ul>
+                <div class="btn-group btn-select">
+                    <select class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                        <option>Seleccione...</option>
+                        @foreach($productos['_gruponivel'] as $grupo)
+                            <option>{{$grupo['Nombre']}}</option>
+                        @endforeach
+                    </select>
+
                 </div>
             </div>
 
@@ -65,233 +58,40 @@
 
         <!-- Products list -->
         <div class="row products-list">
+            @foreach($productos['_landing'] as $producto)
             <div class="product-preview ">
                 <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
+                    <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html"
+                       class="preview-image">
                         <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
+                             src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'])}}_b1.jpg" width="270"
                              height="328" alt="">
                     </a>
                     <ul class="product-controls-list right">
                         <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
+                        @php
+                            $diferencia = $producto['PrecioBrutoNormal'] - $producto['PrecioBruto'];
+                            $porcentaje = 0;
+                            if($diferencia <> 0){
+                                $por = ($diferencia / $producto['PrecioBrutoNormal']);
+                                $porcentaje = $por*100;
+                            }
+
+                        @endphp
+                        <li><span class="label">-{{round($porcentaje)}}%</span></li>
                     </ul>
 
                 </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
+                <h3 class="title"><a
+                            href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html">{{$producto['NombreWeb']}}</a>
+                </h3>
 
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
+                <span class="price old">${{number_format($producto['PrecioBrutoNormal'], 0, ',', '.')}}</span>
+                <span class="price new">${{number_format($producto['PrecioBruto'], 0, ',', '.')}}</span>
             </div>
+            @endforeach
 
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
 
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
-
-            <div class="product-preview ">
-                <div class="preview animate scale">
-                    <a href="product_default.html" class="preview-image">
-                        <img class="img-responsive animate scale"
-                             src="http://localhost:8080/webstw/public/imagenweb/sku/020001848_b1.jpg" width="270"
-                             height="328" alt="">
-                    </a>
-                    <ul class="product-controls-list right">
-                        <li><span class="label label-sale">OFERTA</span></li>
-                        <li><span class="label">-20%</span></li>
-                    </ul>
-
-                </div>
-                <h3 class="title"><a href="#">Chaqueta</a></h3>
-
-                <span class="price old">$54.220</span>
-                <span class="price new">$44.950</span>
-            </div>
 
 
         </div>

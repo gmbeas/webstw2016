@@ -1,6 +1,7 @@
 @php
     $menusPadres = getMenuSuperior(29);
     $cart = new \Steward\Phpcart\Carrito('ventas');
+    \Debugbar::enable();
 @endphp
 
     <style>

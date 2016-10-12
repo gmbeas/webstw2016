@@ -102,8 +102,9 @@ class ProductoController extends Controller
         $cart = new Carrito('ventas');
 
         $itemx = $cart->get($sku);
-
-        $cantidadx = $itemx->cantidad + $cantidad;
+        $cantidadx = $cantidad;
+        if ($itemx != null)
+            $cantidadx = $itemx->cantidad + $cantidad;
 
         $resultado = getStock(29, $sku, $cantidadx);
 

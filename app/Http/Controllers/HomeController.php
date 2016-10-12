@@ -11,6 +11,8 @@ class HomeController extends Controller
 {
     public function index(){
 
+        //$nnnn = getTest();
+
         $vehicles = Compra::all();
         $jjj = compact('vehicles');
         foreach ($vehicles as $vehicle) {
