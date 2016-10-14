@@ -23,7 +23,7 @@ namespace {
         }
         
         /**
-         * Run the given array of bootstrap classes.
+         * Run the given array of bootstrap Clases.
          *
          * @param array $bootstrappers
          * @return void 

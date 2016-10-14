@@ -64,6 +64,8 @@ Route::post('/getciudades', array('uses' => 'ClienteController@getCiudades'));
 Route::post('/getcomunas', array('uses' => 'ClienteController@getComunas'));
 Route::post('/nuevadireccion', array('uses' => 'ClienteController@addDireccion'));
 
+Route::post('/validaregistro', array('uses' => 'ClienteController@validaRegistro'));
+
 
 
 

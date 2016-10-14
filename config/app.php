@@ -237,6 +237,8 @@ return [
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
+        'SoapClient' => SoapClient::class,
+
     ],
 
 ];

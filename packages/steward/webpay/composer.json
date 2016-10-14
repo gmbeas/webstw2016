@@ -1,0 +1,14 @@
+{
+  "name": "steward/webpay",
+  "description": "Libreria para utilizar webpay transbank",
+  "type": "package",
+  "license": "GPL",
+  "authors": [
+    {
+      "name": "Gonzalo Martinez",
+      "email": "gmbeas@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {}
+}

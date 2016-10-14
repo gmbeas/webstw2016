@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 
 use App\Compra;
 use App\Http\Requests;
+
+use App\Libraries\LibWebpay\WebPaySOAP;
 use Steward\Phpcart\Carrito;
+use Steward\Webpay\Webpay;
+
 
 class HomeController extends Controller
 {

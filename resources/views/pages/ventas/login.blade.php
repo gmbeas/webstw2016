@@ -12,11 +12,13 @@
     <!-- Two column content -->
     <section class="container">
         <div class="row">
-            <section class="col-sm-6 col-md-6 col-lg-6">
-
-
+            <section class="col-sm-4 col-md-4 col-lg-4">
+                @include('pages.ventas.modulo_registro')
             </section>
-            <section class="col-sm-6 col-md-6 col-lg-6">
+            <section class="col-sm-4 col-md-4 col-lg-4">
+                @include('pages.ventas.modulo_invitado')
+            </section>
+            <section class="col-sm-4 col-md-4 col-lg-4">
                 @include('pages.ventas.modulo_acceso')
             </section>
 

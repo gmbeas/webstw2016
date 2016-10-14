@@ -111,10 +111,9 @@
 
                 <!-- Products list -->
                 <div class="hidden-xs row">
+                    <div class="products-list row" id="resultLineas" style="display: none;"></div>
                     <div class="products-list" id="resultProductos" data-arbol="{{Request::segment(2)}}"
-                         data-prfid="{{Request::segment(3)}}">
-
-                    </div>
+                         data-prfid="{{Request::segment(3)}}"></div>
                 </div>
                 <!-- //end Products list -->
 
@@ -128,7 +127,8 @@
 @section('javascript')
     <script>
         var token = $('meta[name="csrf-token"]').attr('content');
-        var $isotop = $('.products-list');
+        var $isotop = $('#resultProductos');
+
         var testprefijo = "";
 
 
@@ -235,11 +235,61 @@
 
         }
 
+        function desplegarLineas(linea, id) {
+            //console.log(id);
+            if (!linea) {
+                return false;
+            }
+
+            var boton = $('#resultCategorias #lista-lineas a[rel="btnLinea"][data-linea="' + linea + '"]');
+
+            if ($('h3#TituloPrefijo > small').length) {
+                $('h3#TituloPrefijo > small').remove();
+            }
+            $('#resultCategorias #lista-lineas a').removeClass('activo');
+            $(boton).addClass('activo');
+
+            if ($('h3#TituloPrefijo').length) {
+                $('h3#TituloPrefijo').append(' <small> &raquo; ' + linea + '</small>');
+            }
+            if ($('#resultLineas').length && $('#resultLineas').is(':visible')) {
+                $('#resultLineas').fadeOut(500, function () {
+                    $isotop.show();
+
+                    var filterValue = ".atributo-" + id;
+                    filterValue = filterFns[filterValue] || filterValue;
+
+                    $isotop.isotope({filter: filterValue});
+                });
+            } else {
+                var filterValue = ".atributo-" + id;
+                filterValue = filterFns[filterValue] || filterValue;
+
+                $isotop.isotope({filter: filterValue});
+            }
+
+            $('#lista-lineas > li > ul').slideUp(200);
+
+            if ($(boton).parents('li').find('ul[rel="filtrosLineas"]').length) {
+                if ($(boton).parents('li').find('ul[rel="filtrosLineas"]').is(':visible')) {
+                    $(boton).parents('li').find('ul[rel="filtrosLineas"] input.filtros').prop('checked', false);
+                } else {
+                    $(boton).parents('li').find('ul[rel="filtrosLineas"]').slideDown(300);
+                }
+                return false;
+            }
+            $(boton).parents('li').append('<ul rel="filtrosLineas"></ul>');
+            var target = $(boton).parents('li').find('ul[rel="filtrosLineas"]');
+
+        }
+
         function cargarProductos(mostrar) {
 
             var targetBanner = $('#resultBanner');
             var arbol = $isotop.data('arbol');
             var prfid = $isotop.data('prfid');
+
+            //console.log(arbol);
 
             $.ajax({
                 type: "POST",
@@ -302,6 +352,11 @@
                         });
                         $isotop.append(contenido);
                         recarga();
+
+                        if (!mostrar) {
+                            $isotop.hide();
+                            //desplegarLineas($('ul#lista-lineas a.linea.activo').data('linea'), $('ul#lista-lineas a.linea.activo').data('id'));
+                        }
                     }
                 }
             });
@@ -393,6 +448,7 @@
                         var iconos = '';
                         $.each(respuesta['_lineas'], function (index, linea) {
 
+
                             var urlimage = '{{URL::asset('/imagenweb/arbol/')}}';
                             var imagen = urlimage + '/' + $.trim(linea.FotoAtributo);
 
@@ -414,7 +470,9 @@
                                     '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Atributo + '"><b>' + linea.Atributo + '</b></a>' +
                                     '</h3>' +
                                     '</div>';
+
                         });
+                        //console.log(iconos);
                         $('#resultLineas').html(iconos).fadeIn(500);
                         mostrar = false;
                     }
@@ -485,12 +543,6 @@
                 });
             });
 
-            $(document).on('click','#resultCategorias #lista-lineas a[rel="btnLinea"], #resultLineas a[rel="btnLinea"]',function(e) {
-                e.preventDefault();
-                var id = $(this).data('id'),
-                        linea = $(this).data('linea');
-                desplegarLineas(linea, id);
-            });
 
             $(document).on('click','#resultCategorias #recogerCategorias', function(e) {
                 e.preventDefault();
@@ -590,6 +642,15 @@
 
                 return false;
             });
+
+
+            $(document).on('click', '#resultCategorias #lista-lineas a[rel="btnLinea"], #resultLineas a[rel="btnLinea"]', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id'),
+                        linea = $(this).data('linea');
+                desplegarLineas(linea, id);
+            });
+
 
             $(document).on('click', '#lista-lineas ul[rel="filtrosLineas"] a[rel="prefijoFiltroLinea"]', function(e) {
                 e.preventDefault();

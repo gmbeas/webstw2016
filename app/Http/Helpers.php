@@ -10,6 +10,20 @@
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 
+function validaRut($rut, $dv)
+{
+    $client = new Client;
+    $url = Config::get('constants.SERVICIOS.METHOD_VALIDA_RUT');
+    $r = $client->request('POST', $url, [
+        'json' => [
+            "Rut" => $rut,
+            "Dv" => $dv
+        ]]);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
 function getLanding($tienda, $codigo)
 {
     $client = new Client;

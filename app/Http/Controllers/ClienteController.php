@@ -127,4 +127,28 @@ class ClienteController extends Controller
         return response()->json(json_encode($idnuevadire));
 
     }
+
+    public function validaRegistro(Request $request)
+    {
+
+        $rutinput = str_replace(".", "", $request->input('rutcliente'));
+
+        $dv = substr($rutinput, -1);
+        // verificar caracteres
+        $len = strlen($rutinput - 1);
+        $rut = '';
+        for ($x = 0; $x < $len; $x++) {
+            if (is_numeric($rutinput[$x])) {
+                $rut .= $rutinput[$x];
+            }
+        }
+
+        $tt = validaRut($rut, $dv);
+        if ($tt['Error'] == false) {
+            return view('pages.ventas.modulo_registro_usuario');
+        } else {
+            Alert::error('Si no recuerda su contraseña, de click en olvido contraseña y siga las instrucciones', 'El rut ingresado ya existe.')->persistent("Cerrar");
+            return Redirect::to('login');
+        }
+    }
 }

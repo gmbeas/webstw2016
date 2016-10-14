@@ -1050,7 +1050,7 @@
                     _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.addClass(modal, params.customClass);
                     modal.setAttribute('data-custom-class', params.customClass);
                 } else {
-                    // Find previously set classes and remove them
+                    // Find previously set Clases and remove them
                     var customClass = modal.getAttribute('data-custom-class');
                     _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide.removeClass(modal, customClass);
                     modal.setAttribute('data-custom-class', '');

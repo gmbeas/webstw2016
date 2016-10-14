@@ -31,6 +31,7 @@ $METHOD_TOTAl_COMBO_ARRIENDO = "GetTotalArriendo";
 $METHOD_SIMULA_COMBO_ARRIENDO = "GetSimulaComboArriendo";
 $METHOD_GET_NOTA_VENTA = "GeneraVentaNota";
 $METHOD_GET_LANDING = "GetLanding";
+$METHOD_VALIDA_RUT = "ValidaRut";
 
 $METHOD_TEST = "GeneraFirma";
 
@@ -56,6 +57,7 @@ return [
         'METHOD_SIMULA_COMBO_ARRIENDO' => $url . $api . $METHOD_SIMULA_COMBO_ARRIENDO,
         'METHOD_GET_NOTA_VENTA' => $url . $api . $METHOD_GET_NOTA_VENTA,
         'METHOD_GET_LANDING' => $url . $api . $METHOD_GET_LANDING,
+        'METHOD_VALIDA_RUT' => $url . $api . $METHOD_VALIDA_RUT,
         'METHOD_TEST' => $url . $api . $METHOD_TEST,
     ]
 ];
