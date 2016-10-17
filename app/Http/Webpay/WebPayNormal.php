@@ -3,14 +3,12 @@
  * Created by PhpStorm.
  * User: Gonzalo Martinez
  * Date: 14-10-2016
- * Time: 10:21
+ * Time: 12:12
  */
 
-namespace Steward\Webpay;
+namespace App\Http\Webpay;
 
 use Exception;
-use Steward\Webpay\Soap\SoapValidation;
-use Steward\Webpay\Soap\WSSecuritySoapClient;
 
 
 /**
@@ -198,19 +196,19 @@ class WebPayNormal
     );
 
     private static $classmap = array(
-        'getTransactionResult' => 'Steward\Webpay\Clases\getTransactionResult',
-        'getTransactionResultResponse' => 'Steward\Webpay\Clases\getTransactionResultResponse',
-        'transactionResultOutput' => 'Steward\Webpay\Clases\transactionResultOutput',
-        'cardDetail' => 'Steward\Webpay\Clases\cardDetail',
-        'wsTransactionDetailOutput' => 'Steward\Webpay\Clases\wsTransactionDetailOutput',
-        'wsTransactionDetail' => 'Steward\Webpay\Clases\wsTransactionDetail',
-        'acknowledgeTransaction' => 'Steward\Webpay\Clases\acknowledgeTransaction',
-        'acknowledgeTransactionResponse' => 'Steward\Webpay\Clases\acknowledgeTransactionResponse',
-        'initTransaction' => 'Steward\Webpay\Clases\initTransaction',
-        'wsInitTransactionInput' => 'Steward\Webpay\Clases\wsInitTransactionInput',
-        'wpmDetailInput' => 'Steward\Webpay\Clases\wpmDetailInput',
-        'initTransactionResponse' => 'Steward\Webpay\Clases\initTransactionResponse',
-        'wsInitTransactionOutput' => 'Steward\Webpay\Clases\wsInitTransactionOutput');
+        'getTransactionResult' => 'App\Http\Webpay\Clases\getTransactionResult',
+        'getTransactionResultResponse' => 'App\Http\Webpay\Clases\getTransactionResultResponse',
+        'transactionResultOutput' => 'App\Http\Webpay\Clases\transactionResultOutput',
+        'cardDetail' => 'App\Http\Webpay\Clases\cardDetail',
+        'wsTransactionDetailOutput' => 'App\Http\Webpay\Clases\wsTransactionDetailOutput',
+        'wsTransactionDetail' => 'App\Http\Webpay\Clases\wsTransactionDetail',
+        'acknowledgeTransaction' => 'App\Http\Webpay\Clases\acknowledgeTransaction',
+        'acknowledgeTransactionResponse' => 'App\Http\Webpay\Clases\acknowledgeTransactionResponse',
+        'initTransaction' => 'App\Http\Webpay\Clases\initTransaction',
+        'wsInitTransactionInput' => 'App\Http\Webpay\Clases\wsInitTransactionInput',
+        'wpmDetailInput' => 'App\Http\Webpay\Clases\wpmDetailInput',
+        'initTransactionResponse' => 'App\Http\Webpay\Clases\initTransactionResponse',
+        'wsInitTransactionOutput' => 'App\Http\Webpay\Clases\wsInitTransactionOutput');
 
     function __construct($config)
     {

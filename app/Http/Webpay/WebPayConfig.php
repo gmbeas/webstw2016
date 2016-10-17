@@ -1,17 +1,16 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: Gonzalo Martinez
  * Date: 14-10-2016
- * Time: 10:20
+ * Time: 12:11
  */
 
-namespace Steward\Webpay;
+namespace App\Http\Webpay;
+
 
 class WebPayConfig
 {
-
     private $params = array();
 
     /**

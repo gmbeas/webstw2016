@@ -10,6 +10,15 @@
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 
+function identificaRut($rut)
+{
+    $client = new Client;
+    $r = $client->get('http://siichile.herokuapp.com/consulta?rut=' . $rut);
+    $pp = $r->getBody();
+    $response_body = json_decode($pp, true);
+    return $response_body;
+}
+
 function validaRut($rut, $dv)
 {
     $client = new Client;

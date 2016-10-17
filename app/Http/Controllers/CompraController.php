@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Compra;
 use App\CompraDetalle;
+use App\Http\Certificados;
+use App\Http\Webpay\WebPaySOAP;
 use Illuminate\Http\Request;
 
 
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use Steward\Phpcart\Carrito;
 
 use Alert;
+
 
 class CompraController extends Controller
 {
@@ -152,8 +155,73 @@ class CompraController extends Controller
             $detalle->save();
         }
 
-        Alert::info('Email was sent!');
-        return back();
+        $certificate = Certificados::getCertificados();
+
+        $webpay_settings = array(
+            "MODO" => "INTEGRACION",
+            "PRIVATE_KEY" => $certificate['private_key'],
+            "PUBLIC_CERT" => $certificate['public_cert'],
+            "WEBPAY_CERT" => $certificate['webpay_cert'],
+            "COMMERCE_CODE" => $certificate['commerce_code'],
+            "URL_RETURN" => "http://localhost:8080/webstw/public/respuesta",
+            "URL_FINAL" => "http://localhost:8080/webstw/public/finaliza",
+        );
+
+
+        $webpay = new WebPaySOAP($webpay_settings);
+        $webpay = $webpay->getNormalTransaction();
+
+        $request = array(
+            "amount" => $hhh['bruto'],      // monto a cobrar
+            "buyOrder" => $nv['NotaVenta'],    // numero orden de compra
+            "sessionId" => uniqid(), // idsession local
+        );
+
+        $result = $webpay->initTransaction($request["amount"], $request["sessionId"], $request["buyOrder"]);
+        //Alert::info('Email was sent!');
+        //return back();
+        return view('webpay.pago')->with('url', $result['url'])->with('token_ws', $result['token_ws']);
+    }
+
+    public function respuesta(Request $request)
+    {
+        $certificate = Certificados::getCertificados();
+        $request = array(
+            "token" => $request->input("token_ws")
+        );
+
+        $webpay_settings = array(
+            "MODO" => "INTEGRACION",
+            "PRIVATE_KEY" => $certificate['private_key'],
+            "PUBLIC_CERT" => $certificate['public_cert'],
+            "WEBPAY_CERT" => $certificate['webpay_cert'],
+            "COMMERCE_CODE" => $certificate['commerce_code'],
+            "URL_RETURN" => "http://localhost:8080/webstw/public/respuesta",
+            "URL_FINAL" => "http://localhost:8080/webstw/public/finaliza",
+        );
+
+
+        $webpay = new WebPaySOAP($webpay_settings);
+        $webpay = $webpay->getNormalTransaction();
+        $result = $webpay->getTransactionResult($request["token"]);
+
+        if ($result->detailOutput->responseCode === 0) {
+            return view('webpay.pago')->with('url', $result->urlRedirection)->with('token_ws', $request["token"]);
+        } else {
+            Alert::error('Pago RECHAZADO por webpay!')->persistent("Cerrar");
+            return redirect('checkout');
+        }
+    }
+
+    public function finaliza(Request $request)
+    {
+        $pp = $request->all();
+        if (isset($pp['token_ws']) && ($pp['token_ws'] != null)) { //VENTA OK
+            return view('webpay.exito');
+        } else { //ANULA
+            Alert::error('Transacción Anulada!')->persistent("Cerrar");
+            return redirect('checkout');
+        }
     }
 
     public function indexArriendo(){

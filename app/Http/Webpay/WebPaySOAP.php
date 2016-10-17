@@ -3,14 +3,15 @@
  * Created by PhpStorm.
  * User: Gonzalo Martinez
  * Date: 14-10-2016
- * Time: 10:23
+ * Time: 12:13
  */
 
-namespace Steward\Webpay;
+namespace App\Http\Webpay;
 
 
-class Webpay
+class WebPaySOAP
 {
+
     var $config, $webpayNormal;
 
     /**
@@ -44,4 +45,24 @@ class Webpay
             . "document.webpayForm.submit();"
             . "</script>";
     }
+
+}
+
+class baseBean
+{
+
+}
+
+class getTransactionResult
+{
+
+    var $tokenInput; //string
+
+}
+
+class getTransactionResultResponse
+{
+
+    var $return; //transactionResultOutput
+
 }

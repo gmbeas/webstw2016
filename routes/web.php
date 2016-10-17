@@ -66,7 +66,7 @@ Route::post('/nuevadireccion', array('uses' => 'ClienteController@addDireccion')
 
 Route::post('/validaregistro', array('uses' => 'ClienteController@validaRegistro'));
 
-
+Route::get('/registro/{rut}', 'ClienteController@registroUsuario');
 
 
 
@@ -103,6 +103,9 @@ Route::post('/cambiadespacho', array('uses' => 'CompraController@cambiaDespacho'
 
 Route::get('/arriendo/checkout', 'CompraController@indexArriendo');
 
+
+Route::post('/respuesta', array('uses' => 'CompraController@respuesta'));
+Route::post('/finaliza', array('uses' => 'CompraController@finaliza'));
 
 /*
 |--------------------------------------------------------------------------
