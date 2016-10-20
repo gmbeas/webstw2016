@@ -16,6 +16,18 @@
 Route::get('/', 'HomeController@index');
 Route::get('/arriendo', 'HomeController@indexArriendo');
 
+Route::get('/textil', function () {
+    return view('pages.ventas.textil');
+});
+
+Route::get('/lavanderia', function () {
+    return view('pages.ventas.lavanderia');
+});
+
+Route::get('/contacto', function () {
+    return view('pages.ventas.contacto');
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +79,8 @@ Route::post('/nuevadireccion', array('uses' => 'ClienteController@addDireccion')
 Route::post('/validaregistro', array('uses' => 'ClienteController@validaRegistro'));
 
 Route::get('/registro/{rut}', 'ClienteController@registroUsuario');
+Route::get('/invitado', 'ClienteController@registroInvitado');
+Route::post('/validainvitado', array('uses' => 'ClienteController@validaInvitado'));
 
 
 
@@ -97,7 +111,7 @@ Route::post('/arriendo/traeproductos', array('uses' => 'CategoriaController@trae
 | Metodos para controller de compras
 |
 */
-Route::get('/checkout', 'CompraController@index');
+Route::get('/checkout/{invitado}', 'CompraController@index');
 Route::post('/pago', array('uses' => 'CompraController@pago'));
 Route::post('/cambiadespacho', array('uses' => 'CompraController@cambiaDespacho'));
 
@@ -116,4 +130,4 @@ Route::post('/finaliza', array('uses' => 'CompraController@finaliza'));
 |
 */
 
-Route::get('/cibermonday', 'PromocionController@indexCiberMonday2016');
+Route::get('/cybermonday', 'PromocionController@indexCiberMonday2016');

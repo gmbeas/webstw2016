@@ -70,10 +70,10 @@
                     <ul class="product-controls-list right">
                         <li><span class="label label-sale">OFERTA</span></li>
                         @php
-                            $diferencia = $producto['PrecioBrutoNormal'] - $producto['PrecioBruto'];
+                            $diferencia = $producto['PrecioUnidadBrutoNormal'] - $producto['PrecioUnidadBruto'];
                             $porcentaje = 0;
                             if($diferencia <> 0){
-                                $por = ($diferencia / $producto['PrecioBrutoNormal']);
+                                $por = ($diferencia / $producto['PrecioUnidadBrutoNormal']);
                                 $porcentaje = $por*100;
                             }
 
@@ -86,8 +86,9 @@
                             href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html">{{$producto['NombreWeb']}}</a>
                 </h3>
 
-                <span class="price old">${{number_format($producto['PrecioBrutoNormal'], 0, ',', '.')}}</span>
-                <span class="price new">${{number_format($producto['PrecioBruto'], 0, ',', '.')}}</span>
+                <span class="price old">${{number_format($producto['PrecioUnidadBrutoNormal'], 0, ',', '.')}}</span>
+                <span class="price new">${{number_format($producto['PrecioUnidadBruto'], 0, ',', '.')}}</span>
+
             </div>
             @endforeach
 

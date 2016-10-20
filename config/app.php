@@ -170,6 +170,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+
         //
 
         /*
@@ -239,6 +240,7 @@ return [
 
         'SoapClient' => SoapClient::class,
 
+        'Asset' => App\Http\Asset::class,
     ],
 
 ];

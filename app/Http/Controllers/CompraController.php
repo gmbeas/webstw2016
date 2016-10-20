@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Compra;
 use App\CompraDetalle;
 use App\Http\Certificados;
+use App\Http\Log;
 use App\Http\Webpay\WebPaySOAP;
 use Illuminate\Http\Request;
 
@@ -19,31 +20,46 @@ use Alert;
 
 class CompraController extends Controller
 {
-    public function index(){
+    public function index($invitado)
+    {
+        $sessioncliente = array();
+        $direcciones = array();
+        $regiones = array();
+        $cart = new Carrito('ventas');
+        $inforegiones = getRegCiuCom(1, 0, 0);
+        foreach ($inforegiones['_regciucom'] as $region) {
+            $regiones[$region['Id']] = $region['Nombre'];
+        }
+
         if(checkSesionUsuario()){
             $sessioncliente = getSesionUsuario();
-            $cart = new Carrito('ventas');
-            $direcciones = array();
+
+
             $direcciones["0"] = "- Seleccione dirección de despacho";
             foreach($sessioncliente['_direcciones'] as $direccion) {
                 $direcciones[$direccion['MbDirCod']] = $direccion['MbDirDes'] . ', ' . $direccion['MbCiuNom'] . ', ' . $direccion['MbZonNom'];
             }
 
-            $regiones = array();
-            $inforegiones = getRegCiuCom(1, 0, 0);
-            foreach ($inforegiones['_regciucom'] as $region) {
-                $regiones[$region['Id']] = $region['Nombre'];
-            }
 
             return view('pages.ventas.checkout')
                 ->with('cliente', $sessioncliente)
                 ->with('direcciones', $direcciones)
                 ->with('productos', $cart->getItems())
-                ->with('regiones', $regiones);
+                ->with('regiones', $regiones)
+                ->with('invitado', $invitado);
         }
         else{
-            Session::put('url.checkout', \URL::to('/checkout'));
-            return \Redirect::to('/login');
+            if ($invitado == 1) {
+                return view('pages.ventas.checkout')
+                    ->with('cliente', $sessioncliente)
+                    ->with('direcciones', $direcciones)
+                    ->with('productos', $cart->getItems())
+                    ->with('regiones', $regiones)
+                    ->with('invitado', $invitado);
+            } else {
+                Session::put('url.checkout', \URL::to('/checkout'));
+                return \Redirect::to('/login');
+            }
         }
     }
 
@@ -206,8 +222,59 @@ class CompraController extends Controller
         $result = $webpay->getTransactionResult($request["token"]);
 
         if ($result->detailOutput->responseCode === 0) {
+
+            $info = "accountingDate = " . $result->accountingDate . "\r\n";
+            $info .= "buyOrder = " . $result->buyOrder . "\r\n";
+            $info .= "CARD DETAIL \r\n";
+            $info .= "cardNumber = " . $result->cardDetail->cardNumber . "\r\n";
+            $info .= "cardExpirationDate = " . $result->cardDetail->cardExpirationDate . "\r\n";
+            $info .= "DETAIL OUTPUT \r\n";
+            $info .= "authorizationCode = " . $result->detailOutput->authorizationCode . "\r\n";
+            $info .= "paymentTypeCode = " . $result->detailOutput->paymentTypeCode . "\r\n";
+            $info .= "responseCode = " . $result->detailOutput->responseCode . "\r\n";
+            $info .= "sharesAmount = " . $result->detailOutput->sharesAmount . "\r\n";
+            $info .= "sharesNumber = " . $result->detailOutput->sharesNumber . "\r\n";
+            $info .= "amount = " . $result->detailOutput->amount . "\r\n";
+            $info .= "commerceCode = " . $result->detailOutput->commerceCode . "\r\n";
+            $info .= "buyOrder = " . $result->detailOutput->buyOrder . "\r\n";
+            $info .= "----------------- \r\n";
+            $info .= "sessionId = " . $result->sessionId . "\r\n";
+            $info .= "transactionDate = " . $result->transactionDate . "\r\n";
+            $info .= "urlRedirection = " . $result->urlRedirection . "\r\n";
+            $info .= "VCI = " . $result->VCI . "\r\n";
+
+            Log::setLogTBK($result->detailOutput->buyOrder, $info);
+
+            $estado = CompraValida::actualizaEstadoCompra($result->detailOutput->buyOrder, $result->detailOutput->amount);
+            if ($estado)
+                CompraValida::guardaPago($result);
+
+
+
+
             return view('webpay.pago')->with('url', $result->urlRedirection)->with('token_ws', $request["token"]);
         } else {
+            $info = "accountingDate = " . $result->accountingDate . "\r\n";
+            $info .= "buyOrder = " . $result->buyOrder . "\r\n";
+            $info .= "CARD DETAIL \r\n";
+            $info .= "cardNumber = " . $result->cardDetail->cardNumber . "\r\n";
+            $info .= "cardExpirationDate = " . $result->cardDetail->cardExpirationDate . "\r\n";
+            $info .= "DETAIL OUTPUT \r\n";
+            $info .= "authorizationCode = " . $result->detailOutput->authorizationCode . "\r\n";
+            $info .= "paymentTypeCode = " . $result->detailOutput->paymentTypeCode . "\r\n";
+            $info .= "responseCode = " . $result->detailOutput->responseCode . "\r\n";
+            $info .= "sharesAmount = " . $result->detailOutput->sharesAmount . "\r\n";
+            $info .= "sharesNumber = " . $result->detailOutput->sharesNumber . "\r\n";
+            $info .= "amount = " . $result->detailOutput->amount . "\r\n";
+            $info .= "commerceCode = " . $result->detailOutput->commerceCode . "\r\n";
+            $info .= "buyOrder = " . $result->detailOutput->buyOrder . "\r\n";
+            $info .= "----------------- \r\n";
+            $info .= "sessionId = " . $result->sessionId . "\r\n";
+            $info .= "transactionDate = " . $result->transactionDate . "\r\n";
+            $info .= "urlRedirection = " . $result->urlRedirection . "\r\n";
+            $info .= "VCI = " . $result->VCI . "\r\n";
+
+            Log::setLogTBK($result->detailOutput->buyOrder, $info);
             Alert::error('Pago RECHAZADO por webpay!')->persistent("Cerrar");
             return redirect('checkout');
         }
@@ -215,8 +282,13 @@ class CompraController extends Controller
 
     public function finaliza(Request $request)
     {
+        $certificate = Certificados::getCertificados();
         $pp = $request->all();
         if (isset($pp['token_ws']) && ($pp['token_ws'] != null)) { //VENTA OK
+            $request = array(
+                "token" => $request->input("token_ws")
+            );
+
             return view('webpay.exito');
         } else { //ANULA
             Alert::error('Transacción Anulada!')->persistent("Cerrar");

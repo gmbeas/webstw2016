@@ -9,7 +9,8 @@
                         <div class="product-preview">
                             <div class="preview">
                                 <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
-                                    <img class="img-responsive" src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}" alt="">
+                                    <img class="img-responsive" src="{{Asset::skus($producto['Sku'] . '_b1.jpg')}}"
+                                         alt="">
                                 </a>
                                 <ul class="product-controls-list right">
                                     <li><span class="label label-sale hidden">SALE</span></li>

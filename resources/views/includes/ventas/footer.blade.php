@@ -78,7 +78,7 @@
 
             <div class="col-sm-4 col-md-4">
                 <ul class="payment-list pull-right">
-                    <li><img src="{{URL::asset('img/web-pay.png')}}"></li>
+                    <li><img src="{{Asset::img('web-pay.png')}}"></li>
                 </ul>
             </div>
         </div>

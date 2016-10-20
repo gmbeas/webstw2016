@@ -23,16 +23,16 @@
         <!-- LOGO -->
         <div class="col-md-2" style="height:100px">
             <a style="margin-left:45px" href="{{URL::to('/')}}">
-                <img src="{{URL::asset('/img/logo-top.png')}}" height="75px" class="logo-top" style="margin-top:10px">
+                <img src="{{Asset::img('logo-top.png')}}" height="75px" class="logo-top" style="margin-top:10px">
             </a>
         </div>
         <!-- END LOGO -->
         <div class="col-md-10">
             <div class="row">
                 <ul class="list-inline list-unstyled list-top pull-right">
-                    <li><a href="">Lavandería</a></li>
-                    <li><a href="">Textil</a></li>
-                    <li><a href="">Contacto</a></li>
+                    <li><a href="{{URL::to('/lavanderia')}}">Lavandería</a></li>
+                    <li><a href="{{URL::to('/textil')}}">Textil</a></li>
+                    <li><a href="{{URL::to('/contacto')}}">Contacto</a></li>
                 </ul>
             </div>
 
@@ -41,7 +41,7 @@
                     {!! Form::open(['method'=>'GET', 'url'=>'/categoria/buscador','class'=>'navbar-form','role'=>'buscar'])  !!}
                     <div class="input-group">
                         <div style="text-transform: uppercase; padding: 7px 10px; font-weight: 900; position: absolute; top: -48px; right: 0;">
-                            <input type="checkbox" class="demo" checked/>
+                            <input type="checkbox" class="demo"/>
                         </div>
                         {{ Form::input('buscar', 'buscar', null, ['class' => 'form-control input-md input-search', 'placeholder' => 'Busque su producto aquí']) }}
                         <div class="input-group-btn">
@@ -74,7 +74,7 @@
                                         @foreach($cart->getItems() as $producto)
                                             <li class="item">
                                                 <a href="{{ URL::to('/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) }}.html" class="preview-image">
-                                                    <img class="preview" src="{{URL::asset('/imagenweb/sku/' . $producto->foto)}}" alt="">
+                                                    <img class="preview" src="{{Asset::skus($producto->foto)}}" alt="">
                                                 </a>
                                                 <div class="description">
                                                     <a href="{{ URL::to('/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) }}.html">
@@ -86,7 +86,9 @@
                                         @endforeach
                                     </ul>
                                     <div class="total">Total: <strong>${{number_format($cart->getTotal(), 0, ",", ".")}}</strong></div>
-                                    <a href="{{URL::to('/checkout')}}" class="btn btn-mega">Pagar</a>
+                                    <a href="{{URL::to('/checkout/0')}}" class="btn btn-mega">Pagar</a>
+
+
                                     <div class="view-link"><a href="{{URL::to('/carrito')}}">Ver el Carro </a></div>
                                 </div>
                             @else

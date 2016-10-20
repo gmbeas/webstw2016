@@ -320,19 +320,30 @@
             $(document).on('click', '#comboForm .borrar a[rel="borrarProducto"]', function (e) {
                 e.preventDefault();
                 var contenedor = $(this).parents('li');
-                $(contenedor).slideUp(800, function () {
-                    var padre = $(contenedor).parents('ul');
-                    $(contenedor).remove();
-                    if (!$(padre).find('li').length) {
-                        $(padre).prev('h4').slideUp(300, function () {
-                            $(padre).prev('h4').remove();
-                        });
-                    }
-                    var item = 0;
-                    $('#comboForm ul.listado-combo-detalle li').each(function (index, elemento) {
-                        $(elemento).find('.numero').text(++item);
-                    });
-                });
+                var padre = $(contenedor).parents('ul');
+
+                var numero = contenedor.find('.numero');
+                var titulo = contenedor.find('.divisor h6');
+                var cantidad = contenedor.find('.cantidad-combo-detalle  .form-control');
+                var precio = contenedor.find('div.cantidad-combo-detalle.pull-right.text-right');
+
+
+                if ($(this).html().toLowerCase().trim() == "eliminar") {
+
+                    $(numero).css('text-decoration', 'line-through');
+                    $(titulo).css('text-decoration', 'line-through');
+                    $(cantidad).prop('readonly', true);
+                    $(precio).css('text-decoration', 'line-through');
+                    $(this).html("AGREGAR");
+                } else {
+
+                    $(this).html("ELIMINAR");
+                    $(numero).css('text-decoration', 'none');
+                    $(titulo).css('text-decoration', 'none');
+                    $(cantidad).prop('readonly', false);
+                    $(precio).css('text-decoration', 'none');
+                }
+
             });
 
             var requestCombo;

@@ -86,17 +86,23 @@
                 <!-- Filters -->
                 <div class="filters-panel">
                     <div class="row">
-                        <div class="col-sm-6 col-md-4 col-lg-4"> Ordenar por
-                            <div class="btn-group btn-select sort-select sort-isotope"><a href="#"
-                                                                                          class="btn btn-default btn-xs dropdown-toggle"
-                                                                                          data-toggle="dropdown"> <span
-                                            class="value">Precio</span> <span class="caret min"></span> </a>
+                        <div class="col-sm-5 col-md-5 col-lg-5"> Ordenar por
+                            <div class="btn-group btn-select sort-select sort-isotope">
+                                <a href="#" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    <span class="value">Por nombre</span>
+                                    <span class="caret min"></span>
+                                </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" data-value="price">Precio</a></li>
+                                    <li><a href="#" data-value="name">Por nombre</a></li>
+                                    <li><a href="#" data-value="price-down">Precio de menor a mayor</a></li>
+                                    <li><a href="#" data-value="price-up">Precio de mayor a menor</a></li>
                                 </ul>
                             </div>
-                            <a href="#" class="sort-select-arrow up"><span class="up icon-arrow-up-3"></span><span
-                                        class="down icon-arrow-down-3"></span></a></div>
+                            <a href="#" class="sort-select-arrow up">
+                                <span class="up icon-arrow-up-3"></span>
+                                <span class="down icon-arrow-down-3"></span>
+                            </a>
+                        </div>
                         <div class="col-md-4 col-lg-4 hidden-sm hidden-xs">
                             <div class="view-mode"> Ver como:&nbsp; <a href="#" class="view-grid"><span
                                             class="icon-th"></span></a>&nbsp;&nbsp;<a href="#" class="view-list"><span
@@ -168,51 +174,45 @@
                     layoutMode: "fitRows",
                     masonry: {},
                     resizable: false,
-                    sortBy: "price",
+                    sortBy: "name",
                     sortAscending: true,
                     getSortData: {
-                        position: function ($elem) {
-                            return parseInt($elem.attr("data-position"), 10)
-                        },
-                        rating: function ($elem) {
-                            return parseFloat($elem.attr("data-rating"))
-                        },
                         price: function ($elem) {
-                            return parseFloat($elem.find(".price:last").text().replace("$", "").replace(",", "."))
+                            return parseFloat($elem.find(".price:last").text().replace("$", "").replace(".", ""))
                         },
-                        dateAdded: function ($elem) {
-                            return Date.parse($elem.attr("data-date-added"))
+                        name: function ($elem) {
+                            return $elem.find(".list_description").text()
                         }
                     }
                 });
 
 
                 $(".sort-select").change(function (e, data) {
-                    $(".sort-select .value").html(data.html);
+                    //$(".sort-select .value").html(data.html);
+                    var sort = "";
+                    var updown = false;
                     if (data.value) {
+                        if (data.value == "name") {
+                            sort = data.value;
+                            updown = true;
+                        } else if (data.value == "price-down") {
+                            sort = "price";
+                            updown = true;
+                            $sortAscending.removeClass("down").addClass("up")
+                        }
+                        else if (data.value == "price-up") {
+                            sort = "price";
+                            updown = false;
+                            $sortAscending.removeClass("up").addClass("down")
+                        }
                         $isotop.isotope({
-                            sortBy: data.value
+                            sortBy: sort,
+                            layoutMode: "masonry",
+                            sortAscending: updown
                         });
                     }
                 });
-                $sortAscending.click(function (e) {
-                    if ($(this).parent().find(".sort-isotope").length >
-                            0) e.preventDefault();
-                    var $this = $(this);
-                    if ($this.hasClass("up")) {
-                        $isotop.isotope({
-                            layoutMode: "masonry",
-                            sortAscending: false
-                        });
-                        $sortAscending.removeClass("up").addClass("down")
-                    } else {
-                        $isotop.isotope({
-                            layoutMode: "masonry",
-                            sortAscending: true
-                        });
-                        $sortAscending.removeClass("down").addClass("up")
-                    }
-                });
+
             }
 
             var viewGrid = $(".view-grid"),
@@ -233,10 +233,11 @@
                 e.preventDefault()
             });
 
+
         }
 
         function desplegarLineas(linea, id) {
-            //console.log(id);
+            console.log(id);
             if (!linea) {
                 return false;
             }
@@ -271,15 +272,18 @@
             $('#lista-lineas > li > ul').slideUp(200);
 
             if ($(boton).parents('li').find('ul[rel="filtrosLineas"]').length) {
+
                 if ($(boton).parents('li').find('ul[rel="filtrosLineas"]').is(':visible')) {
+
                     $(boton).parents('li').find('ul[rel="filtrosLineas"] input.filtros').prop('checked', false);
                 } else {
+
                     $(boton).parents('li').find('ul[rel="filtrosLineas"]').slideDown(300);
                 }
                 return false;
             }
-            $(boton).parents('li').append('<ul rel="filtrosLineas"></ul>');
-            var target = $(boton).parents('li').find('ul[rel="filtrosLineas"]');
+
+            //var target = $(boton).parents('li').find('ul[rel="filtrosLineas"]');
 
         }
 
@@ -341,7 +345,7 @@
                                     '</h3>'+
                                     '<span class="price new">$ '+precio+'</span>'+
                                     '<div class="list_description">'+registro.NombreWeb+'</div>'+
-                                    '<div class="nombreBusqueda hidden">'+registro.NombreWeb.toLowerCase()+'</div>'+
+                                    '<div class="nombreBusqueda hidden">' + extinto + '</div>' +
                                     '<div class="list_buttons">'+
                                     '<a class="btn btn-mega pull-left" href="#">Add to Cart</a>'+
                                     '</div>'+
@@ -437,9 +441,16 @@
                         $.each(respuesta['_lineas'], function (index, linea) {
                             contenido += '<li>' +
                                     '<span class="name">' +
-                                    '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Atributo + '" data-id="' + linea.Atd_Id + '">' + linea.Atributo + '</a>' +
+                                    '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Linea + '" data-id="' + linea.Atd_Id + '">' + linea.Linea + '</a>' +
                                     '</span>' +
-                                    '</li>';
+                                    '<ul rel="filtrosLineas">';
+                            $.each(linea['_prefijos'], function (grupo, prefijo) {
+                                //console.log(filtroCategoria['_atributos']);
+                                contenido += '<li ><span class="name"> <a href="#" rel="prefijoFiltroLinea" class="categoria" data-categoria="' + prefijo.Prf_Id + '">' + prefijo.Prefijo + '</a></span></li>';
+                            });
+
+
+                            contenido += '</ul></li>';
                         });
 
                         contenido += '</ul>';
@@ -459,7 +470,7 @@
                             }
                             iconos += '<div class="product-preview" style="height: 400px;">' +
                                     '<div class="preview ">' +
-                                    '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Atributo + '" data-id="' + linea.Atd_Id + '" class="preview-image">' +
+                                    '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Linea + '" data-id="' + linea.Atd_Id + '" class="preview-image">' +
                                     '<img class="bordegris" src="' + imagen + '" width="270" height="270" alt="">' +
                                     '</a>' +
                                     '<ul class="product-controls-list right hide-right">' +
@@ -467,7 +478,7 @@
                                     '</ul>' +
                                     '</div>' +
                                     '<h3 class="title nombreProducto">' +
-                                    '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Atributo + '"><b>' + linea.Atributo + '</b></a>' +
+                                    '<a href="#" class="linea" rel="btnLinea" data-linea="' + linea.Linea + '"><b>' + linea.Linea + '</b></a>' +
                                     '</h3>' +
                                     '</div>';
 
@@ -556,6 +567,15 @@
                 $isotop.isotope({filter: '*'});
             });
 
+
+            $(document).on('click', '#resultCategorias #lista-lineas a[rel="btnLinea"], #resultLineas a[rel="btnLinea"]', function (e) {
+                e.preventDefault();
+
+                var id = $(this).data('id'),
+                        linea = $(this).data('linea');
+                desplegarLineas(linea, id);
+            });
+
             $(document).on('click','#resultCategorias #lista-categorias.expander-list > li.categorias > span.name > a[rel="btnPrefijo"]', function() {
 
                 var categoria_id = $(this).parents('li.categorias').data('categoria');// categoria seleccionada
@@ -604,13 +624,47 @@
                     });
                 });
 
-                //filterValue = '.melamina';
-                //console.log(filterValue);
-                //filterValue = filterFns[ filterValue ] || filterValue;
+                console.log(1);
+
+
                 var selector = isoFilters.join(', ');
                 $isotop.isotope({filter: selector});
+
+                var iso = $isotop.data('isotope');
+
+                var xx = [];
+                iso.$filteredAtoms.each(function (i, elem) {
+                    var pp = $(elem).find('div.nombreBusqueda.hidden');
+                    var pp1 = pp.html().trim().split(" ");
+                    pp1.forEach(function (datto) {
+                        xx.push(datto);
+                    });
+                });
+
+                var targetCategorias = $('#resultCategorias');
+                var nn = targetCategorias.find('input.filtros');
+                for (var i = 0, len = nn.length; i < len; i++) {
+                    var au = false;
+                    if (!$(nn[i]).prop('checked')) {
+                        xx.forEach(function (datto) {
+                            //console.log(datto);
+                            if (datto == $(nn[i]).val()) {
+                                //console.log(datto);
+                                au = true;
+                            }
+                        });
+
+                        if (!au) {
+                            //$(nn[i]).hide();
+                        }
+
+                    }
+
+                }
+
                 return false;
             });
+
 
             $(document).on('change','#resultCategorias #lista-categorias .filtros',function() {
                 //console.log(1);
@@ -628,55 +682,30 @@
                 });
 
 
-                var filters = {};
-
-                filters['.prueba-873'] = '.atributo-396';
-                //console.log(testprefijo);
-
                 //console.log(isoFilters);
                 var selector = isoFilters.join(', ');
-                //$isotop.isotope({ filter: '.prueba-' + testprefijo});
-                var filterValue = concatValues(filters);
-                //console.log(filterValue);
+                console.log(2);
                 $isotop.isotope({filter: ".prueba-" + categoria_id + selector});
 
                 return false;
             });
 
 
-            $(document).on('click', '#resultCategorias #lista-lineas a[rel="btnLinea"], #resultLineas a[rel="btnLinea"]', function (e) {
-                e.preventDefault();
-                var id = $(this).data('id'),
-                        linea = $(this).data('linea');
-                desplegarLineas(linea, id);
-            });
-
 
             $(document).on('click', '#lista-lineas ul[rel="filtrosLineas"] a[rel="prefijoFiltroLinea"]', function(e) {
                 e.preventDefault();
 
                 var boton = $(this);
-                $('a[rel="prefijoFiltroLinea"]').removeClass('activo').css({
-                    textDecoration: 'none'
-                });
-                $(boton).addClass('activo').css({
-                    textDecoration: 'underline'
-                });
-                $('#resultProductos').fadeOut(300, function() {
-                    var prefijo = $(boton).text();
-                    var linea = $(boton).parents('ul[rel="filtrosLineas"]').siblings('span.name').find('a[rel="btnLinea"]').data('linea');
-                    $('div.product-preview').addClass('noMostrar');
-                    $('div.product-preview.modulo-oferta').removeClass('noMostrar');
-                    $('.nombreBusqueda:contains("'+linea.toLowerCase()+' ")').each(function(index,elemento) {
-                        if ($(elemento).is(':contains("'+prefijo.toLowerCase()+' ")')) {
-                            $(elemento).parent().removeClass('noMostrar');
-                        }
-                    });
-                    $('html, body').animate({
-                        scrollTop: $("#resultProductos").parent().offset().top
-                    }, 300);
-                    $('#resultProductos').fadeIn(300);
-                });
+                var prefijo = $(boton).data("categoria");
+                var linea = $(boton).parents('ul[rel="filtrosLineas"]').siblings('span.name').find('a[rel="btnLinea"]').data('id');
+
+                var filterValue = ".prueba-" + prefijo + ".atributo-" + linea;
+                //var filterValue = ".atributo-" + id;
+                filterValue = filterFns[filterValue] || filterValue;
+
+                $isotop.isotope({filter: filterValue});
+
+                console.log(prefijo, linea);
             });
         });
 

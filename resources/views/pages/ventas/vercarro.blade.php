@@ -46,7 +46,7 @@
                                             <span class="icon-cancel-2 "></span>
                                         </a>
                                         <a href="{{ URL::to('/ficha/' . $producto->id . '/' . Str::slug($producto->nombre, '-')) }}.html">
-                                            <img class="preview" src="{{URL::asset('/imagenweb/sku/' . $producto->foto)}}">
+                                            <img class="preview" src="{{Asset::skus($producto->foto)}}">
                                         </a>
                                     </td>
                                     <td style="text-align:left">
@@ -106,7 +106,7 @@
                                         </div>
                                         <div class="row text-right">
                                             <div style="padding-right: 35px;" class="col-md-6 col-md-offset-6">
-                                                <a href="{{URL::to('/checkout')}}" class="btn btn-mega">Comprar</a>
+                                                <a href="{{URL::to('/checkout/0')}}" class="btn btn-mega">Comprar</a>
                                             </div>
                                         </div>
                                     </div>

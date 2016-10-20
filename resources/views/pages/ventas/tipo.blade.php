@@ -12,7 +12,8 @@
                         <li>
                             <div class="product">
                                 <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
-                                    <img class="img-responsive " src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}" alt="">
+                                    <img class="img-responsive " src="{{Asset::skus($producto['Sku'] . '_b1.jpg')}}"
+                                         alt="">
                                 </a>
                                 <p class="name">
                                     <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
@@ -37,7 +38,8 @@
                             <li>
                                 <div class="product">
                                     <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
-                                        <img class="img-responsive scale" src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}" alt="">
+                                        <img class="img-responsive scale"
+                                             src="{{Asset::skus($producto['Sku'] . '_b1.jpg')}}" alt="">
                                     </a>
                                     <p class="name">
                                         <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
@@ -68,7 +70,9 @@
 
                                                 <div class="preview ">
                                                     <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">
-                                                        <img class="img-responsive" src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}"  width="100%" alt="">
+                                                        <img class="img-responsive"
+                                                             src="{{Asset::skus($producto['Sku'] . '_b1.jpg')}}"
+                                                             width="100%" alt="">
                                                     </a>
                                                     <ul class="product-controls-list">
                                                         <li><span class="label label-new hidden">NUEVO</span></li>
@@ -102,7 +106,8 @@
                             <li>
                                 <div class="product">
                                     <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html"class="preview-image">
-                                        <img class="img-responsive  " src="{{URL::asset('/imagenweb/sku/' . $producto['Sku'] . '_b1.jpg')}}" alt="">
+                                        <img class="img-responsive  "
+                                             src="{{Asset::skus($producto['Sku'] . '_b1.jpg')}}" alt="">
                                     </a>
                                     <p class="name">
                                         <a href="{{ URL::to('/ficha/' . $producto['Sku'] . '/' . Str::slug($producto['NombreWeb'], '-')) }}.html" class="preview-image">

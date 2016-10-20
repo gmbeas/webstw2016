@@ -13,8 +13,11 @@
         <div class="product-view row">
             <div class="col-sm-6 col-md-5 col-lg-5">
                 <div class="large-image">
-                    <img alt="#" class="cloudzoom hidden-xs hidden-sm" src="{{URL::asset('/imagenweb/sku/' . $producto['foto'][0])}}" data-cloudzoom = "zoomImage: '{{URL::asset('/imagenweb/sku/' . $producto['foto'][0])}}', autoInside : 900, zoomSizeMode: 'image'" />
-                    <img alt="#" class="cloudzoom mobile-cloudzoom hidden-md hidden-lg" src="{{URL::asset('/imagenweb/sku/' . $producto['foto'][0])}}" data-cloudzoom = "zoomImage: '{{URL::asset('/imagenweb/sku/' . $producto['foto'][0])}}'" />
+                    <img alt="#" class="cloudzoom hidden-xs hidden-sm" src="{{Asset::skus($producto['foto'][0])}}"
+                         data-cloudzoom="zoomImage: '{{Asset::skus($producto['foto'][0])}}', autoInside : 900, zoomSizeMode: 'image'"/>
+                    <img alt="#" class="cloudzoom mobile-cloudzoom hidden-md hidden-lg"
+                         src="{{Asset::skus($producto['foto'][0])}}"
+                         data-cloudzoom="zoomImage: '{{Asset::skus($producto['foto'][0])}}'"/>
                 </div>
 
                 <!-- GALERIA -->
@@ -23,8 +26,14 @@
                         <ul class="previews-list slides" style="width: 1000%; -webkit-transition-duration: 0s; transition-duration: 0s; -webkit-transform: translate3d(0px, 0px, 0px);">
                             @foreach($producto['foto'] as $imagen)
                                 <li style="width: 76px; float: left; display: block;">
-                                    <img class="cloudzoom-gallery hidden-xs hidden-sm" alt="#" src="{{URL::asset('/imagenweb/sku/' . $imagen)}}" data-cloudzoom="useZoom: '.cloudzoom', image: '{{URL::asset('/imagenweb/sku/' . $imagen)}}', zoomImage: '{{URL::asset('/imagenweb/sku/' . $imagen)}}', autoInside : 991" draggable="false">
-                                    <img class="cloudzoom-gallery hidden-md hidden-lg" alt="#" src="{{URL::asset('/imagenweb/sku/' . $imagen)}}" data-cloudzoom="useZoom: '.mobile-cloudzoom', image: '{{URL::asset('/imagenweb/sku/' . $imagen)}}'" draggable="false">
+                                    <img class="cloudzoom-gallery hidden-xs hidden-sm" alt="#"
+                                         src="{{Asset::skus($imagen)}}"
+                                         data-cloudzoom="useZoom: '.cloudzoom', image: '{{Asset::skus($imagen)}}', zoomImage: '{{Asset::skus($imagen)}}', autoInside : 991"
+                                         draggable="false">
+                                    <img class="cloudzoom-gallery hidden-md hidden-lg" alt="#"
+                                         src="{{Asset::skus($imagen)}}}}"
+                                         data-cloudzoom="useZoom: '.mobile-cloudzoom', image: '{{Asset::skus($imagen)}}'"
+                                         draggable="false">
                                 </li>
                             @endforeach
                         </ul>

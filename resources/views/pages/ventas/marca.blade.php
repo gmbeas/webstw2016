@@ -22,7 +22,8 @@
                 @foreach($marcas['_marcas'] as $marca)
                     <li>
                         <a href="">
-                            <img src="{{URL::asset('/imagenweb/arbol/' . $marca['FotoAtributo'])}}" alt="{{$marca['FotoAtributo']}}" height="120">
+                            <img src="{{Asset::arbol($marca['FotoAtributo'])}}" alt="{{$marca['FotoAtributo']}}"
+                                 height="120">
                         </a>
                     </li>
                 @endforeach

@@ -13,7 +13,7 @@ class PromocionController extends Controller
     public function indexCiberMonday2016()
     {
 
-        $data = getLanding("24", "PR001");
+        $data = getLanding("29", "CYBERMONDAY");
         return view('promocion.cibermonday')
             ->with('productos', $data);
     }

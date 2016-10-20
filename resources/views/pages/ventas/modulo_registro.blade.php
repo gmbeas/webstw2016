@@ -11,10 +11,11 @@
         <p>Escriba su rut para crear su cuenta</p>
         {{ Form::open(array('url' => '/validaregistro', 'class' => 'validar-formulario')) }}
         <div class="form-group">
-            {{ Form::input('rutcliente', 'rutcliente', null, ['class' => 'form-control', 'placeholder' => 'Ej: 11111111-1', 'id' => 'rutcliente']) }}
+            {{ Form::input('text', 'rutclientereg', null, ['class' => 'form-control', 'placeholder' => 'Ej: 11111111-1', 'id' => 'rutclientereg']) }}
         </div>
         <button class="btn btn-mega" onclick="location.href='#';">CONTINUAR</button>
         {{ Form::close() }}
 
     </div>
 </section>
+

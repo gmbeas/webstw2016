@@ -40,7 +40,7 @@
                     {!! Form::open(['method'=>'GET', 'url'=>'/arriendo/categoria/buscador','class'=>'navbar-form','role'=>'buscar'])  !!}
                     <div class="input-group">
                         <div style="text-transform: uppercase; padding: 7px 10px; font-weight: 900; position: absolute; top: -48px; right: 0;">
-                            <input type="checkbox" class="demo"/>
+                            <input type="checkbox" class="demo" checked/>
                         </div>
                         {{ Form::input('buscar', 'buscar', null, ['class' => 'form-control input-md input-search', 'placeholder' => 'Busque su producto aquí']) }}
                         <div class="input-group-btn">

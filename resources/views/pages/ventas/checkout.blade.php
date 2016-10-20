@@ -17,60 +17,70 @@
             <div class="col-md-12">
                 <!-- checkout -->
                 <div class="panel-group"  id="checkOut">
-                <!-- REGISTRO - LOGIN -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading active">
-                            <h4 class="panel-title"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> <span>1</span>Información del cliente</a> </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse in">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <table class="table table-condensed">
-                                        <tr>
-                                            <td>Nombre</td>
-                                            <td>{{$cliente['_usuarioweb']['Nombre']}}</td>
-                                        </tr>
 
-                                        <tr>
-                                            <td>Apellidos</td>
-                                            <td>{{$cliente['_usuarioweb']['ApeP']}} {{$cliente['_usuarioweb']['ApeM']}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>RUT</td>
-                                            <td>{{ $cliente['_usuarioweb']['Rut']}}-{{ $cliente['_usuarioweb']['Dv']}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Email</td>
-                                            <td>{{$cliente['_usuarioweb']['Email']}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Teléfono</td>
-                                            <td>{{$cliente['_usuarioweb']['Telefono']}}</td>
-                                        </tr>
-                                    </table>
+                @if($invitado == 0)
+                    <!-- REGISTRO - LOGIN -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading active">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseOne">
+                                        <span>1</span>Información del cliente</a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <table class="table table-condensed">
+                                            <tr>
+                                                <td>Nombre</td>
+                                                <td>{{$cliente['_usuarioweb']['Nombre']}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Apellidos</td>
+                                                <td>{{$cliente['_usuarioweb']['ApeP']}} {{$cliente['_usuarioweb']['ApeM']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>RUT</td>
+                                                <td>{{ $cliente['_usuarioweb']['Rut']}}
+                                                    -{{ $cliente['_usuarioweb']['Dv']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Email</td>
+                                                <td>{{$cliente['_usuarioweb']['Email']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Teléfono</td>
+                                                <td>{{$cliente['_usuarioweb']['Telefono']}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- FIN REGISTRO - LOGIN -->
-                {{ Form::open(array('url' => '/pago', 'class' => 'form-horizontal validar-formulario', 'id' => 'CompraPagoForm')) }}
+                        <!-- FIN REGISTRO - LOGIN -->
+                    {{ Form::open(array('url' => '/pago', 'class' => 'form-horizontal validar-formulario', 'id' => 'CompraPagoForm')) }}
                     <!-- DESPACHO -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading active">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#">
-                                    <span>2</span>Despacho
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseThree" class="panel-collapse collapse in">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <a data-toggle="modal" href='#add-direc' class=" btn btn-xs btn-mega pull-right" style="margin-top:-10px">Agregar dirección</a>
+                        <div class="panel panel-default">
+                            <div class="panel-heading active">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                                       href="#">
+                                        <span>2</span>Despacho
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <a data-toggle="modal" href='#add-direc'
+                                               class=" btn btn-xs btn-mega pull-right" style="margin-top:-10px">Agregar
+                                                dirección</a>
+                                        </div>
                                     </div>
-                                </div>
-                                <h6>Selecciona:</h6>
+                                    <h6>Selecciona:</h6>
                                     {{ Form::select('CompraDespachoId', $direcciones, null, ['class' => 'form-control', 'id' => 'CompraDespachoId']) }}
                                     <br>
                                     <table class="table table-condensed">
@@ -92,116 +102,331 @@
                                         </tr>
                                     </table>
                                     <a href="#collapseFive" class=" btn btn-mega pull-right">Continuar</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- FIN DESPACHO -->
-                    <!-- PAGO -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" href="#collapseFive">
-                                    <span>3</span>Forma de Pago
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseFive" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <input type="radio" name="mediopago" id="mediopago" value="1" checked="checked" style="margin-right: 10px;"> Web Play Plus
-                                <a href="#collapseSix" class=" btn btn-mega pull-right">Continuar</a>
+                        <!-- FIN DESPACHO -->
+                        <!-- PAGO -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" href="#collapseFive">
+                                        <span>3</span>Forma de Pago
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <input type="radio" name="mediopago" id="mediopago" value="1" checked="checked"
+                                           style="margin-right: 10px;"> Web Play Plus
+                                    <a href="#collapseSix" class=" btn btn-mega pull-right">Continuar</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- FIN PAGO -->
-                    <!-- RESUMEN -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a class="accordion-toggle" href="#collapseSix">
-                                    <span>4</span>Revise Su Orden
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseSix" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <section class="content-box">
-                                    <div class="shopping_cart">
-                                        <div class="box">
+                        <!-- FIN PAGO -->
+                        <!-- RESUMEN -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" href="#collapseSix">
+                                        <span>4</span>Revise Su Orden
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseSix" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <section class="content-box">
+                                        <div class="shopping_cart">
+                                            <div class="box">
 
-                                            <h3>Detalle de la Compra</h3>
-                                            <table>
-                                                <thead>
-                                                <tr class="hidden-xs">
-                                                    <th></th>
-                                                    <th>Producto</th>
-                                                    <th>Precio</th>
-                                                    <th>Cantidad</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($productos as $producto)
-                                                <tr>
-                                                    <td><a href="#" class="remove-button visible-xs"><span class="icon-cancel-2 "></span></a>
-                                                        <a href="">
-                                                            <img class="preview" src="{{URL::asset('/imagenweb/sku/' . $producto->foto)}}">
-                                                        </a>
-                                                    </td>
-                                                    <td><span class="td-name visible-xs">Producto</span><a href="#">{{$producto->nombre}}</a></td>
-                                                    <td><span class="td-name visible-xs">Precio</span>${{number_format($producto->precio, 0, ",", ".")}}</td>
-                                                    <td>
-                                                        <span class="td-name visible-xs">Cantidad</span>
-                                                        <div class="input-group quantity-control">
-                                                            {{$producto->cantidad}}
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="td-name visible-xs">Total</span>
-                                                        ${{number_format(($producto->precio * $producto->cantidad) , 0, ",", ".")}}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                            {{ Form::hidden('valordespachoinput', '0') }}
-                                            {{ Form::hidden('valoridregion', '0') }}
-                                            {{ Form::hidden('valoridciudad', '0') }}
-                                            <div class="pull-left"> <b class="title">Despacho:</b> <span id="valorDespacho2"></span></div>
-
-                                            <div class="pull-right">
-                                                <table class="table condensed">
-                                                    <tr>
-                                                        <td style="text-align: left;"><b>Neto:</b></td>
-                                                        <td style="text-align: right;"><span id="neto" class="price">$</span></td>
+                                                <h3>Detalle de la Compra</h3>
+                                                <table>
+                                                    <thead>
+                                                    <tr class="hidden-xs">
+                                                        <th></th>
+                                                        <th>Producto</th>
+                                                        <th>Precio</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Total</th>
                                                     </tr>
-                                                    <tr>
-                                                        <td style="text-align: left;"><b>Iva:</b></td>
-                                                        <td style="text-align: right;"><span id="iva" class="price">$</span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="text-align: left;"><b>Total:</b></td>
-                                                        <td style="text-align: right;"><span id="precioTotal" class="price">$</span></td>
-                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($productos as $producto)
+                                                        <tr>
+                                                            <td><a href="#" class="remove-button visible-xs"><span
+                                                                            class="icon-cancel-2 "></span></a>
+                                                                <a href="">
+                                                                    <img class="preview"
+                                                                         src="{{Asset::skus($producto->foto)}}">
+                                                                </a>
+                                                            </td>
+                                                            <td><span class="td-name visible-xs">Producto</span><a
+                                                                        href="#">{{$producto->nombre}}</a></td>
+                                                            <td>
+                                                                <span class="td-name visible-xs">Precio</span>${{number_format($producto->precio, 0, ",", ".")}}
+                                                            </td>
+                                                            <td>
+                                                                <span class="td-name visible-xs">Cantidad</span>
+                                                                <div class="input-group quantity-control">
+                                                                    {{$producto->cantidad}}
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <span class="td-name visible-xs">Total</span>
+                                                                ${{number_format(($producto->precio * $producto->cantidad) , 0, ",", ".")}}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
                                                 </table>
+                                                {{ Form::hidden('valordespachoinput', '0') }}
+                                                {{ Form::hidden('valoridregion', '0') }}
+                                                {{ Form::hidden('valoridciudad', '0') }}
+                                                <div class="pull-left"><b class="title">Despacho:</b> <span
+                                                            id="valorDespacho2"></span></div>
 
-                                                <div class="col-md-12" style="margin-bottom: 20px;">
-                                                    <div class="row">
-                                                        {{Form::checkbox('politicas', 'value', false, ['id' => 'politicas'])}}
-                                                        <a href="" target="_blank" style="margin-left: 7px;">acepto los términos y condiciones</a>
+                                                <div class="pull-right">
+                                                    <table class="table condensed">
+                                                        <tr>
+                                                            <td style="text-align: left;"><b>Neto:</b></td>
+                                                            <td style="text-align: right;"><span id="neto"
+                                                                                                 class="price">$</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;"><b>Iva:</b></td>
+                                                            <td style="text-align: right;"><span id="iva" class="price">$</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;"><b>Total:</b></td>
+                                                            <td style="text-align: right;"><span id="precioTotal"
+                                                                                                 class="price">$</span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+
+                                                    <div class="col-md-12" style="margin-bottom: 20px;">
+                                                        <div class="row">
+                                                            {{Form::checkbox('politicas', 'value', false, ['id' => 'politicas'])}}
+                                                            <a href="" target="_blank" style="margin-left: 7px;">acepto
+                                                                los términos y condiciones</a>
+                                                        </div>
                                                     </div>
+                                                    <a href="#" id="continuar" class="continuar btn btn-mega">Pagar</a>
                                                 </div>
-                                                <a href="#" id="continuar" class="continuar btn btn-mega">Pagar</a>
-                                            </div>
-                                            <div class="clearfix"></div>
+                                                <div class="clearfix"></div>
 
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIN RESUMEN -->
+                    {{Form::close()}}
+                @elseif($invitado == 1)
+                    <!-- REGISTRO - LOGIN -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading active">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapseOne">
+                                        <span>1</span>Datos para contacto y despacho
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOneInvitado" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <div class="form-group">
+                                                <label for="nombrepersona">Nombre</label>
+                                                {{ Form::input('text', 'nombrepersona', null, ['class' => 'form-control', 'id' => 'nombrepersona']) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Rut</label>
+                                                {{ Form::input('text', 'rutpersona', null, ['class' => 'form-control', 'id' => 'rutpersona']) }}
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label for="fonopersona">Teléfono contacto</label>
+                                                {{ Form::input('text', 'fonopersona', null, ['class' => 'form-control', 'id' => 'fonopersona']) }}
+                                            </div>
                                         </div>
                                     </div>
-                                </section>
+
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label for="mailpersona">E-mail contacto</label>
+                                                {{ Form::input('text', 'mailpersona', null, ['class' => 'form-control', 'id' => 'mailpersona']) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="direccionpersona">Dirección</label>
+                                                {{ Form::input('text', 'direccionpersona', null, ['class' => 'form-control', 'id' => 'direccionpersona']) }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="regionpersona">Región</label>
+                                                {{ Form::select('regionpersona', $regiones, null, ['class' => 'form-control', 'id' => 'regionpersona']) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="ciudadpersona">Ciudad</label>
+                                                {{ Form::select('ciudadpersona', array(), null, ['class' => 'form-control', 'id' => 'ciudadpersona', 'empty' => '- sin info']) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="comunapersona">Comuna</label>
+                                                {{ Form::select('comunapersona', array(), null, ['class' => 'form-control', 'id' => 'comunapersona', 'empty' => '- sin info']) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="#collapseTwoInvitado" class=" btn btn-mega pull-right">Continuar</a>
+                                    </div>
+                            </div>
+                            </div>
+                        <!-- FIN REGISTRO - LOGIN -->
+                        <!-- PAGO -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" href="#collapseTwoInvitado">
+                                        <span>2</span>Forma de Pago
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwoInvitado" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <input type="radio" name="mediopago" id="mediopago" value="1" checked="checked"
+                                           style="margin-right: 10px;"> Web Play Plus
+                                    <a href="#collapseThreeInvitado" class=" btn btn-mega pull-right">Continuar</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- FIN RESUMEN -->
-                    {{Form::close()}}
+                        <!-- FIN PAGO -->
+                        <!-- RESUMEN -->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" href="#collapseThreeInvitado">
+                                        <span>3</span>Revise Su Orden
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThreeInvitado" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <section class="content-box">
+                                        <div class="shopping_cart">
+                                            <div class="box">
+
+                                                <h3>Detalle de la Compra</h3>
+                                                <table>
+                                                    <thead>
+                                                    <tr class="hidden-xs">
+                                                        <th></th>
+                                                        <th>Producto</th>
+                                                        <th>Precio</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($productos as $producto)
+                                                        <tr>
+                                                            <td><a href="#" class="remove-button visible-xs"><span
+                                                                            class="icon-cancel-2 "></span></a>
+                                                                <a href="">
+                                                                    <img class="preview"
+                                                                         src="{{Asset::skus($producto->foto)}}">
+                                                                </a>
+                                                            </td>
+                                                            <td><span class="td-name visible-xs">Producto</span><a
+                                                                        href="#">{{$producto->nombre}}</a></td>
+                                                            <td>
+                                                                <span class="td-name visible-xs">Precio</span>${{number_format($producto->precio, 0, ",", ".")}}
+                                                            </td>
+                                                            <td>
+                                                                <span class="td-name visible-xs">Cantidad</span>
+                                                                <div class="input-group quantity-control">
+                                                                    {{$producto->cantidad}}
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <span class="td-name visible-xs">Total</span>
+                                                                ${{number_format(($producto->precio * $producto->cantidad) , 0, ",", ".")}}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                                {{ Form::hidden('valordespachoinput', '0') }}
+                                                {{ Form::hidden('valoridregion', '0') }}
+                                                {{ Form::hidden('valoridciudad', '0') }}
+                                                <div class="pull-left"><b class="title">Despacho:</b> <span
+                                                            id="valorDespacho2"></span></div>
+
+                                                <div class="pull-right">
+                                                    <table class="table condensed">
+                                                        <tr>
+                                                            <td style="text-align: left;"><b>Neto:</b></td>
+                                                            <td style="text-align: right;"><span id="neto"
+                                                                                                 class="price">$</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;"><b>Iva:</b></td>
+                                                            <td style="text-align: right;"><span id="iva" class="price">$</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style="text-align: left;"><b>Total:</b></td>
+                                                            <td style="text-align: right;"><span id="precioTotal"
+                                                                                                 class="price">$</span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+
+                                                    <div class="col-md-12" style="margin-bottom: 20px;">
+                                                        <div class="row">
+                                                            {{Form::checkbox('politicas', 'value', false, ['id' => 'politicas'])}}
+                                                            <a href="" target="_blank" style="margin-left: 7px;">acepto
+                                                                los términos y condiciones</a>
+                                                        </div>
+                                                    </div>
+                                                    <a href="#" id="continuar" class="continuar btn btn-mega">Pagar</a>
+                                                </div>
+                                                <div class="clearfix"></div>
+
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIN RESUMEN -->
+                    @endif
                 </div>
                 <!-- end check out -->
                 <div class="divider divider-sm visible-sm  visible-xs"></div>
@@ -370,6 +595,98 @@
             });
         });
 
+        $(document).on('click', 'a[href="#collapseTwoInvitado"]', function (e) {
+            e.preventDefault();
+            var rut = $('#rutpersona').val().replaceAll('.', '');
+            var nombre = $('#nombrepersona').val();
+            var fono = $('#fonopersona').val();
+            var mail = $('#mailpersona').val();
+            var direccion = $('#direccionpersona').val();
+            var regid = $('#regionpersona').val();
+            var ciuid = $('#ciudadpersona').val();
+            var comid = $('#comunapersona').val();
+
+            var error = false;
+            if ($(rut).length) {
+                error = true;
+            }
+
+            if ($(nombre).length) {
+                error = true;
+            }
+
+            if ($(fono).length) {
+                error = true;
+            }
+
+            if (mail.length < 4) {
+                error = true;
+            }
+
+            if ($(direccion).length) {
+                error = true;
+            }
+
+            if (regid == 0) {
+                error = true;
+            }
+
+            if (ciuid == 0 || ciuid == null) {
+                error = true;
+            }
+
+            if (comid == 0 || comid == null) {
+                error = true;
+            }
+
+            if (error) {
+                swal("Debe ingresar todos los datos para continuar!")
+                return false;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '{{URL::to('validainvitado')}}',
+                data: {'rut': rut, 'regid': regid, 'ciuid': ciuid, 'comid': comid, '_token': token},
+                success: function (response) {
+                    var respuesta = JSON.parse(response);
+                    if (respuesta.Error == true) {
+                        swal("El rut ingresado esta registrado.!")
+                        return false;
+                    } else {
+                        $('#valorDespacho').html('$' + format(respuesta.total.flete) + ' + IVA');
+                        $('#valorDespacho2').html('$' + format(respuesta.total.flete) + ' + IVA');
+                        $('#precioTotal').html('$' + format(respuesta.total.bruto));
+                        $('#iva').html('$' + format(respuesta.total.iva));
+                        $('#neto').html('$' + format(respuesta.total.neto));
+
+                        $('a[href="#collapseTwoInvitado"]').parents('.panel-heading').addClass('active');
+                        $('#collapseTwoInvitado').collapse('show');
+                        $('html, body').animate({
+                            scrollTop: $("#collapseTwoInvitado").parent().offset().top
+                        }, 600);
+                    }
+
+                }
+            });
+
+        });
+
+        $(document).on('click', 'a[href="#collapseThreeInvitado"]', function (e) {
+            $('a[href="#collapseThreeInvitado"]').parents('.panel-heading').addClass('active');
+            $('#collapseThreeInvitado').collapse('show');
+            $('html, body').animate({
+                scrollTop: $("#collapseThreeInvitado").parent().offset().top
+            }, 600);
+        });
+
+        $(document).on('click', 'a[href="#collapseThreeInvitado"]', function (e) {
+            $('a[href="#collapseThreeInvitado"]').parents('.panel-heading').addClass('active');
+            $('#collapseThreeInvitado').collapse('show');
+            $('html, body').animate({
+                scrollTop: $("#collapseThreeInvitado").parent().offset().top
+            }, 600);
+        });
 
 
         $(document).on('click','a[href="#collapseFive"]',function(e) {
@@ -418,6 +735,7 @@
             }
             $(target).html('<option>cargando...</option>');
 
+
             $.ajax({
                 type: "POST",
                 url: '{{URL::to('getciudades')}}',
@@ -431,7 +749,6 @@
                 }
             });
         });
-
 
         $('#ClienteCiudad').change(function() {
             var ciudad = $(this).val(),
@@ -455,11 +772,75 @@
             });
         });
 
-
         $('#CompraDespachoId').change(function() {
             var id = $(this).val();
             cambiarDespacho(id);
         });
+
+        $(document).on('change', '#rutpersona', function () {
+            var target = $(this),
+                    rut = $(this).val();
+            if (rut.length > 1) {
+                var newRut = '',
+                        dv = '';
+                for (x = 0; x < rut.length; x++) {
+                    if (x == (rut.length - 1)) {
+                        dv = rut[x];
+                    } else if (!isNaN(rut[x])) {
+                        newRut += rut[x];
+                    }
+                }
+                $(target).val(format(newRut) + '-' + dv);
+            }
+        });
+
+        $('#regionpersona').change(function () {
+            var region = $(this).val(), target = $('#ciudadpersona');
+            if (!$(target).length) {
+                return false;
+            }
+            $(target).html('<option>cargando...</option>');
+            $('#comunapersona').html('<option></option>');
+            $.ajax({
+                type: "POST",
+                url: '{{URL::to('getciudades')}}',
+                data: {'idregion': region, '_token': token},
+                success: function (response) {
+                    var respuesta = JSON.parse(response);
+                    $(target).html('');
+                    $.each(respuesta, function (i, value) {
+                        $(target).append($('<option>').text(value.Nombre).attr('value', value.Id));
+                    });
+                }
+            });
+        });
+
+        $('#ciudadpersona').change(function () {
+            var ciudad = $(this).val(),
+                    region = $('#regionpersona').val(),
+                    target = $('#comunapersona');
+            if (!$(target).length) {
+                return false;
+            }
+            $(target).html('<option>cargando...</option>');
+            $.ajax({
+                type: "POST",
+                url: '{{URL::to('getcomunas')}}',
+                data: {'idregion': region, 'idciudad': ciudad, '_token': token},
+                success: function (response) {
+                    var respuesta = JSON.parse(response);
+                    $(target).html('');
+                    $.each(respuesta, function (i, value) {
+                        $(target).append($('<option>').text(value.Nombre).attr('value', value.Id));
+                    });
+                }
+            });
+        });
+
+        String.prototype.replaceAll = function (find, replace) {
+            var str = this;
+            return str.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replace);
+        };
 
         function format(input) {
             var num = input;
